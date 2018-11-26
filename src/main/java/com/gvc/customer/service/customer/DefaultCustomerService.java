@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service(value = "customerService")
@@ -60,7 +61,7 @@ public class DefaultCustomerService implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerDTO> findOne(Long id) {
+    public Optional<CustomerDTO> findOne(UUID id) {
         Optional<CustomerEntity> entity = repository.findById(id);
         return entity.map(customerMapper::asDTO);
     }

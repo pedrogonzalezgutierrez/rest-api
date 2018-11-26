@@ -67,6 +67,13 @@
             <version>1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>fr.xebia.extras</groupId>
+            <artifactId>selma-processor</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- XSS injection -->
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>

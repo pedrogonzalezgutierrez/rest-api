@@ -2,17 +2,19 @@ package com.gvc.customer.dto;
 
 import com.gvc.customer.domain.BaseEntity;
 
+import java.util.UUID;
+
 public abstract class AbstractDTO implements BaseEntity {
 
-    private Long id;
+    private UUID id;
 
     @Override
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
     @Override
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

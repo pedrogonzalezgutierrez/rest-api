@@ -1,9 +1,11 @@
 package com.gvc.customer.domain;
 
+import java.util.UUID;
+
 public interface BaseEntity {
 
-    Long getId();
+    UUID getId();
 
-    void setId(Long id);
+    void setId(UUID id);
 
 }

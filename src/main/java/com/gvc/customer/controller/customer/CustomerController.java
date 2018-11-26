@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.gvc.customer.controller.customer.AbstractCustomerController.ROUTING_USER_CONTROLLER;
 
@@ -41,7 +42,7 @@ public class CustomerController extends AbstractCustomerController {
     }
 
     @RequestMapping(value = ROUTING_FIND_ONE, method = RequestMethod.GET)
-    public ResponseEntity<CustomerDTO> findOne(@PathVariable Long id) {
+    public ResponseEntity<CustomerDTO> findOne(@PathVariable UUID id) {
         Optional<CustomerDTO> customerDTO = customerService.findOne(id);
         return customerDTO
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
