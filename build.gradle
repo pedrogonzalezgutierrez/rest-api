@@ -10,10 +10,22 @@ buildscript {
     }
 }
 
+plugins {
+    // MapStruct
+    id 'net.ltgt.apt' version '0.19'
+}
+
+// Java Project
 apply plugin: 'java'
+// Spock Framework
 apply plugin: 'groovy'
+// IDEs compatibility
 apply plugin: 'idea'
 apply plugin: 'eclipse'
+// MapStruct IDEs compatibility
+apply plugin: 'net.ltgt.apt-idea'
+apply plugin: 'net.ltgt.apt-eclipse'
+// Spring Boot Project
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -39,8 +51,8 @@ dependencies {
 	implementation('org.apache.commons:commons-lang3:3.0')
 
     // Mapper
-	implementation('fr.xebia.extras:selma:1.0')
-    implementation('fr.xebia.extras:selma-processor:1.0')
+    implementation ('org.mapstruct:mapstruct:1.2.0.Final')
+    annotationProcessor('org.mapstruct:mapstruct-processor:1.2.0.Final')
 
     // XSS
     implementation('com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20181114.1')
@@ -49,4 +61,5 @@ dependencies {
     testImplementation('org.codehaus.groovy:groovy-all:2.5.4')
     testImplementation('org.spockframework:spock-core:1.2-groovy-2.5')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testAnnotationProcessor('org.mapstruct:mapstruct-processor:1.2.0.Final')
 }

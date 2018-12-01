@@ -1,10 +1,10 @@
-package com.kiesoft.customer.converter.role;
+package com.kiesoft.customer.mapper.role;
 
 import com.kiesoft.customer.dto.role.RoleDTO;
 import com.kiesoft.customer.jpa.entity.role.RoleEntity;
-import fr.xebia.extras.selma.Mapper;
+import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface RoleConverter {
 
     RoleDTO asDTO(RoleEntity roleEntity);

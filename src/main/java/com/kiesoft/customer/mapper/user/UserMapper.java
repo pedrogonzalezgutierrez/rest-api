@@ -1,11 +1,11 @@
-package com.kiesoft.customer.converter.user;
+package com.kiesoft.customer.mapper.user;
 
 import com.kiesoft.customer.dto.user.UserDTO;
 import com.kiesoft.customer.jpa.entity.user.UserEntity;
-import fr.xebia.extras.selma.Mapper;
+import org.mapstruct.Mapper;
 
-@Mapper
-public interface UserConverter {
+@Mapper(componentModel = "spring")
+public interface UserMapper {
 
     UserDTO asDTO(UserEntity userEntity);
 
