@@ -11,12 +11,13 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-group = 'com.example'
+group = 'com.kiesoft'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
@@ -25,18 +26,27 @@ repositories {
 }
 
 dependencies {
+	// Spring
     implementation('org.springframework.boot:spring-boot-starter')
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
-	
+
+    // Databases
 	implementation('org.postgresql:postgresql:42.2.5')
 	implementation('org.hibernate:hibernate-hikaricp:5.3.7.Final')
-	
+
+    // Tools
 	implementation('org.apache.commons:commons-lang3:3.0')
-	
+
+    // Mapper
 	implementation('fr.xebia.extras:selma:1.0')
     implementation('fr.xebia.extras:selma-processor:1.0')
 
-    implementation('com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20181114.1')	
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
+    // XSS
+    implementation('com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20181114.1')
+
+    // Testing
+    testImplementation('org.codehaus.groovy:groovy-all:2.5.4')
+    testImplementation('org.spockframework:spock-core:1.2-groovy-2.5')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 }

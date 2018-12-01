@@ -1,8 +1,10 @@
 package com.kiesoft.customer.domain.customer;
 
+import com.kiesoft.customer.domain.BaseEntity;
+
 import java.util.List;
 
-public interface Customer<T> {
+public interface Customer<T>  {
 
     String getFirstName();
 
