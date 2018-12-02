@@ -54,7 +54,7 @@ public class UserController extends AbstractUserController {
     }
 
     @InitBinder("generateJwtDTO")
-    public void setupretrieveJWT(WebDataBinder binder) {
+    public void setupRetrieveJWT(WebDataBinder binder) {
         binder.addValidators(generateJwtDTOValidator);
     }
 
