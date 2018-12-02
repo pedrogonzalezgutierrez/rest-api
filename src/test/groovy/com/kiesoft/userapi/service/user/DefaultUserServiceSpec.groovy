@@ -15,14 +15,17 @@ class DefaultUserServiceSpec extends Specification {
 
     final username = "pEDROLA"
     final email = "pEDROLA@correo.es"
+    final password = "Betis"
 
     final userDTO = new UserDTO.Builder()
             .name(username)
+            .password(password)
             .email(email)
             .build()
 
     final userEntity = new UserEntity.Builder()
             .name(username)
+            .password(password)
             .email(email)
             .build()
 
@@ -31,12 +34,14 @@ class DefaultUserServiceSpec extends Specification {
     final savedEntity = new UserEntity.Builder()
             .id(idUser)
             .name(username)
+            .password(password)
             .email(email)
             .build()
 
     final savedDTO = new UserDTO.Builder()
             .id(idUser)
             .name(username)
+            .password(password)
             .email(email)
             .build()
 
@@ -106,6 +111,29 @@ class DefaultUserServiceSpec extends Specification {
 
         when:
         final optionalUserDTO = userService.findByEmail(email)
+
+        then:
+        optionalUserDTO.isPresent()
+    }
+
+    def "findByEmailAndPassword: it does not exist"() {
+        given:
+        userRepository.findByEmailIgnoreCaseAndPassword(email, password) >> Optional.empty()
+
+        when:
+        final optionalUserDTO = userService.findByEmailAndPassword(email, password)
+
+        then:
+        !optionalUserDTO.isPresent()
+    }
+
+    def "findByEmailAndPassword: it exists"() {
+        given:
+        userRepository.findByEmailIgnoreCaseAndPassword(email, password) >> Optional.of(savedEntity)
+        userMapper.asDTO(savedEntity) >> savedDTO
+
+        when:
+        final optionalUserDTO = userService.findByEmailAndPassword(email, password)
 
         then:
         optionalUserDTO.isPresent()

@@ -42,4 +42,11 @@ public class DefaultUserService implements UserService {
         Optional<UserEntity> userEntity = userRepository.findByEmailIgnoreCase(email);
         return userEntity.map(userMapper::asDTO);
     }
+
+    @Override
+    public Optional<UserDTO> findByEmailAndPassword(String email, String password) {
+        Optional<UserEntity> userEntity = userRepository.findByEmailIgnoreCaseAndPassword(email, password);
+        return userEntity.map(userMapper::asDTO);
+    }
+
 }

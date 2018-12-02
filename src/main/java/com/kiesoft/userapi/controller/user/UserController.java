@@ -1,9 +1,11 @@
 package com.kiesoft.userapi.controller.user;
 
 import com.kiesoft.userapi.dto.user.CreateUserDTO;
+import com.kiesoft.userapi.dto.user.GenerateJwtDTO;
 import com.kiesoft.userapi.dto.user.UserDTO;
 import com.kiesoft.userapi.service.user.UserService;
 import com.kiesoft.userapi.validator.user.CreateUserDTOValidator;
+import com.kiesoft.userapi.validator.user.GenerateJwtDTOValidator;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,15 +27,17 @@ public class UserController extends AbstractUserController {
 
     private final UserService userService;
     private final CreateUserDTOValidator createUserDTOValidator;
+    private final GenerateJwtDTOValidator generateJwtDTOValidator;
 
     @Autowired
-    public UserController(final UserService userService, final CreateUserDTOValidator createUserDTOValidator) {
+    public UserController(final UserService userService, final CreateUserDTOValidator createUserDTOValidator, final GenerateJwtDTOValidator generateJwtDTOValidator) {
         this.userService = userService;
         this.createUserDTOValidator = createUserDTOValidator;
+        this.generateJwtDTOValidator = generateJwtDTOValidator;
     }
 
     @InitBinder("createUserDTO")
-    public void setupBinder(WebDataBinder binder) {
+    public void setupcreateNewUser(WebDataBinder binder) {
         binder.addValidators(createUserDTOValidator);
     }
 
@@ -49,15 +53,13 @@ public class UserController extends AbstractUserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @InitBinder("generateJwtDTO")
+    public void setupretrieveJWT(WebDataBinder binder) {
+        binder.addValidators(generateJwtDTOValidator);
+    }
+
     @RequestMapping(value = ROUTING_JWT, method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> retrieveJWT(@Valid @RequestBody CreateUserDTO createUserDTO) {
-        userService.save(new UserDTO.Builder()
-                .name(createUserDTO.getName())
-                .email(createUserDTO.getEmail())
-                .password(DigestUtils.md5Hex(createUserDTO.getPassword()))
-                .enabled(Boolean.TRUE)
-                .points(0)
-                .build());
+    public ResponseEntity<UserDTO> retrieveJWT(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

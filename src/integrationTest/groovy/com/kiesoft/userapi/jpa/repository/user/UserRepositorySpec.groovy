@@ -20,7 +20,7 @@ class UserRepositorySpec extends Specification {
             .points(100)
             .build()
 
-    def "save an UserEntity without id (UUID) and without Roles"() {
+    def "create an UserEntity without id (UUID) and without Roles"() {
         given:
         userRepository.save(userAdmin)
 
@@ -53,14 +53,7 @@ class UserRepositorySpec extends Specification {
 
         then:
         actual.isPresent()
-        with(actual.get()) {
-            id != null
-            name == userAdmin.name
-            email == userAdmin.email
-            password == userAdmin.password
-            enabled == userAdmin.enabled
-            points == userAdmin.points
-        }
+
         where:
         name                     || _
         "TheAdmin".toUpperCase() || __
@@ -76,18 +69,28 @@ class UserRepositorySpec extends Specification {
 
         then:
         actual.isPresent()
-        with(actual.get()) {
-            id != null
-            name == userAdmin.name
-            email == userAdmin.email
-            password == userAdmin.password
-            enabled == userAdmin.enabled
-            points == userAdmin.points
-        }
+
         where:
-        email                             || _
-        "pEDROLA@correo.es".toUpperCase() || __
-        "pEDROLA@correo.es".toLowerCase() || __
+        email                               || _
+        "TheAdmin@kiesoft.es".toUpperCase() || __
+        "TheAdmin@kiesoft.es".toLowerCase() || __
+
+    }
+
+    def "find by email ignore case and password"() {
+        given:
+        userRepository.save(userAdmin)
+
+        when:
+        final actual = userRepository.findByEmailIgnoreCaseAndPassword(email, password)
+
+        then:
+        actual.isPresent()
+
+        where:
+        email                               | password || _
+        "TheAdmin@kiesoft.es".toUpperCase() | "Betis"  || __
+        "TheAdmin@kiesoft.es".toLowerCase() | "Betis"  || __
 
     }
 

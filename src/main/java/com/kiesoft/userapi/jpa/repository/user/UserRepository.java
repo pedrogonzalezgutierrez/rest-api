@@ -10,6 +10,7 @@ public interface UserRepository extends PagingAndSortingRepository<UserEntity, U
 
     Optional<UserEntity> findByNameIgnoreCase(String name);
     Optional<UserEntity> findByEmailIgnoreCase(String email);
+    Optional<UserEntity> findByEmailIgnoreCaseAndPassword(String password, String email);
 
 
 }

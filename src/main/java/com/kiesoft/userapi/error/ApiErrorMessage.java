@@ -12,7 +12,9 @@ public enum ApiErrorMessage {
     USERNAME_ALREADY_EXISTS("username-already-exists", "The username is in use by other user"),
 
     EMAIL_INVALID("email-invalid", "This email is not valid"),
-    EMAIL_ALREADY_EXISTS("email-already-exists", "This email is in use by other user");
+    EMAIL_ALREADY_EXISTS("email-already-exists", "This email is in use by other user"),
+
+    BAD_CREDENTIALS("bad-credentials", "Incorrect email or password");
 
 
     private String code;

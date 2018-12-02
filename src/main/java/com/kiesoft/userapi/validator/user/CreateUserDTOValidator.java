@@ -42,7 +42,7 @@ public class CreateUserDTOValidator implements Validator {
     public void validate(Object target, Errors errors) {
         CreateUserDTO createUserDTO = (CreateUserDTO) target;
 
-        // Remove rubbish from the name
+        // Remove rubbish from input
         createUserDTO.setName(validatorHelper.removeHTMLandJS(createUserDTO.getName()));
 
         // name, email and password cannot by blank
@@ -90,7 +90,7 @@ public class CreateUserDTOValidator implements Validator {
 
         // Check the name is not taken
         Optional<UserDTO> userDTO = userService.findByName(createUserDTO.getName());
-        if(userDTO.isPresent()) {
+        if (userDTO.isPresent()) {
             errors.rejectValue("name", ApiErrorMessage.USERNAME_ALREADY_EXISTS.getCode(), ApiErrorMessage.USERNAME_ALREADY_EXISTS.getMessage());
         }
 
@@ -100,7 +100,7 @@ public class CreateUserDTOValidator implements Validator {
 
         // Check the email is not taken
         Optional<UserDTO> userEmailDTO = userService.findByEmail(createUserDTO.getEmail());
-        if(userEmailDTO.isPresent()) {
+        if (userEmailDTO.isPresent()) {
             errors.rejectValue("email", ApiErrorMessage.EMAIL_ALREADY_EXISTS.getCode(), ApiErrorMessage.EMAIL_ALREADY_EXISTS.getMessage());
         }
 

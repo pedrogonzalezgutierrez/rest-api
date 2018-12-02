@@ -31,7 +31,8 @@ class CreateUserDTOValidatorSpec extends Specification {
         env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 10
 
         and:
-        userService.findByName(_) >> Optional.empty()
+        userService.findByName(_ as String) >> Optional.empty()
+        userService.findByEmail(_ as String) >> Optional.empty()
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
@@ -308,7 +309,7 @@ class CreateUserDTOValidatorSpec extends Specification {
                 .points(100)
                 .build()
 
-        userService.findByName(_) >> Optional.empty()
+        userService.findByName(_ as String) >> Optional.empty()
         userService.findByEmail(email) >> Optional.of(userDTO)
 
         and:
