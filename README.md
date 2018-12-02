@@ -16,7 +16,7 @@ POST /user
 Body:
 {
 	"name": "Pedro",
-	"email": "pedro@myemail.com"
+	"email": "pedro@universidad.com"
 	"password": "Betis"
 }
 ```
@@ -32,10 +32,10 @@ POST /user/jwt
 Body:
 {
 	"name": "Pedro",
-	"password": "Pedro"
+	"password": "Betis"
 }
 ```
-> 400: User does not exist
+> 400: User does not exist or is not enabled
 
 > 400: Validation Error
 
