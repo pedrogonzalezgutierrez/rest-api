@@ -33,13 +33,13 @@ public class DefaultUserService implements UserService {
 
     @Override
     public Optional<UserDTO> findByName(String name) {
-        Optional<UserEntity> userEntity = userRepository.findByName(name);
+        Optional<UserEntity> userEntity = userRepository.findByNameIgnoreCase(name);
         return userEntity.map(userMapper::asDTO);
     }
 
     @Override
     public Optional<UserDTO> findByEmail(String email) {
-        Optional<UserEntity> userEntity = userRepository.findByEmail(email);
+        Optional<UserEntity> userEntity = userRepository.findByEmailIgnoreCase(email);
         return userEntity.map(userMapper::asDTO);
     }
 }

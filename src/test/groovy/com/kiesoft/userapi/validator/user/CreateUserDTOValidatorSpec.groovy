@@ -251,11 +251,11 @@ class CreateUserDTOValidatorSpec extends Specification {
         errors.getErrorCount() == 1
     }
 
-    def "validation fails when username is already taken"() {
+    def "validation fails when username '#name' is already taken"() {
         given:
-        final name = "pEDROLA"
         final createUserDTO = new CreateUserDTO.Builder()
                 .name(name)
+                .email("pedrola@kiesoft.com")
                 .password("Betis")
                 .build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
@@ -282,11 +282,15 @@ class CreateUserDTOValidatorSpec extends Specification {
 
         then:
         errors.getErrorCount() == 1
+
+        where:
+        name      || _
+        "pEDROLA" || _
+        "pedrola" || _
     }
 
     def "validation fails when email is already taken"() {
         given:
-        final email = "pEDROLA@correo.es"
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("pEDROLA")
                 .email(email)
@@ -318,6 +322,12 @@ class CreateUserDTOValidatorSpec extends Specification {
 
         then:
         errors.getErrorCount() == 1
+
+        where:
+        email               || _
+        "pEDROLA@correo.es" || _
+        "pedrola@CORREO.es" || _
+
     }
 
 }

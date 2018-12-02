@@ -49,5 +49,17 @@ public class UserController extends AbstractUserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @RequestMapping(value = ROUTING_JWT, method = RequestMethod.POST)
+    public ResponseEntity<UserDTO> retrieveJWT(@Valid @RequestBody CreateUserDTO createUserDTO) {
+        userService.save(new UserDTO.Builder()
+                .name(createUserDTO.getName())
+                .email(createUserDTO.getEmail())
+                .password(DigestUtils.md5Hex(createUserDTO.getPassword()))
+                .enabled(Boolean.TRUE)
+                .points(0)
+                .build());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

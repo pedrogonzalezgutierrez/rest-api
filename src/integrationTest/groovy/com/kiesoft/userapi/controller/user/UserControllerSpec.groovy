@@ -235,10 +235,10 @@ class UserControllerSpec extends Specification {
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
     }
 
-    def "user not created when it already exist"() {
+    def "user not created when it already exist (ignore case)"() {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
-                .name("admin")
+                .name(name)
                 .email("newadmin@kiesoft.com")
                 .password("admin")
                 .build()
@@ -253,13 +253,18 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        where:
+        name                  || _
+        "admin"               || _
+        "admin".toUpperCase() || _
     }
 
-    def "user not created when it does not exist but email already exist"() {
+    def "user not created when it does not exist but email already exist (ignore case)"() {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("sucolega")
-                .email("admin@kiesoft.com")
+                .email(email)
                 .password("sucolega")
                 .build()
 
@@ -273,6 +278,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        where:
+        email                             || _
+        "admin@kiesoft.com"               || _
+        "admin@kiesoft.com".toUpperCase() || _
     }
 
 

@@ -67,7 +67,7 @@ class DefaultUserServiceSpec extends Specification {
 
     def "findByName: user does not exist"() {
         given:
-        userRepository.findByName(username) >> Optional.empty()
+        userRepository.findByNameIgnoreCase(username) >> Optional.empty()
 
         when:
         final optionalUserDTO = userService.findByName(username)
@@ -78,7 +78,7 @@ class DefaultUserServiceSpec extends Specification {
 
     def "findByName: user exists"() {
         given:
-        userRepository.findByName(username) >> Optional.of(savedEntity)
+        userRepository.findByNameIgnoreCase(username) >> Optional.of(savedEntity)
         userMapper.asDTO(savedEntity) >> savedDTO
 
         when:
@@ -90,7 +90,7 @@ class DefaultUserServiceSpec extends Specification {
 
     def "findByEmail: email does not exist"() {
         given:
-        userRepository.findByEmail(email) >> Optional.empty()
+        userRepository.findByEmailIgnoreCase(email) >> Optional.empty()
 
         when:
         final optionalUserDTO = userService.findByEmail(email)
@@ -101,7 +101,7 @@ class DefaultUserServiceSpec extends Specification {
 
     def "findByEmail: email exists"() {
         given:
-        userRepository.findByEmail(email) >> Optional.of(savedEntity)
+        userRepository.findByEmailIgnoreCase(email) >> Optional.of(savedEntity)
         userMapper.asDTO(savedEntity) >> savedDTO
 
         when:
