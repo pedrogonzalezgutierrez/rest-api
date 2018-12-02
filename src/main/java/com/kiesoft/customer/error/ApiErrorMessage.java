@@ -3,9 +3,13 @@ package com.kiesoft.customer.error;
 public enum ApiErrorMessage {
 
     FIELD_REQUIRED("field-required", "This field is required"),
-    STRING_BLANK("string-blank", "This field can not be null of empty"),
-    STRING_LENGTH("string-length", "The length of this string has to be between {0} and {1} characters"),
-    INTEGER_RANGE("integer-range", "This number has to be less than {0} and greater than {1}");
+
+    STRING_BLANK("string-blank", "This field can not be null, empty or whitespaces"),
+    STRING_LENGTH("string-length", "The length of this string has to be between %d and %d characters"),
+
+    INTEGER_RANGE("integer-range", "This number has to be less than %d and greater than %d"),
+
+    USERNAME_ALREADY_EXISTS("username-already-exists", "The username is in use by other user");
 
 
     private String code;
