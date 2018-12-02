@@ -11,6 +11,7 @@ import java.util.UUID;
 public class UserDTO extends AbstractDTO implements User<RoleDTO> {
 
     private String name;
+    private String email;
     private String password;
     private Boolean enabled;
     private List<RoleDTO> roles = new ArrayList<>();
@@ -24,6 +25,16 @@ public class UserDTO extends AbstractDTO implements User<RoleDTO> {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -79,10 +90,10 @@ public class UserDTO extends AbstractDTO implements User<RoleDTO> {
         this.roles.remove(role);
     }
 
-
     public static final class Builder {
         private UUID id;
         private String name;
+        private String email;
         private String password;
         private Boolean enabled;
         private List<RoleDTO> roles = new ArrayList<>();
@@ -95,6 +106,11 @@ public class UserDTO extends AbstractDTO implements User<RoleDTO> {
 
         public Builder name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
             return this;
         }
 
@@ -122,6 +138,7 @@ public class UserDTO extends AbstractDTO implements User<RoleDTO> {
             UserDTO userDTO = new UserDTO();
             userDTO.setId(id);
             userDTO.setName(name);
+            userDTO.setEmail(email);
             userDTO.setPassword(password);
             userDTO.setEnabled(enabled);
             userDTO.setRoles(roles);

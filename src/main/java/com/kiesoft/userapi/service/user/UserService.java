@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface UserService extends SaveEntityService<UserDTO> {
 
     Optional<UserDTO> findByName(String name);
+    Optional<UserDTO> findByEmail(String email);
 
 }

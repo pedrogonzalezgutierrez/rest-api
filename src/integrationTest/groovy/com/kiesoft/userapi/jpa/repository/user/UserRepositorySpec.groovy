@@ -13,6 +13,7 @@ class UserRepositorySpec extends Specification {
 
     final user1 = new UserEntity.Builder()
             .name("Pedro")
+            .email("pEDROLA@correo.es")
             .password("Real Betis")
             .enabled(Boolean.TRUE)
             .points(100)
@@ -32,6 +33,7 @@ class UserRepositorySpec extends Specification {
         with(actual.getAt(0)) {
             id != null
             name == user1.name
+            email == user1.email
             password == user1.password
             enabled == user1.enabled
             points == user1.points
@@ -53,6 +55,25 @@ class UserRepositorySpec extends Specification {
         with(actual.get()) {
             id != null
             name == user1.name
+            password == user1.password
+            enabled == user1.enabled
+            points == user1.points
+        }
+    }
+
+    def "find by email"() {
+        given:
+        userRepository.save(user1)
+
+        when:
+        final actual = userRepository.findByEmail(user1.email)
+
+        then:
+        actual.isPresent()
+        with(actual.get()) {
+            id != null
+            name == user1.name
+            email == user1.email
             password == user1.password
             enabled == user1.enabled
             points == user1.points

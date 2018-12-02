@@ -37,6 +37,7 @@ public class TestDataService {
 
         UserEntity userAdmin = new UserEntity.Builder()
                 .name("admin")
+                .email("admin@kiesoft.com")
                 .password("admin")
                 .enabled(Boolean.TRUE)
                 .points(2000)
@@ -45,6 +46,7 @@ public class TestDataService {
 
         UserEntity userEditor = new UserEntity.Builder()
                 .name("editor")
+                .email("editor@kiesoft.com")
                 .password("editor")
                 .enabled(Boolean.TRUE)
                 .points(1000)
@@ -61,6 +63,7 @@ public class TestDataService {
 
         UserEntity pedrola = new UserEntity.Builder()
                 .name("pedrola")
+                .email("pedrola@kiesoft.com")
                 .password("pedrola")
                 .enabled(Boolean.TRUE)
                 .points(0)
@@ -68,6 +71,7 @@ public class TestDataService {
 
         UserEntity madara = new UserEntity.Builder()
                 .name("madara")
+                .email("madara@kiesoft.com")
                 .password("madara")
                 .enabled(Boolean.TRUE)
                 .points(500)

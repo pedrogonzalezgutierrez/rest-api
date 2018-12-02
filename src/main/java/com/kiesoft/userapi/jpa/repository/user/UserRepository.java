@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public interface UserRepository extends PagingAndSortingRepository<UserEntity, UUID> {
 
-//    UserEntity findByName(String name);
     Optional<UserEntity> findByName(String name);
+    Optional<UserEntity> findByEmail(String email);
 
 
 }

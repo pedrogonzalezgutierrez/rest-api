@@ -8,4 +8,5 @@ public interface ValidatorHelper {
     void rejectStringIfNotInLength(String field, String string, int min, int max, Errors errors);
     void rejectIntegerIfNotInRange(String field, Integer number, int min, int max, Errors errors);
     String removeHTMLandJS(String untrustedString);
+    void rejectIfNotEmail(String field, String email, Errors errors);
 }

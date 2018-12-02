@@ -20,6 +20,7 @@ import java.util.UUID;
 public class UserEntity extends AbstractEntity implements User<RoleEntity> {
 
     private String name;
+    private String email;
     private String password;
     private Boolean enabled;
     private List<RoleEntity> roles = new ArrayList<>();
@@ -33,6 +34,16 @@ public class UserEntity extends AbstractEntity implements User<RoleEntity> {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -95,6 +106,7 @@ public class UserEntity extends AbstractEntity implements User<RoleEntity> {
     public static final class Builder {
         private UUID id;
         private String name;
+        private String email;
         private String password;
         private Boolean enabled;
         private List<RoleEntity> roles = new ArrayList<>();
@@ -107,6 +119,11 @@ public class UserEntity extends AbstractEntity implements User<RoleEntity> {
 
         public Builder name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
             return this;
         }
 
@@ -134,6 +151,7 @@ public class UserEntity extends AbstractEntity implements User<RoleEntity> {
             UserEntity userEntity = new UserEntity();
             userEntity.setId(id);
             userEntity.setName(name);
+            userEntity.setEmail(email);
             userEntity.setPassword(password);
             userEntity.setEnabled(enabled);
             userEntity.setRoles(roles);

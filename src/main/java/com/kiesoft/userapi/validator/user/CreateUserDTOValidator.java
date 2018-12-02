@@ -45,10 +45,14 @@ public class CreateUserDTOValidator implements Validator {
         // Remove rubbish from the name
         createUserDTO.setName(validatorHelper.removeHTMLandJS(createUserDTO.getName()));
 
-        // name and password cannot by blank
+        // name, email and password cannot by blank
         validatorHelper.rejectIfStringIsBlank(
                 "name",
                 createUserDTO.getName(),
+                errors);
+        validatorHelper.rejectIfStringIsBlank(
+                "email",
+                createUserDTO.getEmail(),
                 errors);
         validatorHelper.rejectIfStringIsBlank(
                 "password",
@@ -74,6 +78,12 @@ public class CreateUserDTOValidator implements Validator {
                 Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_PASSWORD_MAX))),
                 errors);
 
+        // valid email
+        validatorHelper.rejectIfNotEmail(
+                "email",
+                createUserDTO.getEmail(),
+                errors);
+
         if (errors.hasErrors()) {
             return;
         }
@@ -82,6 +92,16 @@ public class CreateUserDTOValidator implements Validator {
         Optional<UserDTO> userDTO = userService.findByName(createUserDTO.getName());
         if(userDTO.isPresent()) {
             errors.rejectValue("name", ApiErrorMessage.USERNAME_ALREADY_EXISTS.getCode(), ApiErrorMessage.USERNAME_ALREADY_EXISTS.getMessage());
+        }
+
+        if (errors.hasErrors()) {
+            return;
+        }
+
+        // Check the email is not taken
+        Optional<UserDTO> userEmailDTO = userService.findByEmail(createUserDTO.getEmail());
+        if(userEmailDTO.isPresent()) {
+            errors.rejectValue("email", ApiErrorMessage.EMAIL_ALREADY_EXISTS.getCode(), ApiErrorMessage.EMAIL_ALREADY_EXISTS.getMessage());
         }
 
     }

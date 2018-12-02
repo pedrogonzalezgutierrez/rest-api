@@ -9,7 +9,10 @@ public enum ApiErrorMessage {
 
     INTEGER_RANGE("integer-range", "This number has to be less than %d and greater than %d"),
 
-    USERNAME_ALREADY_EXISTS("username-already-exists", "The username is in use by other user");
+    USERNAME_ALREADY_EXISTS("username-already-exists", "The username is in use by other user"),
+
+    EMAIL_INVALID("email-invalid", "This email is not valid"),
+    EMAIL_ALREADY_EXISTS("email-already-exists", "This email is in use by other user");
 
 
     private String code;

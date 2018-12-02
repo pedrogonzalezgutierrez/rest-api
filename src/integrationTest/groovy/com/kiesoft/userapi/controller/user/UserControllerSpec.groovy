@@ -55,15 +55,12 @@ class UserControllerSpec extends Specification {
         result.andExpect(MockMvcResultMatchers.status().isOk())
     }
 
-    def "user not created when it already exist"() {
+    def "user not created when missing name"() {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
-                .name("admin")
+                .email("admin@correo.es")
                 .password("admin")
                 .build()
-
-        and:
-        testDataService.usersAdminAndEditor()
 
         when:
         final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
@@ -74,9 +71,10 @@ class UserControllerSpec extends Specification {
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
     }
 
-    def "user not created when missing name"() {
+    def "user not created when missing email"() {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
+                .name("admin")
                 .password("admin")
                 .build()
 
@@ -93,6 +91,7 @@ class UserControllerSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("admin")
+                .email("admin@correo.es")
                 .build()
 
         when:
@@ -104,10 +103,9 @@ class UserControllerSpec extends Specification {
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
     }
 
-    def "user not created when missing name and password"() {
+    def "user not created when missing name, email and password"() {
         given:
-        final createUserDTO = new CreateUserDTO.Builder()
-                .build()
+        final createUserDTO = new CreateUserDTO.Builder().build()
 
         when:
         final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
@@ -122,6 +120,7 @@ class UserControllerSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("a")
+                .email("admin@correo.es")
                 .password("Betis")
                 .build()
 
@@ -138,6 +137,7 @@ class UserControllerSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("Pedro Gonzalez Gutierrez")
+                .email("admin@correo.es")
                 .password("betis")
                 .build()
 
@@ -154,6 +154,7 @@ class UserControllerSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("pEDROLA")
+                .email("admin@correo.es")
                 .password("1")
                 .build()
 
@@ -170,6 +171,7 @@ class UserControllerSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("pEDROLA")
+                .email("admin@correo.es")
                 .password("Real BEtis Balompie")
                 .build()
 
@@ -186,6 +188,7 @@ class UserControllerSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("aa")
+                .email("admin@correo.es")
                 .password("bb")
                 .build()
 
@@ -202,8 +205,66 @@ class UserControllerSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("Pedro Gonzalez Gutierrez")
+                .email("admin@correo.es")
                 .password("Real Betis Balompie")
                 .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+                .content(objectMapper.writeValueAsString(createUserDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "user not created when email is invalid"() {
+        given:
+        final createUserDTO = new CreateUserDTO.Builder()
+                .name("pEDROLA")
+                .email("admin@")
+                .password("Betis")
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+                .content(objectMapper.writeValueAsString(createUserDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "user not created when it already exist"() {
+        given:
+        final createUserDTO = new CreateUserDTO.Builder()
+                .name("admin")
+                .email("newadmin@kiesoft.com")
+                .password("admin")
+                .build()
+
+        and:
+        testDataService.usersAdminAndEditor()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+                .content(objectMapper.writeValueAsString(createUserDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "user not created when it does not exist but email already exist"() {
+        given:
+        final createUserDTO = new CreateUserDTO.Builder()
+                .name("sucolega")
+                .email("admin@kiesoft.com")
+                .password("sucolega")
+                .build()
+
+        and:
+        testDataService.usersAdminAndEditor()
 
         when:
         final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")

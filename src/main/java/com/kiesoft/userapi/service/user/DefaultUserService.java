@@ -37,4 +37,9 @@ public class DefaultUserService implements UserService {
         return userEntity.map(userMapper::asDTO);
     }
 
+    @Override
+    public Optional<UserDTO> findByEmail(String email) {
+        Optional<UserEntity> userEntity = userRepository.findByEmail(email);
+        return userEntity.map(userMapper::asDTO);
+    }
 }

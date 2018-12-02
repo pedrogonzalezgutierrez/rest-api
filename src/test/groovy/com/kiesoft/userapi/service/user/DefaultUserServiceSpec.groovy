@@ -14,12 +14,16 @@ class DefaultUserServiceSpec extends Specification {
     final userService = new DefaultUserService(userRepository, userMapper)
 
     final username = "pEDROLA"
+    final email = "pEDROLA@correo.es"
+
     final userDTO = new UserDTO.Builder()
             .name(username)
+            .email(email)
             .build()
 
     final userEntity = new UserEntity.Builder()
             .name(username)
+            .email(email)
             .build()
 
     UUID idUser = UUID.randomUUID()
@@ -27,11 +31,13 @@ class DefaultUserServiceSpec extends Specification {
     final savedEntity = new UserEntity.Builder()
             .id(idUser)
             .name(username)
+            .email(email)
             .build()
 
     final savedDTO = new UserDTO.Builder()
             .id(idUser)
             .name(username)
+            .email(email)
             .build()
 
     def "create a user"() {
@@ -61,7 +67,7 @@ class DefaultUserServiceSpec extends Specification {
 
     def "findByName: user does not exist"() {
         given:
-        userRepository.findByName("pEDROLA") >> Optional.empty()
+        userRepository.findByName(username) >> Optional.empty()
 
         when:
         final optionalUserDTO = userService.findByName(username)
@@ -72,11 +78,34 @@ class DefaultUserServiceSpec extends Specification {
 
     def "findByName: user exists"() {
         given:
-        userRepository.findByName("pEDROLA") >> Optional.of(savedEntity)
+        userRepository.findByName(username) >> Optional.of(savedEntity)
         userMapper.asDTO(savedEntity) >> savedDTO
 
         when:
         final optionalUserDTO = userService.findByName(username)
+
+        then:
+        optionalUserDTO.isPresent()
+    }
+
+    def "findByEmail: email does not exist"() {
+        given:
+        userRepository.findByEmail(email) >> Optional.empty()
+
+        when:
+        final optionalUserDTO = userService.findByEmail(email)
+
+        then:
+        !optionalUserDTO.isPresent()
+    }
+
+    def "findByEmail: email exists"() {
+        given:
+        userRepository.findByEmail(email) >> Optional.of(savedEntity)
+        userMapper.asDTO(savedEntity) >> savedDTO
+
+        when:
+        final optionalUserDTO = userService.findByEmail(email)
 
         then:
         optionalUserDTO.isPresent()

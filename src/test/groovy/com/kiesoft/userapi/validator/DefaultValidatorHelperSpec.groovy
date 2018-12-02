@@ -19,7 +19,7 @@ class DefaultValidatorHelperSpec extends Specification {
         validatorHelper.rejectIfStringIsBlank("stringField", string, errors)
 
         then:
-        errors.hasErrors()
+        errors.getErrorCount() == 1
 
         where:
         string || _
@@ -79,10 +79,10 @@ class DefaultValidatorHelperSpec extends Specification {
         !errors.hasErrors()
 
         where:
-        string  | minLength | maxLength | _
-        "A"     | 1         | 3         | _
-        "Pedro" | 3         | 15        | _
-        "AAA"   | 1         | 3         | _
+        string  | minLength | maxLength || _
+        "A"     | 1         | 3         || _
+        "Pedro" | 3         | 15        || _
+        "AAA"   | 1         | 3         || _
     }
 
     def "will reject the integer '#integer' if value not between #minValue and #maxValue"() {
@@ -95,13 +95,13 @@ class DefaultValidatorHelperSpec extends Specification {
         validatorHelper.rejectIntegerIfNotInRange("integerField", integer, minValue, maxValue, errors)
 
         then:
-        errors.hasErrors()
+        errors.getErrorCount() == 1
 
         where:
-        integer | minValue | maxValue | _
-        null    | 10       | 20       | _
-        5       | 10       | 20       | _
-        25      | 10       | 20       | _
+        integer | minValue | maxValue || _
+        null    | 10       | 20       || _
+        5       | 10       | 20       || _
+        25      | 10       | 20       || _
     }
 
     def "will not reject the integer '#integer' if value between #minValue and #maxValue"() {
@@ -117,10 +117,10 @@ class DefaultValidatorHelperSpec extends Specification {
         !errors.hasErrors()
 
         where:
-        integer | minValue | maxValue | _
-        5       | 5        | 20       | _
-        15      | 5        | 20       | _
-        20      | 5        | 20       | _
+        integer | minValue | maxValue || _
+        5       | 5        | 20       || _
+        15      | 5        | 20       || _
+        20      | 5        | 20       || _
     }
 
     def "will remove HTML and Javascript code from string '#string'"() {
@@ -135,6 +135,49 @@ class DefaultValidatorHelperSpec extends Specification {
         "<a>Hola</a>"                                         || "Hola"
         "<script>alert(1)</script>"                           || ""
         "<p><script>alert(1)</script>Real Betis Balompie</p>" || "Real Betis Balompie"
+    }
+
+    def "will reject the invalid email '#untrustedEmail'"() {
+        given:
+        final validationObject = new ValidationObject()
+        validationObject.setStringField(untrustedEmail)
+        final errors = new BeanPropertyBindingResult(validationObject, "validationObject")
+
+        when:
+        validatorHelper.rejectIfNotEmail("stringField", untrustedEmail, errors)
+
+        then:
+        errors.getErrorCount() == 1
+
+        where:
+        untrustedEmail || _
+        null           || _
+        ""             || _
+        "     "        || _
+        "correo"       || _
+        "1000 aaaa"    || _
+        "correo@"      || _
+        "correo@loco"  || _
+        "@loco.com"    || _
+    }
+
+    def "will accept the email '#untrustedEmail'"() {
+        given:
+        final validationObject = new ValidationObject()
+        validationObject.setStringField(untrustedEmail)
+        final errors = new BeanPropertyBindingResult(validationObject, "validationObject")
+
+        when:
+        validatorHelper.rejectIfNotEmail("stringField", untrustedEmail, errors)
+
+        then:
+        errors.getErrorCount() == 0
+
+        where:
+        untrustedEmail           || _
+        "pedro@yahoo.com"        || _
+        "macarena@gmail.es"      || _
+        "asuncion@hotmail.co.uk" || _
     }
 
     private static class ValidationObject {

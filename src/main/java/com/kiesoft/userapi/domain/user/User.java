@@ -10,6 +10,10 @@ public interface User<T> extends BaseEntity {
 
     void setName(String name);
 
+    String getEmail();
+
+    void setEmail(String email);
+
     String getPassword();
 
     void setPassword(String password);

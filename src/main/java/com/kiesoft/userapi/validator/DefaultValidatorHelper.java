@@ -2,6 +2,7 @@ package com.kiesoft.userapi.validator;
 
 import com.kiesoft.userapi.error.ApiErrorMessage;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import org.springframework.stereotype.Component;
@@ -13,9 +14,14 @@ import java.util.Objects;
 public class DefaultValidatorHelper implements ValidatorHelper {
 
     /**
-     * I dont allow anything, just raw text
+     * Used to remove HTML and Javascript core from a string. This policy does not allow anything, just raw text
      */
     private final PolicyFactory sanitizer = new HtmlPolicyBuilder().toFactory();
+
+    /**
+     * Used to validate an email
+     */
+    private EmailValidator emailValidator = EmailValidator.getInstance();
 
     @Override
     public void rejectIfStringIsBlank(String field, String string, Errors errors) {
@@ -48,6 +54,13 @@ public class DefaultValidatorHelper implements ValidatorHelper {
     @Override
     public String removeHTMLandJS(String untrustedString) {
         return sanitizer.sanitize(untrustedString);
+    }
+
+    @Override
+    public void rejectIfNotEmail(String field, String email, Errors errors) {
+        if (!emailValidator.isValid(email)) {
+            errors.rejectValue(field, ApiErrorMessage.EMAIL_INVALID.getCode(), ApiErrorMessage.EMAIL_INVALID.getMessage());
+        }
     }
 
 }

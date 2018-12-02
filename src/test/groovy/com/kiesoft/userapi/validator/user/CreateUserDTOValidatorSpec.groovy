@@ -19,6 +19,7 @@ class CreateUserDTOValidatorSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("pEDROLA")
+                .email("pedro@email.com")
                 .password("Betis")
                 .build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
@@ -42,6 +43,22 @@ class CreateUserDTOValidatorSpec extends Specification {
     def "validation fails when missing name"() {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
+                .email("pedro@email.com")
+                .password("Betis")
+                .build()
+        final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
+
+        when:
+        createUserDTOValidator.validate(createUserDTO, errors)
+
+        then:
+        errors.getErrorCount() == 1
+    }
+
+    def "validation fails when missing email"() {
+        given:
+        final createUserDTO = new CreateUserDTO.Builder()
+                .name("pEDROLA")
                 .password("Betis")
                 .build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
@@ -57,6 +74,7 @@ class CreateUserDTOValidatorSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("pEDROLA")
+                .email("pedro@email.com")
                 .build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
 
@@ -67,23 +85,23 @@ class CreateUserDTOValidatorSpec extends Specification {
         errors.getErrorCount() == 1
     }
 
-    def "validation fails when missing name and password"() {
+    def "validation fails when missing name, email and password"() {
         given:
-        final createUserDTO = new CreateUserDTO.Builder()
-                .build()
+        final createUserDTO = new CreateUserDTO.Builder().build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
 
         then:
-        errors.getErrorCount() == 2
+        errors.getErrorCount() == 3
     }
 
     def "validation fails when name too small"() {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("aaa")
+                .email("pedro@email.com")
                 .password("Betis")
                 .build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
@@ -105,6 +123,7 @@ class CreateUserDTOValidatorSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("Pedro Gonzalez Gutierrez")
+                .email("pedro@email.com")
                 .password("Betis")
                 .build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
@@ -126,6 +145,7 @@ class CreateUserDTOValidatorSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("pEDROLA")
+                .email("pedro@email.com")
                 .password("aaa")
                 .build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
@@ -147,6 +167,7 @@ class CreateUserDTOValidatorSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("pEDROLA")
+                .email("pedro@email.com")
                 .password("Betis Betis Balompie")
                 .build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
@@ -168,6 +189,7 @@ class CreateUserDTOValidatorSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("rbb")
+                .email("pedro@email.com")
                 .password("loco")
                 .build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
@@ -189,6 +211,7 @@ class CreateUserDTOValidatorSpec extends Specification {
         given:
         final createUserDTO = new CreateUserDTO.Builder()
                 .name("Pedro Gonzalez Gutierrez")
+                .email("pedro@email.com")
                 .password("Real Betis Balompie")
                 .build()
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
@@ -204,6 +227,28 @@ class CreateUserDTOValidatorSpec extends Specification {
 
         then:
         errors.getErrorCount() == 2
+    }
+
+    def "validation fails when email is invalid"() {
+        given:
+        final createUserDTO = new CreateUserDTO.Builder()
+                .name("pEDROLA")
+                .email("email@")
+                .password("Betis")
+                .build()
+        final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
+
+        and:
+        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
+        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
+        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
+        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+
+        when:
+        createUserDTOValidator.validate(createUserDTO, errors)
+
+        then:
+        errors.getErrorCount() == 1
     }
 
     def "validation fails when username is already taken"() {
@@ -236,7 +281,43 @@ class CreateUserDTOValidatorSpec extends Specification {
         createUserDTOValidator.validate(createUserDTO, errors)
 
         then:
-        errors.hasErrors()
+        errors.getErrorCount() == 1
+    }
+
+    def "validation fails when email is already taken"() {
+        given:
+        final email = "pEDROLA@correo.es"
+        final createUserDTO = new CreateUserDTO.Builder()
+                .name("pEDROLA")
+                .email(email)
+                .password("Betis")
+                .build()
+        final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
+
+        and:
+        final userDTO = new UserDTO.Builder()
+                .id(UUID.randomUUID())
+                .name("pEDROLA")
+                .email(email)
+                .password("Betis")
+                .enabled(Boolean.TRUE)
+                .points(100)
+                .build()
+
+        userService.findByName(_) >> Optional.empty()
+        userService.findByEmail(email) >> Optional.of(userDTO)
+
+        and:
+        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
+        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
+        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
+        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+
+        when:
+        createUserDTOValidator.validate(createUserDTO, errors)
+
+        then:
+        errors.getErrorCount() == 1
     }
 
 }

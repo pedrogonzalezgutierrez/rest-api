@@ -41,6 +41,7 @@ public class UserController extends AbstractUserController {
     public ResponseEntity<UserDTO> createNewUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
         userService.save(new UserDTO.Builder()
                 .name(createUserDTO.getName())
+                .email(createUserDTO.getEmail())
                 .password(DigestUtils.md5Hex(createUserDTO.getPassword()))
                 .enabled(Boolean.TRUE)
                 .points(0)
