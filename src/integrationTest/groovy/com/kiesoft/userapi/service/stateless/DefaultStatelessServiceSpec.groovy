@@ -16,14 +16,6 @@ class DefaultStatelessServiceSpec extends Specification {
     final roles = [new DefaultGrantedAuthority("ROLE_ADMIN"), new DefaultGrantedAuthority("ROLE_STUFF")]
     final jwt = "jwt"
 
-    def "ddd"() {
-        when:
-        final aaa = Boolean.FALSE
-
-        then:
-        aaa
-    }
-
     def "will authenticate a StatelessAuthentication object"() {
         given:
         final statelessAuthentication = new StatelessAuthentication(stringUUID, password, roles, jwt)

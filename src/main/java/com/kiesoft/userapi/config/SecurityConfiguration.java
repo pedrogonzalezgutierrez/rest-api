@@ -37,12 +37,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement()
 
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)// No session
+                // No session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
 
-                .csrf().disable()// No CSRF
+                // No CSRF
+                .csrf().disable()
 
+                // Add Filter
                 .addFilter(jwtAuthorizationFilter())
                 .authorizeRequests()
                 .antMatchers("/role/**").authenticated();
