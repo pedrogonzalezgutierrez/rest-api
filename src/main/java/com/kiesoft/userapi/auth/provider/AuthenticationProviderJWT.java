@@ -46,6 +46,8 @@ public class AuthenticationProviderJWT implements AuthenticationProvider {
 
                 return new StatelessAuthentication(
                         userDTO.get().getId().toString(),
+                        userDTO.get().getName(),
+                        userDTO.get().getEmail(),
                         userDTO.get().getPassword(),
                         roles,
                         (String) statelessAuthentication.getDetails());

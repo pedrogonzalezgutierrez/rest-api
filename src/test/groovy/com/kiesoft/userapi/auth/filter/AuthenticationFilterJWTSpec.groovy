@@ -38,7 +38,7 @@ class AuthenticationFilterJWTSpec extends Specification {
         jwtService.getIssuer(_ as String) >> Optional.of("6c5ed861-e5f0-42de-847b-cd7390651daf")
 
         and: "Authentication Manager authenticate the user"
-        final statelessAuthentication = new StatelessAuthentication(UUID.randomUUID().toString(), "Betis", [], "jwt")
+        final statelessAuthentication = new StatelessAuthentication(UUID.randomUUID().toString(), "pEDROLA", "pedro@kiesoft.com", "Betis", [], "jwt")
         authenticationManager.authenticate(_ as StatelessAuthentication) >> statelessAuthentication
 
         when:

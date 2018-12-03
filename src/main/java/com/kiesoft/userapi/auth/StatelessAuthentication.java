@@ -15,9 +15,14 @@ public class StatelessAuthentication implements Authentication {
     private String name;
 
     /**
-     * UUID of the user
+     * Email of the user
      */
-    private UUID id;
+    private String email;
+
+    /**
+     * Username
+     */
+    private String username;
 
     /**
      * User password
@@ -40,11 +45,10 @@ public class StatelessAuthentication implements Authentication {
     private String token;
 
     /**
-     * Use this constructor when you want TO TRY to authenticate by token and id
+     * Use this constructor when you want TO TRY to authenticate by Issuer (id/uuid) and token
      */
     public StatelessAuthentication(String issuer, String token) {
         this.name = issuer;
-        this.id = UUID.fromString(issuer);
         this.token = token;
         this.isAuthenticated = Boolean.FALSE;
     }
@@ -52,54 +56,48 @@ public class StatelessAuthentication implements Authentication {
     /**
      * Use this constructor for populating a User with Roles
      */
-    public StatelessAuthentication(String issuer, String password, Collection<? extends GrantedAuthority> collection, String token) {
+    public StatelessAuthentication(String issuer, String name, String email, String password, Collection<? extends GrantedAuthority> collection, String token) {
         this.name = issuer;
-        this.id = UUID.fromString(issuer);
+        this.username = name;
+        this.email = email;
         this.password = password;
         this.roles = collection;
         this.token = token;
         this.isAuthenticated = Boolean.TRUE;
     }
 
-    /**
-     * username
-     */
     @Override
     public String getName() {
         return name;
     }
 
     public UUID getId() {
-        return id;
+        return UUID.fromString(name);
     }
 
-    /**
-     * Roles
-     */
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
     }
 
-    /**
-     * The credentials that prove the principal is correct. This is usually a password, but could be anything relevant to the AuthenticationManager
-     */
     @Override
     public Object getCredentials() {
         return password;
     }
 
-    /**
-     * Stores additional details about the authentication request. These might be an IP address, certificate serial number or any other metadata
-     */
     @Override
     public Object getDetails() {
         return token;
     }
 
-    /**
-     * The identity of the principal being authenticated.
-     */
     @Override
     public Object getPrincipal() {
         return name;

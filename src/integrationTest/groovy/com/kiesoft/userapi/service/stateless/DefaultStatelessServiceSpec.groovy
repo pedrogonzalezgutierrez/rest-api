@@ -12,13 +12,15 @@ class DefaultStatelessServiceSpec extends Specification {
 
     final uuid = UUID.randomUUID()
     final stringUUID = uuid.toString()
+    final username = "pEDROLA"
+    final email = "pedro@kiesoft.com"
     final password = "Betis"
     final roles = [new DefaultGrantedAuthority("ROLE_ADMIN"), new DefaultGrantedAuthority("ROLE_STUFF")]
     final jwt = "jwt"
 
     def "will authenticate a StatelessAuthentication object"() {
         given:
-        final statelessAuthentication = new StatelessAuthentication(stringUUID, password, roles, jwt)
+        final statelessAuthentication = new StatelessAuthentication(stringUUID, username, email, password, roles, jwt)
 
         when:
         defaultStatelessService.authenticate(statelessAuthentication)
@@ -30,6 +32,8 @@ class DefaultStatelessServiceSpec extends Specification {
         Objects.nonNull(actualAuthentication)
         actualAuthentication.getId() == uuid
         actualAuthentication.getName() == stringUUID
+        actualAuthentication.getUsername() == username
+        actualAuthentication.getEmail() == email
         actualAuthentication.getCredentials() == password
         actualAuthentication.getDetails() == jwt
         actualAuthentication.getAuthorities() == roles
