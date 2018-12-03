@@ -7,13 +7,14 @@ class StatelessAuthenticationSpec extends Specification{
 
     final uuid = UUID.randomUUID()
     final stringUUID = uuid.toString()
+    final email = "pedro@kiesoft.com"
     final password = "Betis"
     final jwt = "jwt"
     final roles = [new DefaultGrantedAuthority("ROLE_ADMIN"), new DefaultGrantedAuthority("ROLE_STUFF")]
 
     def "constructor issuer and token: populate a no authenticated object"() {
         when:
-        final statelessAuthentication = new StatelessAuthentication(stringUUID, jwt)
+        final statelessAuthentication = new StatelessAuthentication(email, jwt)
 
         then:
         with(statelessAuthentication) {

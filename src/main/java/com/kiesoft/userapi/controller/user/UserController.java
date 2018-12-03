@@ -68,5 +68,17 @@ public class UserController extends AbstractUserController {
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
+    @InitBinder("generateJwtDTO")
+    public void setupChangePassword(WebDataBinder binder) {
+        binder.addValidators(generateJwtDTOValidator);
+    }
+
+    @RequestMapping(value = ROUTING_USER_UPDATE_PASSWORD, method = RequestMethod.PATCH)
+    public ResponseEntity<Void> changePassword(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + generateJwtDTO.getJwt());
+        return new ResponseEntity<>(headers, HttpStatus.OK);
+    }
+
 
 }

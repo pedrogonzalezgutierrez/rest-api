@@ -41,5 +41,22 @@ Body:
 
 > 200: Token created
 ```
+Response:
 Header Authorization: Bearer jwtToken
 ```
+
+**3) Update password:** Allows the user to change its password 
+```
+PATCH /user/password
+Header Authorization: Bearer jwtToken
+Body:
+{
+	"email": "pedro@universidad.com"
+	"newPassword": "Heliopolis",
+}
+```
+> 400: User already exists
+
+> 400: Validation Error
+
+> 200: User created
