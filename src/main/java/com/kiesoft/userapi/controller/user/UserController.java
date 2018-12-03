@@ -6,9 +6,9 @@ import com.kiesoft.userapi.dto.user.UserDTO;
 import com.kiesoft.userapi.service.user.UserService;
 import com.kiesoft.userapi.validator.user.CreateUserDTOValidator;
 import com.kiesoft.userapi.validator.user.GenerateJwtDTOValidator;
-import com.kiesoft.userapi.validator.user.JwtDTO;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
@@ -62,11 +62,10 @@ public class UserController extends AbstractUserController {
     }
 
     @RequestMapping(value = ROUTING_USER_JWT, method = RequestMethod.POST)
-    public ResponseEntity<JwtDTO> retrieveJWT(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
-        final JwtDTO jwtDTO = new JwtDTO.Builder()
-                .jwt(generateJwtDTO.getJwt())
-                .build();
-        return new ResponseEntity<>(jwtDTO, (HttpStatus.OK));
+    public ResponseEntity<Void> retrieveJWT(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + generateJwtDTO.getJwt());
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
 
