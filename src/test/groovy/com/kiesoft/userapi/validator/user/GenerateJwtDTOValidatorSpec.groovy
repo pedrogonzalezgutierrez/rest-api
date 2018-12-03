@@ -41,6 +41,7 @@ class GenerateJwtDTOValidatorSpec extends Specification {
 
         and:
         userService.findByEmailAndPassword(_ as String, _ as String) >> Optional.of(userDTO)
+        jwtService.generateHS256(_ as UUID, _ as String) >> Optional.of("correctJWT")
 
         when:
         generateJwtDTOValidator.validate(generateJwtDTO, errors)
