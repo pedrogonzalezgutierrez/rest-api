@@ -41,6 +41,5 @@ Body:
 
 > 200: Token created
 ```
-Response Body:
 Header Authorization: Bearer jwtToken
 ```
