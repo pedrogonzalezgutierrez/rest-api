@@ -12,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
@@ -20,6 +21,7 @@ import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_JWT;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -31,10 +33,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private StatelessService statelessService;
 
-    // Requests secured
+    // Secured Requests
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.sessionManagement()
 
                 // No session
@@ -51,10 +52,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/role/**").authenticated();
     }
 
-    // All of Spring Security will ignore these requests
+    // Spring Security will ignore these requests
     @Override
     public void configure(WebSecurity webSecurity) {
-        webSecurity.ignoring()
+        webSecurity
+                .ignoring()
                 .antMatchers(HttpMethod.POST, ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .antMatchers(HttpMethod.GET, ROUTING_USER_CONTROLLER + ROUTING_USER_JWT);
     }
@@ -71,7 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProviderJWT());
     }
 
-    @Bean
+    //    @Bean
     public AuthorizationFilterJWT jwtAuthorizationFilter() throws Exception {
         AuthorizationFilterJWT authorizationFilterJWT = new AuthorizationFilterJWT(authenticationManager());
         authorizationFilterJWT.setJwtService(jwtService);
