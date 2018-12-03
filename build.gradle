@@ -63,7 +63,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter')
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
-//    implementation("org.springframework.security:spring-security-jwt")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 
     // Databases
     implementation('org.postgresql:postgresql:42.2.5')
