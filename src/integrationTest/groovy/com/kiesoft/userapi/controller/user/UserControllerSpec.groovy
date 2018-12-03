@@ -396,7 +396,7 @@ class UserControllerSpec extends Specification {
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
     }
 
-    def "retrieveJWT: token not generated when email is envalid"() {
+    def "retrieveJWT: token not generated when email is not an email"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .email("@kiesoft.com")
@@ -462,6 +462,25 @@ class UserControllerSpec extends Specification {
 
         and:
         testDataService.usersAdminAndEditor()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
+                .content(objectMapper.writeValueAsString(generateJWTDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "retrieveJWT: token not generated when email and password are correct but user not enabled"() {
+        given:
+        final generateJWTDTO = new GenerateJwtDTO.Builder()
+                .email("sucolega@kiesoft.com")
+                .password("sucolega")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
 
         when:
         final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)

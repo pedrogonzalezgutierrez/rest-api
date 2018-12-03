@@ -82,12 +82,16 @@ public class GenerateJwtDTOValidator implements Validator {
         // Check credentials
         Optional<UserDTO> userDTO = userService.findByEmailAndPassword(generateJwtDTO.getEmail(), DigestUtils.md5Hex(generateJwtDTO.getPassword()));
         if (userDTO.isPresent()) {
-            // Populate the object (which will get the controller) with the jwt token
-            Optional<String> jwt = jwtService.generateHS256(userDTO.get().getId(), userDTO.get().getPassword());
-            if (jwt.isPresent()) {
-                generateJwtDTO.setJwt(jwt.get());
+            if(userDTO.get().getEnabled()) {
+                // Populate the object (which will get the controller) with the jwt token
+                Optional<String> jwt = jwtService.generateHS256(userDTO.get().getId(), userDTO.get().getPassword());
+                if (jwt.isPresent()) {
+                    generateJwtDTO.setJwt(jwt.get());
+                } else {
+                    errors.rejectValue("jwt", ApiErrorMessage.JWT_NOT_GENERATED.getCode(), ApiErrorMessage.JWT_NOT_GENERATED.getMessage());
+                }
             } else {
-                errors.rejectValue("jwt", ApiErrorMessage.JWT_NOT_GENERATED.getCode(), ApiErrorMessage.JWT_NOT_GENERATED.getMessage());
+                errors.rejectValue("email", ApiErrorMessage.USERNAME_NOT_ENABLED.getCode(), ApiErrorMessage.USERNAME_NOT_ENABLED.getMessage());
             }
         } else {
             errors.rejectValue("email", ApiErrorMessage.BAD_CREDENTIALS.getCode(), ApiErrorMessage.BAD_CREDENTIALS.getMessage());

@@ -40,7 +40,7 @@ public class UserController extends AbstractUserController {
     }
 
     @InitBinder("createUserDTO")
-    public void setupcreateNewUser(WebDataBinder binder) {
+    public void setupCreateNewUser(WebDataBinder binder) {
         binder.addValidators(createUserDTOValidator);
     }
 

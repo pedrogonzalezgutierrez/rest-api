@@ -77,10 +77,19 @@ public class TestDataService {
                 .points(500)
                 .build();
 
+        UserEntity sucolega = new UserEntity.Builder()
+                .name("sucolega")
+                .email("sucolega@kiesoft.com")
+                .password("9e522220f3bc58fa75c98e4b6a5c95e9")
+                .enabled(Boolean.FALSE)
+                .points(0)
+                .build();
+
         pedrola = userRepository.save(pedrola);
         madara = userRepository.save(madara);
+        sucolega = userRepository.save(sucolega);
 
-        return Arrays.asList(pedrola, madara);
+        return Arrays.asList(pedrola, madara, sucolega);
     }
 
 }

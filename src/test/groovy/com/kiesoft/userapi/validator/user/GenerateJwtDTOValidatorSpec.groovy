@@ -146,6 +146,36 @@ class GenerateJwtDTOValidatorSpec extends Specification {
         errors.getErrorCount() == 1
     }
 
+    def "validation fails when email and password are found in database but is not enabled"() {
+        given:
+        final generateJwtDTO = new GenerateJwtDTO.Builder()
+                .email("pedro@email.com")
+                .password("Betis")
+                .build()
+        final errors = new BeanPropertyBindingResult(generateJwtDTO, "generateJwtDTO")
+
+        and:
+        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
+        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+
+        and:
+        final userDTO = new UserDTO.Builder()
+                .id(UUID.randomUUID())
+                .name("pEDROLA")
+                .email("pedro@email.com")
+                .password("Betis")
+                .enabled(Boolean.FALSE)
+                .points(100)
+                .build()
+        userService.findByEmailAndPassword(_ as String, _ as String) >> Optional.of(userDTO)
+
+        when:
+        generateJwtDTOValidator.validate(generateJwtDTO, errors)
+
+        then:
+        errors.getErrorCount() == 1
+    }
+
     def "validation fails when email and password are found in database but fails generating JWT"() {
         given:
         final generateJwtDTO = new GenerateJwtDTO.Builder()

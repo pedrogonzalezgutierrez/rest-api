@@ -58,6 +58,28 @@ class AuthenticationProviderJWTSpec extends Specification {
         Objects.isNull(actual)
     }
 
+    def "will not return a populated Authenticate object because user is not enabled"() {
+        given:
+        final authenticateObject = new StatelessAuthentication(stringUUID, jwt)
+
+        and: "stringUUID is found in database"
+        final userDTO = new UserDTO.Builder()
+                .id(uuid)
+                .name("pEDROLA")
+                .email("pedro@email.com")
+                .password(password)
+                .enabled(Boolean.FALSE)
+                .points(100)
+                .build()
+        userService.findById(uuid) >> Optional.of(userDTO)
+
+        when:
+        final actual = authenticationProviderJWT.authenticate(authenticateObject)
+
+        then:
+        Objects.isNull(actual)
+    }
+
     def "will not return a populated Authenticate object because wrong credentials"() {
         given:
         final authenticateObject = new StatelessAuthentication(stringUUID, jwt)
