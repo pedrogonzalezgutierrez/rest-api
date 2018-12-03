@@ -16,9 +16,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CONTROLLER;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CREATE;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_JWT;
-import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CONTROLLER;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -38,13 +38,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // No session
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement()
 
-        // No CSRF
-        http.csrf().disable();
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)// No session
 
-        http.addFilterBefore(tokenJWTFilter(), UsernamePasswordAuthenticationFilter.class)
+                .and()
+
+                .csrf().disable()// No CSRF
+
+                .addFilterBefore(tokenJWTFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/role/**").authenticated();
     }
