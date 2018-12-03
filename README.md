@@ -35,7 +35,7 @@ Body:
 	"password": "Betis"
 }
 ```
-> 400: User does not exist or is not enabled
+> 400: User does not exist or user is not enabled
 
 > 400: Validation Error
 
@@ -48,15 +48,15 @@ Header Authorization: Bearer jwtToken
 **3) Update password:** Allows the user to change its password 
 ```
 PATCH /user/password
-Header Authorization: Bearer jwtToken
 Body:
 {
 	"email": "pedro@universidad.com"
-	"newPassword": "Heliopolis",
+	"password": "Betis",
+	"newPassword": "Heliopolis"
 }
 ```
-> 400: User already exists
+> 400: Invalid credentials or user is not enabled
 
 > 400: Validation Error
 
-> 200: User created
+> 200: Password updated
