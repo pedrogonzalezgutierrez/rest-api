@@ -1,5 +1,7 @@
 package com.kiesoft.userapi.controller.user;
 
+import com.kiesoft.userapi.auth.filter.AuthorizationFilterJWT;
+import com.kiesoft.userapi.dto.user.ChangePasswordDTO;
 import com.kiesoft.userapi.dto.user.CreateUserDTO;
 import com.kiesoft.userapi.dto.user.GenerateJwtDTO;
 import com.kiesoft.userapi.dto.user.UserDTO;
@@ -64,20 +66,18 @@ public class UserController extends AbstractUserController {
     @RequestMapping(value = ROUTING_USER_JWT, method = RequestMethod.POST)
     public ResponseEntity<Void> retrieveJWT(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + generateJwtDTO.getJwt());
+        headers.add(HttpHeaders.AUTHORIZATION, String.format("%s %s", AuthorizationFilterJWT.BEARER_PREFIX, generateJwtDTO.getJwt()));
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
-    @InitBinder("generateJwtDTO")
+    @InitBinder("changePasswordDTO")
     public void setupChangePassword(WebDataBinder binder) {
         binder.addValidators(generateJwtDTOValidator);
     }
 
     @RequestMapping(value = ROUTING_USER_UPDATE_PASSWORD, method = RequestMethod.PATCH)
-    public ResponseEntity<Void> changePassword(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + generateJwtDTO.getJwt());
-        return new ResponseEntity<>(headers, HttpStatus.OK);
+    public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

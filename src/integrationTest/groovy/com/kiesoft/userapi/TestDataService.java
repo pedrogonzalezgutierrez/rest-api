@@ -38,7 +38,7 @@ public class TestDataService {
         UserEntity userAdmin = new UserEntity.Builder()
                 .name("admin")
                 .email("admin@kiesoft.com")
-                .password("21232f297a57a5a743894a0e4a801fc3")
+                .password("21232f297a57a5a743894a0e4a801fc3") // admin
                 .enabled(Boolean.TRUE)
                 .points(2000)
                 .roles(Collections.singletonList(roleAdmin))
@@ -47,7 +47,7 @@ public class TestDataService {
         UserEntity userEditor = new UserEntity.Builder()
                 .name("editor")
                 .email("editor@kiesoft.com")
-                .password("5aee9dbd2a188839105073571bee1b1f")
+                .password("5aee9dbd2a188839105073571bee1b1f") // editor
                 .enabled(Boolean.TRUE)
                 .points(1000)
                 .roles(Collections.singletonList(roleEditor))
@@ -64,7 +64,7 @@ public class TestDataService {
         UserEntity pedrola = new UserEntity.Builder()
                 .name("pedrola")
                 .email("pedrola@kiesoft.com")
-                .password("c25894ebba77ba392a5f9a67354ca257")
+                .password("c25894ebba77ba392a5f9a67354ca257") // pedrola
                 .enabled(Boolean.TRUE)
                 .points(0)
                 .build();
@@ -72,7 +72,7 @@ public class TestDataService {
         UserEntity madara = new UserEntity.Builder()
                 .name("madara")
                 .email("madara@kiesoft.com")
-                .password("ca0ac6f71f426aa63a4bbfabea06d1a2")
+                .password("ca0ac6f71f426aa63a4bbfabea06d1a2") // madara
                 .enabled(Boolean.TRUE)
                 .points(500)
                 .build();
@@ -80,7 +80,7 @@ public class TestDataService {
         UserEntity sucolega = new UserEntity.Builder()
                 .name("sucolega")
                 .email("sucolega@kiesoft.com")
-                .password("9e522220f3bc58fa75c98e4b6a5c95e9")
+                .password("9e522220f3bc58fa75c98e4b6a5c95e9") // sucolega
                 .enabled(Boolean.FALSE)
                 .points(0)
                 .build();
