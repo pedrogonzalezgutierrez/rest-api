@@ -1,8 +1,9 @@
 package com.kiesoft.userapi.config;
 
-import com.kiesoft.userapi.auth.filter.TokenFilterJWT;
+import com.kiesoft.userapi.auth.filter.FilterJWT;
 import com.kiesoft.userapi.auth.provider.AuthenticationProviderJWT;
 import com.kiesoft.userapi.service.jwt.JwtService;
+import com.kiesoft.userapi.service.stateless.StatelessService;
 import com.kiesoft.userapi.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private StatelessService statelessService;
 
     /*
      * Requests secured
@@ -63,9 +67,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     // JWT Token Filter
     @Bean
-    public TokenFilterJWT tokenJWTFilter() throws Exception {
-        TokenFilterJWT tokenJWTFilter = new TokenFilterJWT(authenticationManager(), jwtService);
-        return tokenJWTFilter;
+    public FilterJWT tokenJWTFilter() throws Exception {
+        return new FilterJWT(authenticationManager(), jwtService, statelessService);
     }
 
     // JWT Authentication Provider

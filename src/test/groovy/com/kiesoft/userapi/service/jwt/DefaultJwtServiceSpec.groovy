@@ -1,6 +1,5 @@
 package com.kiesoft.userapi.service.jwt
 
-
 import spock.lang.Ignore
 import spock.lang.Specification
 

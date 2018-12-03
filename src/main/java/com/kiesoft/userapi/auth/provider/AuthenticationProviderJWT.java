@@ -12,7 +12,6 @@ import org.springframework.security.core.AuthenticationException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AuthenticationProviderJWT implements AuthenticationProvider {
@@ -48,8 +47,8 @@ public class AuthenticationProviderJWT implements AuthenticationProvider {
                 return new StatelessAuthentication(
                         userDTO.get().getId().toString(),
                         userDTO.get().getPassword(),
-                        (String) statelessAuthentication.getDetails(),
-                        roles);
+                        roles,
+                        (String) statelessAuthentication.getDetails());
             }
         }
         return null;

@@ -1,6 +1,5 @@
 package com.kiesoft.userapi.validator.user
 
-
 import com.kiesoft.userapi.dto.user.GenerateJwtDTO
 import com.kiesoft.userapi.dto.user.UserDTO
 import com.kiesoft.userapi.service.jwt.JwtService
