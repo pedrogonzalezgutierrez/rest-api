@@ -26,12 +26,12 @@ Body:
 
 > 200: User created
 
-**2) Obtain a JSON Web Token:** Get a token valid for 1 hour providing username and password/secret
+**2) Obtain a JSON Web Token:** Get a token valid for 1 hour providing email and password/secret
 ```
 POST /user/jwt
 Body:
 {
-	"name": "Pedro",
+	"email": "pedro@universidad.com"
 	"password": "Betis"
 }
 ```
@@ -39,10 +39,8 @@ Body:
 
 > 400: Validation Error
 
-> 200: 
+> 200: Token created
 ```
 Response Body:
-{
-	"jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-}
+Header Authorization: Bearer jwtToken
 ```
