@@ -1,7 +1,4 @@
 buildscript {
-    ext {
-        springBootVersion = '2.1.0.RELEASE'
-    }
     repositories {
         mavenCentral()
     }
@@ -17,17 +14,20 @@ plugins {
 
 // Java Project
 apply plugin: 'java'
+
 // Spock Framework
 apply plugin: 'groovy'
-// IDEs compatibility
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-// MapStruct IDEs compatibility
-apply plugin: 'net.ltgt.apt-idea'
-apply plugin: 'net.ltgt.apt-eclipse'
+
 // Spring Boot Project
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+
+// IDEs compatibility
+apply plugin: 'idea'
+apply plugin: 'net.ltgt.apt-idea'
+apply plugin: 'eclipse'
+apply plugin: 'net.ltgt.apt-eclipse'
+
 
 group = 'com.kiesoft'
 version = '0.0.1-SNAPSHOT'
@@ -55,45 +55,44 @@ configurations {
 
 dependencies {
     // Spring
-    implementation('org.springframework.boot:spring-boot-starter')
-    implementation('org.springframework.boot:spring-boot-starter-web')
-    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
     // Databases
-    implementation('org.postgresql:postgresql:42.2.5')
-    implementation('org.hibernate:hibernate-hikaricp:5.3.7.Final')
+    implementation("org.postgresql:postgresql:${postgresqlVersion}")
+    implementation("org.hibernate:hibernate-hikaricp:${hikaricpVersion}")
 
     // JWT
-    implementation('com.nimbusds:nimbus-jose-jwt:6.4.2')
+    implementation("com.nimbusds:nimbus-jose-jwt:${nimbusJoseVersion}")
 
     // Tools
-    implementation('org.apache.commons:commons-lang3:3.0')
-    implementation('commons-codec:commons-codec:1.11')
-    implementation("commons-validator:commons-validator:1.6")
+    implementation("org.apache.commons:commons-lang3:${commonsLangVersion}")
+    implementation("commons-codec:commons-codec:${commonsCodecVersion}")
+    implementation("commons-validator:commons-validator:${commonsValidatorVersion}")
 
     // Mapper
-    implementation('org.mapstruct:mapstruct:1.2.0.Final')
-    annotationProcessor('org.mapstruct:mapstruct-processor:1.2.0.Final')
+    implementation("org.mapstruct:mapstruct:${mapstructVersion}")
+    annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
 
     // XSS
-    implementation('com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20181114.1')
+    implementation("com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:${owaspSanitizerVersion}")
 
     // Testing
-    testAnnotationProcessor('org.mapstruct:mapstruct-processor:1.2.0.Final')
+    testAnnotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
 
     // Unit Test
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('org.codehaus.groovy:groovy-all:2.5.4')
-    testImplementation('org.spockframework:spock-core:1.2-groovy-2.5')
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.codehaus.groovy:groovy-all:${groovyVersion}")
+    testImplementation("org.spockframework:spock-core:${spockCoreVersion}")
 
     // Integration Test
-    integrationTestImplementation('org.springframework.boot:spring-boot-starter-test')
-    integrationTestImplementation('org.codehaus.groovy:groovy-all:2.5.4')
-    integrationTestImplementation('org.spockframework:spock-core:1.2-groovy-2.5')
-    integrationTestImplementation('org.spockframework:spock-spring:1.2-groovy-2.5')
-    integrationTestImplementation('org.xerial:sqlite-jdbc:3.8.11.2')
-    integrationTestImplementation('com.h2database:h2:1.4.197')
+    integrationTestImplementation("org.springframework.boot:spring-boot-starter-test")
+    integrationTestImplementation("org.codehaus.groovy:groovy-all:${groovyVersion}")
+    integrationTestImplementation("org.spockframework:spock-core:${spockCoreVersion}")
+    integrationTestImplementation("org.spockframework:spock-spring:${spockSpringVersion}")
+    integrationTestImplementation("com.h2database:h2:${h2DatabaseVersion}")
 }
 
 task integrationTest(type: Test) {
