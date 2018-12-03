@@ -5,6 +5,6 @@ import java.util.UUID;
 
 public interface FindOneService<Entity> {
 
-    Optional<Entity> findOne(UUID id);
+    Optional<Entity> findById(UUID id);
 
 }

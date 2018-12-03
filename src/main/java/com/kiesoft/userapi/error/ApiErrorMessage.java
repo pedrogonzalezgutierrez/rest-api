@@ -14,8 +14,8 @@ public enum ApiErrorMessage {
     EMAIL_INVALID("email-invalid", "This email is not valid"),
     EMAIL_ALREADY_EXISTS("email-already-exists", "This email is in use by other user"),
 
-    BAD_CREDENTIALS("bad-credentials", "Incorrect email or password");
-
+    BAD_CREDENTIALS("bad-credentials", "Incorrect email or password"),
+    JWT_NOT_GENERATED("jwt-not-generated", "JSON Web Token could not be generate. Please try again");
 
     private String code;
     private String message;

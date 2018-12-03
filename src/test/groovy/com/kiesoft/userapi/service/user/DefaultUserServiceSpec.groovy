@@ -139,5 +139,27 @@ class DefaultUserServiceSpec extends Specification {
         optionalUserDTO.isPresent()
     }
 
+    def "findById: it does not exist"() {
+        given:
+        userRepository.findById(idUser) >> Optional.empty()
+
+        when:
+        final optionalUserDTO = userService.findById(idUser)
+
+        then:
+        !optionalUserDTO.isPresent()
+    }
+
+    def "findById: it exists"() {
+        given:
+        userRepository.findById(idUser) >> Optional.of(savedEntity)
+        userMapper.asDTO(savedEntity) >> savedDTO
+
+        when:
+        final optionalUserDTO = userService.findById(idUser)
+
+        then:
+        optionalUserDTO.isPresent()
+    }
 
 }

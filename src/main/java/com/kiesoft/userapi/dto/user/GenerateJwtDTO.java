@@ -4,6 +4,7 @@ public class GenerateJwtDTO {
 
     private String email;
     private String password;
+    private String jwt;
 
     public String getEmail() {
         return email;
@@ -21,9 +22,18 @@ public class GenerateJwtDTO {
         this.password = password;
     }
 
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
+    }
+
     public static final class Builder {
         private String email;
         private String password;
+        private String jwt;
 
         public Builder email(String email) {
             this.email = email;
@@ -35,10 +45,16 @@ public class GenerateJwtDTO {
             return this;
         }
 
+        public Builder jwt(String jwt) {
+            this.jwt = jwt;
+            return this;
+        }
+
         public GenerateJwtDTO build() {
             GenerateJwtDTO generateJwtDTO = new GenerateJwtDTO();
             generateJwtDTO.setEmail(email);
             generateJwtDTO.setPassword(password);
+            generateJwtDTO.setJwt(jwt);
             return generateJwtDTO;
         }
     }

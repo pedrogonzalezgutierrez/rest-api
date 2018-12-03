@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service(value = "userService")
 public class DefaultUserService implements UserService {
@@ -46,6 +47,12 @@ public class DefaultUserService implements UserService {
     @Override
     public Optional<UserDTO> findByEmailAndPassword(String email, String password) {
         Optional<UserEntity> userEntity = userRepository.findByEmailIgnoreCaseAndPassword(email, password);
+        return userEntity.map(userMapper::asDTO);
+    }
+
+    @Override
+    public Optional<UserDTO> findById(UUID id) {
+        Optional<UserEntity> userEntity = userRepository.findById(id);
         return userEntity.map(userMapper::asDTO);
     }
 

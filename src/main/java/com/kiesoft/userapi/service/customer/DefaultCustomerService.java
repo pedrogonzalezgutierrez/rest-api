@@ -8,27 +8,27 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service(value = "customerService")
-public class DefaultCustomerService implements CustomerService {
-    @Override
-    public void delete(CustomerDTO customerDTO) {
-
-    }
-
-    @Override
-    public Page<CustomerDTO> findAll(Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public Optional<CustomerDTO> findOne(UUID id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public CustomerDTO save(CustomerDTO customerDTO) {
-        return null;
-    }
+//@Service(value = "customerService")
+//public class DefaultCustomerService implements CustomerService {
+//    @Override
+//    public void delete(CustomerDTO customerDTO) {
+//
+//    }
+//
+//    @Override
+//    public Page<CustomerDTO> findAll(Pageable pageable) {
+//        return null;
+//    }
+//
+//    @Override
+//    public Optional<CustomerDTO> findOne(UUID id) {
+//        return Optional.empty();
+//    }
+//
+//    @Override
+//    public CustomerDTO save(CustomerDTO customerDTO) {
+//        return null;
+//    }
 
 //    private final CustomerRepository repository;
 //    private final AliasMapper aliasMapper;
@@ -82,5 +82,5 @@ public class DefaultCustomerService implements CustomerService {
 //                .collect(Collectors.toList());
 //        return new PageImpl<>(listDTO, pageable, page.getTotalElements());
 //    }
-
-}
+//
+//}

@@ -74,7 +74,6 @@ class UserRepositorySpec extends Specification {
         email                               || _
         "TheAdmin@kiesoft.es".toUpperCase() || __
         "TheAdmin@kiesoft.es".toLowerCase() || __
-
     }
 
     def "find by email ignore case and password"() {
@@ -91,7 +90,17 @@ class UserRepositorySpec extends Specification {
         email                               | password || _
         "TheAdmin@kiesoft.es".toUpperCase() | "Betis"  || __
         "TheAdmin@kiesoft.es".toLowerCase() | "Betis"  || __
+    }
 
+    def "find by id"() {
+        given:
+        userRepository.save(userAdmin)
+
+        when:
+        final actual = userRepository.findById(userAdmin.getId())
+
+        then:
+        actual.isPresent()
     }
 
 }

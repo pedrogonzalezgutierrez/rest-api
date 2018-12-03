@@ -17,8 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
-import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_JWT
-import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CONTROLLER
+import static com.kiesoft.userapi.controller.user.AbstractUserController.*
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -50,7 +49,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -66,7 +65,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -82,7 +81,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -98,7 +97,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -111,7 +110,7 @@ class UserControllerSpec extends Specification {
         final createUserDTO = new CreateUserDTO.Builder().build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -128,7 +127,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -145,7 +144,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -162,7 +161,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -179,7 +178,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -196,7 +195,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -213,7 +212,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -230,7 +229,7 @@ class UserControllerSpec extends Specification {
                 .build()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -250,7 +249,7 @@ class UserControllerSpec extends Specification {
         testDataService.usersAdminAndEditor()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -275,7 +274,7 @@ class UserControllerSpec extends Specification {
         testDataService.usersAdminAndEditor()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/")
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .content(objectMapper.writeValueAsString(createUserDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -299,7 +298,7 @@ class UserControllerSpec extends Specification {
         testDataService.usersAdminAndEditor()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/" + ROUTING_JWT)
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
                 .content(objectMapper.writeValueAsString(generateJWTDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -317,7 +316,7 @@ class UserControllerSpec extends Specification {
         testDataService.usersAdminAndEditor()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/" + ROUTING_JWT)
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
                 .content(objectMapper.writeValueAsString(generateJWTDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -335,7 +334,7 @@ class UserControllerSpec extends Specification {
         testDataService.usersAdminAndEditor()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/" + ROUTING_JWT)
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
                 .content(objectMapper.writeValueAsString(generateJWTDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -351,7 +350,7 @@ class UserControllerSpec extends Specification {
         testDataService.usersAdminAndEditor()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/" + ROUTING_JWT)
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
                 .content(objectMapper.writeValueAsString(generateJWTDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -370,7 +369,7 @@ class UserControllerSpec extends Specification {
         testDataService.usersAdminAndEditor()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/" + ROUTING_JWT)
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
                 .content(objectMapper.writeValueAsString(generateJWTDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -389,7 +388,7 @@ class UserControllerSpec extends Specification {
         testDataService.usersAdminAndEditor()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/" + ROUTING_JWT)
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
                 .content(objectMapper.writeValueAsString(generateJWTDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -408,26 +407,7 @@ class UserControllerSpec extends Specification {
         testDataService.usersAdminAndEditor()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/" + ROUTING_JWT)
-                .content(objectMapper.writeValueAsString(generateJWTDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-
-        then:
-        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
-    }
-
-    def "retrieveJWT: token not generated when password invalid"() {
-        given:
-        final generateJWTDTO = new GenerateJwtDTO.Builder()
-                .email("admin@kiesoft.com")
-                .password("wrongPassword")
-                .build()
-
-        and:
-        testDataService.usersAdminAndEditor()
-
-        when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/" + ROUTING_JWT)
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
                 .content(objectMapper.writeValueAsString(generateJWTDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
@@ -446,7 +426,45 @@ class UserControllerSpec extends Specification {
         testDataService.usersAdminAndEditor()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + "/" + ROUTING_JWT)
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
+                .content(objectMapper.writeValueAsString(generateJWTDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "retrieveJWT: token not generated when password invalid"() {
+        given:
+        final generateJWTDTO = new GenerateJwtDTO.Builder()
+                .email("admin@kiesoft.com")
+                .password("wrongPassword")
+                .build()
+
+        and:
+        testDataService.usersAdminAndEditor()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
+                .content(objectMapper.writeValueAsString(generateJWTDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "retrieveJWT: token not generated when email and password invalid"() {
+        given:
+        final generateJWTDTO = new GenerateJwtDTO.Builder()
+                .email("wrong@email.com")
+                .password("wrongPassword")
+                .build()
+
+        and:
+        testDataService.usersAdminAndEditor()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
                 .content(objectMapper.writeValueAsString(generateJWTDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 

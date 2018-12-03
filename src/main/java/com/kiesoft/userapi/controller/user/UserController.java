@@ -6,6 +6,7 @@ import com.kiesoft.userapi.dto.user.UserDTO;
 import com.kiesoft.userapi.service.user.UserService;
 import com.kiesoft.userapi.validator.user.CreateUserDTOValidator;
 import com.kiesoft.userapi.validator.user.GenerateJwtDTOValidator;
+import com.kiesoft.userapi.validator.user.JwtDTO;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,9 @@ public class UserController extends AbstractUserController {
     private final GenerateJwtDTOValidator generateJwtDTOValidator;
 
     @Autowired
-    public UserController(final UserService userService, final CreateUserDTOValidator createUserDTOValidator, final GenerateJwtDTOValidator generateJwtDTOValidator) {
+    public UserController(final UserService userService,
+                          final CreateUserDTOValidator createUserDTOValidator,
+                          final GenerateJwtDTOValidator generateJwtDTOValidator) {
         this.userService = userService;
         this.createUserDTOValidator = createUserDTOValidator;
         this.generateJwtDTOValidator = generateJwtDTOValidator;
@@ -41,7 +44,7 @@ public class UserController extends AbstractUserController {
         binder.addValidators(createUserDTOValidator);
     }
 
-    @RequestMapping(value = ROUTING_CREATE, method = RequestMethod.POST)
+    @RequestMapping(value = ROUTING_USER_CREATE, method = RequestMethod.POST)
     public ResponseEntity<UserDTO> createNewUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
         userService.save(new UserDTO.Builder()
                 .name(createUserDTO.getName())
@@ -58,9 +61,12 @@ public class UserController extends AbstractUserController {
         binder.addValidators(generateJwtDTOValidator);
     }
 
-    @RequestMapping(value = ROUTING_JWT, method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> retrieveJWT(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    @RequestMapping(value = ROUTING_USER_JWT, method = RequestMethod.POST)
+    public ResponseEntity<JwtDTO> retrieveJWT(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
+        final JwtDTO jwtDTO = new JwtDTO.Builder()
+                .jwt(generateJwtDTO.getJwt())
+                .build();
+        return new ResponseEntity<>(jwtDTO, (HttpStatus.OK));
     }
 
 
