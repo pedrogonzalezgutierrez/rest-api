@@ -38,17 +38,11 @@ repositories {
 }
 
 sourceSets {
-    // Source and Resource Directories of Integration Tests
     integrationTest {
         java {
             compileClasspath += sourceSets.main.output + configurations.testRuntime
             runtimeClasspath += output + compileClasspath
-            srcDirs = ['src/integrationTest/java']
-        }
-        groovy {
-            compileClasspath += sourceSets.main.output + configurations.testRuntime
-            runtimeClasspath += output + compileClasspath
-            srcDirs = ['src/integrationTest/groovy']
+            srcDir file('src/integrationTest/java')
         }
         resources.srcDir file('src/integrationTest/resources')
     }
@@ -56,6 +50,7 @@ sourceSets {
 
 configurations {
     integrationTestImplementation.extendsFrom implementation
+    integrationTestCompile.extendsFrom testCompile
 }
 
 dependencies {
@@ -101,6 +96,11 @@ dependencies {
     integrationTestImplementation('com.h2database:h2:1.4.197')
 }
 
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+/*
 // Task to run the IntegrationTest
 task integrationTest(type: Test) {
     description = 'Runs integration tests'
@@ -111,9 +111,8 @@ task integrationTest(type: Test) {
 
     // Integration test are always out of date, so they will alway run even if there are no changes
     outputs.upToDateWhen { false }
-
-    mustRunAfter test
 }
 
 check.dependsOn integrationTest
 integrationTest.mustRunAfter test
+*/
