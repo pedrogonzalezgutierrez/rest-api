@@ -14,12 +14,17 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Unroll
-class FilterJWTSpec extends Specification {
+class AuthenticationFilterJWTSpec extends Specification {
 
     final authenticationManager = Mock(AuthenticationManager)
     final jwtService = Mock(JwtService)
     final statelessService = Mock(StatelessService)
-    final filterJWT = new FilterJWT(authenticationManager, jwtService, statelessService)
+    final authorizationFilterJWT = new AuthorizationFilterJWT(authenticationManager)
+
+    def setup() {
+        authorizationFilterJWT.setJwtService(jwtService)
+        authorizationFilterJWT.setStatelessService(statelessService)
+    }
 
     final httpServletRequest = Mock(HttpServletRequest)
     final httpServletResponse = Mock(HttpServletResponse)
@@ -37,7 +42,7 @@ class FilterJWTSpec extends Specification {
         authenticationManager.authenticate(_ as StatelessAuthentication) >> statelessAuthentication
 
         when:
-        filterJWT.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
+        authorizationFilterJWT.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
 
         then:
         1 * statelessService.authenticate(_ as Authentication)
@@ -53,7 +58,7 @@ class FilterJWTSpec extends Specification {
         httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION) >> null
 
         when:
-        filterJWT.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
+        authorizationFilterJWT.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
 
         then:
         0 * statelessService.authenticate(_ as Authentication)
@@ -64,7 +69,7 @@ class FilterJWTSpec extends Specification {
         httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION) >> null
 
         when:
-        filterJWT.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
+        authorizationFilterJWT.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
 
         then:
         0 * statelessService.authenticate(_ as Authentication)
@@ -84,7 +89,7 @@ class FilterJWTSpec extends Specification {
         jwtService.getIssuer(_ as String) >> Optional.empty()
 
         when:
-        filterJWT.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
+        authorizationFilterJWT.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
 
         then:
         0 * statelessService.authenticate(_ as Authentication)
@@ -101,7 +106,7 @@ class FilterJWTSpec extends Specification {
         authenticationManager.authenticate(_ as StatelessAuthentication) >> null
 
         when:
-        filterJWT.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
+        authorizationFilterJWT.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
 
         then:
         0 * statelessService.authenticate(_ as Authentication)

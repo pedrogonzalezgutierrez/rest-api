@@ -1,6 +1,6 @@
 package com.kiesoft.userapi.config;
 
-import com.kiesoft.userapi.auth.filter.FilterJWT;
+import com.kiesoft.userapi.auth.filter.AuthorizationFilterJWT;
 import com.kiesoft.userapi.auth.provider.AuthenticationProviderJWT;
 import com.kiesoft.userapi.service.jwt.JwtService;
 import com.kiesoft.userapi.service.stateless.StatelessService;
@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CONTROLLER;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CREATE;
@@ -32,9 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private StatelessService statelessService;
 
-    /*
-     * Requests secured
-     */
+    // Requests secured
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -46,19 +43,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .csrf().disable()// No CSRF
 
-                .addFilterBefore(tokenJWTFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(jwtAuthorizationFilter())
                 .authorizeRequests()
                 .antMatchers("/role/**").authenticated();
     }
 
-    /*
-     * All of Spring Security will ignore these requests
-     */
+    // All of Spring Security will ignore these requests
     @Override
     public void configure(WebSecurity webSecurity) {
         webSecurity.ignoring()
                 .antMatchers(HttpMethod.POST, ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
                 .antMatchers(HttpMethod.GET, ROUTING_USER_CONTROLLER + ROUTING_USER_JWT);
+    }
+
+    // JWT Authentication Provider
+    @Bean
+    public AuthenticationProviderJWT authenticationProviderJWT() throws Exception {
+        return new AuthenticationProviderJWT(userService, jwtService);
     }
 
     // Set AuthenticationProviderJWT into AuthenticationManager
@@ -67,16 +68,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProviderJWT());
     }
 
-    // JWT Token Filter
     @Bean
-    public FilterJWT tokenJWTFilter() throws Exception {
-        return new FilterJWT(authenticationManager(), jwtService, statelessService);
-    }
-
-    // JWT Authentication Provider
-    @Bean
-    public AuthenticationProviderJWT authenticationProviderJWT() throws Exception {
-        return new AuthenticationProviderJWT(userService, jwtService);
+    public AuthorizationFilterJWT jwtAuthorizationFilter() throws Exception {
+        AuthorizationFilterJWT authorizationFilterJWT = new AuthorizationFilterJWT(authenticationManager());
+        authorizationFilterJWT.setJwtService(jwtService);
+        authorizationFilterJWT.setStatelessService(statelessService);
+        return authorizationFilterJWT;
     }
 
 }
