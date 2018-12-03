@@ -3,7 +3,7 @@ package com.kiesoft.userapi.auth
 import com.kiesoft.userapi.auth.authority.DefaultGrantedAuthority
 import spock.lang.Specification
 
-class StatelessAuthenticationSpec extends Specification {
+class StatelessAuthenticationSpec extends Specification{
 
     final uuid = UUID.randomUUID()
     final stringUUID = uuid.toString()
