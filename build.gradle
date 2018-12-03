@@ -103,7 +103,7 @@ dependencies {
 
 // Task to run the IntegrationTest
 task integrationTest(type: Test) {
-    description = 'Runs integration tests.'
+    description = 'Runs integration tests'
     group = 'verification'
 
     testClassesDir = sourceSets.integrationTest.output.classesDir
