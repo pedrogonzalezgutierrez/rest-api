@@ -39,54 +39,62 @@ public class ChangePasswordDTOValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        ChangePasswordDTO generateJwtDTO = (ChangePasswordDTO) target;
+        ChangePasswordDTO changePasswordDTO = (ChangePasswordDTO) target;
 
-        // email and password cannot by blank
+        // email, password and newPassword cannot by blank
         validatorHelper.rejectIfStringIsBlank(
                 "email",
-                generateJwtDTO.getEmail(),
+                changePasswordDTO.getEmail(),
                 errors);
         validatorHelper.rejectIfStringIsBlank(
                 "password",
-                generateJwtDTO.getPassword(),
+                changePasswordDTO.getPassword(),
                 errors);
         validatorHelper.rejectIfStringIsBlank(
                 "newPassword",
-                generateJwtDTO.getNewPassword(),
+                changePasswordDTO.getNewPassword(),
                 errors);
 
         if (errors.hasErrors()) {
             return;
         }
 
-        // name and password maximum and minimum length
+        // password and newPassword maximum and minimum length
         validatorHelper.rejectStringIfNotInLength(
                 "password",
-                generateJwtDTO.getPassword(),
+                changePasswordDTO.getPassword(),
                 Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_PASSWORD_MIN))),
                 Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_PASSWORD_MAX))),
                 errors);
         validatorHelper.rejectStringIfNotInLength(
                 "newPassword",
-                generateJwtDTO.getNewPassword(),
+                changePasswordDTO.getNewPassword(),
                 Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_PASSWORD_MIN))),
                 Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_PASSWORD_MAX))),
                 errors);
+
+        // password and newPassword needs to be different
+        if (Objects.equals(changePasswordDTO.getPassword(), changePasswordDTO.getNewPassword())) {
+            errors.rejectValue("email", ApiErrorMessage.PASSWORDS_ARE_EQUALS.getCode(), ApiErrorMessage.PASSWORDS_ARE_EQUALS.getMessage());
+        }
 
         // valid email
         validatorHelper.rejectIfNotEmail(
                 "email",
-                generateJwtDTO.getEmail(),
+                changePasswordDTO.getEmail(),
                 errors);
 
         if (errors.hasErrors()) {
             return;
         }
 
-        Optional<UserDTO> userDTO = userService.findByEmailAndPassword(generateJwtDTO.getEmail(), DigestUtils.md5Hex(generateJwtDTO.getPassword()));
+        Optional<UserDTO> userDTO = userService.findByEmailAndPassword(changePasswordDTO.getEmail(), DigestUtils.md5Hex(changePasswordDTO.getPassword()));
         if (userDTO.isPresent()) {
             if (!userDTO.get().getEnabled()) {
                 errors.rejectValue("email", ApiErrorMessage.USERNAME_NOT_ENABLED.getCode(), ApiErrorMessage.USERNAME_NOT_ENABLED.getMessage());
+            } else {
+                // Populate the object for the Controller
+                changePasswordDTO.setUserDTO(userDTO.get());
             }
         } else {
             errors.rejectValue("email", ApiErrorMessage.BAD_CREDENTIALS.getCode(), ApiErrorMessage.BAD_CREDENTIALS.getMessage());

@@ -184,6 +184,26 @@ class ChangePasswordDTOValidatorSpec extends Specification {
         errors.getErrorCount() == 1
     }
 
+    def "validation fails when password is equal to newPassword"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("pedro@email.com")
+                .password("Betis")
+                .newPassword("Betis")
+                .build()
+        final errors = new BeanPropertyBindingResult(changePasswordDTO, "changePasswordDTO")
+
+        and:
+        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
+        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+
+        when:
+        changePasswordDTOValidator.validate(changePasswordDTO, errors)
+
+        then:
+        errors.getErrorCount() == 1
+    }
+
     def "validation fails when email is invalid"() {
         given:
         final changePasswordDTO = new ChangePasswordDTO.Builder()

@@ -5,6 +5,7 @@ public class ChangePasswordDTO {
     private String email;
     private String password;
     private String newPassword;
+    private UserDTO userDTO;
 
     public String getEmail() {
         return email;
@@ -30,6 +31,13 @@ public class ChangePasswordDTO {
         this.newPassword = newPassword;
     }
 
+    public UserDTO getUserDTO() {
+        return userDTO;
+    }
+
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
+    }
 
     public static final class Builder {
         private String email;

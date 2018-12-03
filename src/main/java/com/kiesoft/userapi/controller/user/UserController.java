@@ -6,6 +6,7 @@ import com.kiesoft.userapi.dto.user.CreateUserDTO;
 import com.kiesoft.userapi.dto.user.GenerateJwtDTO;
 import com.kiesoft.userapi.dto.user.UserDTO;
 import com.kiesoft.userapi.service.user.UserService;
+import com.kiesoft.userapi.validator.user.ChangePasswordDTOValidator;
 import com.kiesoft.userapi.validator.user.CreateUserDTOValidator;
 import com.kiesoft.userapi.validator.user.GenerateJwtDTOValidator;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -31,14 +32,17 @@ public class UserController extends AbstractUserController {
     private final UserService userService;
     private final CreateUserDTOValidator createUserDTOValidator;
     private final GenerateJwtDTOValidator generateJwtDTOValidator;
+    private final ChangePasswordDTOValidator changePasswordDTOValidator;
 
     @Autowired
     public UserController(final UserService userService,
                           final CreateUserDTOValidator createUserDTOValidator,
-                          final GenerateJwtDTOValidator generateJwtDTOValidator) {
+                          final GenerateJwtDTOValidator generateJwtDTOValidator,
+                          final ChangePasswordDTOValidator changePasswordDTOValidator) {
         this.userService = userService;
         this.createUserDTOValidator = createUserDTOValidator;
         this.generateJwtDTOValidator = generateJwtDTOValidator;
+        this.changePasswordDTOValidator = changePasswordDTOValidator;
     }
 
     @InitBinder("createUserDTO")
@@ -72,11 +76,14 @@ public class UserController extends AbstractUserController {
 
     @InitBinder("changePasswordDTO")
     public void setupChangePassword(WebDataBinder binder) {
-        binder.addValidators(generateJwtDTOValidator);
+        binder.addValidators(changePasswordDTOValidator);
     }
 
     @RequestMapping(value = ROUTING_USER_UPDATE_PASSWORD, method = RequestMethod.PATCH)
     public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
+        UserDTO userDTO = changePasswordDTO.getUserDTO();
+        userDTO.setPassword(DigestUtils.md5Hex(changePasswordDTO.getNewPassword()));
+        userService.save(userDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
