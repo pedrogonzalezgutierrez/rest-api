@@ -3,6 +3,7 @@ package com.kiesoft.userapi.controller.user
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.kiesoft.userapi.TestDataService
 import com.kiesoft.userapi.controller.error.ApiValidationExceptionHandler
+import com.kiesoft.userapi.dto.user.ChangePasswordDTO
 import com.kiesoft.userapi.dto.user.CreateUserDTO
 import com.kiesoft.userapi.dto.user.GenerateJwtDTO
 import org.springframework.beans.factory.annotation.Autowired
@@ -485,6 +486,259 @@ class UserControllerSpec extends Specification {
         when:
         final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
                 .content(objectMapper.writeValueAsString(generateJWTDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password is changed successfully"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("pedrola@kiesoft.com")
+                .password("pedrola")
+                .newPassword("Heliopolis")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+    }
+
+    def "changePassword: password not change because missing email"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .password("pedrola")
+                .newPassword("Heliopolis")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because missing password"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("pedrola@kiesoft.com")
+                .newPassword("Heliopolis")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because missing newPassword"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("pedrola@kiesoft.com")
+                .password("pedrola")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because missing email, password and newPassword"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder().build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because password too small"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("pedrola@kiesoft.com")
+                .password("a")
+                .newPassword("Heliopolis")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because password too big"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("pedrola@kiesoft.com")
+                .password("Real Betis Balompie")
+                .newPassword("Heliopolis")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because newPassword too small"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("pedrola@kiesoft.com")
+                .password("Betis")
+                .newPassword("a")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because newPassword too big"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("pedrola@kiesoft.com")
+                .password("Betis")
+                .newPassword("Real Betis Balompie")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because is equal to newPassword"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("pedrola@kiesoft.com")
+                .password("Heliopolis")
+                .newPassword("Heliopolis")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because invalid email"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("@kiesoft.com")
+                .password("Betis")
+                .newPassword("Heliopolis")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because valid email and password but user not enabled"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("sucolega@kiesoft.com")
+                .password("sucolega")
+                .newPassword("Heliopolis")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "changePassword: password not change because invalid email or password"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("pedrola@kiesoft.com")
+                .password("Betis")
+                .newPassword("Heliopolis")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
         then:
