@@ -19,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CONTROLLER;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CREATE;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_JWT;
+import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_UPDATE_PASSWORD;
 
 @Configuration
 @EnableWebSecurity
@@ -49,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // Add Filter
                 .addFilter(jwtAuthorizationFilter())
                 .authorizeRequests()
-                .antMatchers("/role/**").authenticated();
+                .antMatchers(HttpMethod.PATCH, ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD).authenticated();
     }
 
     // Spring Security will ignore these requests
