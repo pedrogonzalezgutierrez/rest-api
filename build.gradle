@@ -97,22 +97,12 @@ dependencies {
 }
 
 task integrationTest(type: Test) {
-    testClassesDirs = sourceSets.integrationTest.output.classesDirs
-    classpath = sourceSets.integrationTest.runtimeClasspath
-}
-/*
-// Task to run the IntegrationTest
-task integrationTest(type: Test) {
     description = 'Runs integration tests'
     group = 'verification'
 
-    testClassesDir = sourceSets.integrationTest.output.classesDir
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
-
-    // Integration test are always out of date, so they will alway run even if there are no changes
-    outputs.upToDateWhen { false }
 }
 
 check.dependsOn integrationTest
 integrationTest.mustRunAfter test
-*/
