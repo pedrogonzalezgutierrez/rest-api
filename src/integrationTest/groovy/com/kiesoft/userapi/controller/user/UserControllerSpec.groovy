@@ -2,6 +2,8 @@ package com.kiesoft.userapi.controller.user
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.kiesoft.userapi.TestDataService
+import com.kiesoft.userapi.controller.error.ApiErrorMessage
+import com.kiesoft.userapi.controller.error.ApiErrorsView
 import com.kiesoft.userapi.controller.error.ApiValidationExceptionHandler
 import com.kiesoft.userapi.dto.user.ChangePasswordDTO
 import com.kiesoft.userapi.dto.user.CreateUserDTO
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
 import static com.kiesoft.userapi.controller.user.AbstractUserController.*
+import static org.assertj.core.api.Assertions.assertThat
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -73,6 +76,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
     }
 
     def "createNewUser: user not created when missing email"() {
@@ -89,6 +97,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
     }
 
     def "createNewUser: user not created when missing password"() {
@@ -105,6 +118,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
     }
 
     def "createNewUser: user not created when missing name, email and password"() {
@@ -118,6 +136,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode(), ApiErrorMessage.STRING_BLANK.getCode(), ApiErrorMessage.STRING_BLANK.getCode())
     }
 
     def "createNewUser: user not created when name too small"() {
@@ -135,6 +158,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
     def "createNewUser: user not created when name too big"() {
@@ -152,6 +180,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
     def "createNewUser: user not created when password too small"() {
@@ -169,6 +202,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
     def "createNewUser: user not created when password too big"() {
@@ -186,6 +224,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
     def "createNewUser: user not created when name and password too small"() {
@@ -203,6 +246,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode(), ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
     def "createNewUser: user not created when name and password too big"() {
@@ -220,6 +268,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode(), ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
     def "createNewUser: user not created when email is invalid"() {
@@ -237,6 +290,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.EMAIL_INVALID.getCode())
     }
 
     def "createNewUser: user not created when it already exist (ignore case)"() {
@@ -257,6 +315,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.USERNAME_ALREADY_EXISTS.getCode())
 
         where:
         name                  || _
@@ -283,13 +346,18 @@ class UserControllerSpec extends Specification {
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
 
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.EMAIL_ALREADY_EXISTS.getCode())
+
         where:
         email                             || _
         "admin@kiesoft.com"               || _
         "admin@kiesoft.com".toUpperCase() || _
     }
 
-    def "retrieveJWT: token generated when is valid credentials and validation successful"() {
+    def "generateJWT: token generated when is valid credentials and validation successful"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .email("admin@kiesoft.com")
@@ -308,7 +376,7 @@ class UserControllerSpec extends Specification {
         result.andExpect(MockMvcResultMatchers.status().isOk())
     }
 
-    def "retrieveJWT: token not generated when missing email"() {
+    def "generateJWT: token not generated when missing email"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .password("admin")
@@ -324,9 +392,14 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
     }
 
-    def "retrieveJWT: token not generated when missing password"() {
+    def "generateJWT: token not generated when missing password"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .email("admin@kiesoft.com")
@@ -342,9 +415,14 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
     }
 
-    def "retrieveJWT: token not generated when missing email and password"() {
+    def "generateJWT: token not generated when missing email and password"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder().build()
 
@@ -358,9 +436,14 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode(), ApiErrorMessage.STRING_BLANK.getCode())
     }
 
-    def "retrieveJWT: token not generated when password too small"() {
+    def "generateJWT: token not generated when password too small"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .email("admin@kiesoft.com")
@@ -377,9 +460,14 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
-    def "retrieveJWT: token not generated when password too big"() {
+    def "generateJWT: token not generated when password too big"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .email("admin@kiesoft.com")
@@ -396,9 +484,14 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
-    def "retrieveJWT: token not generated when email is not an email"() {
+    def "generateJWT: token not generated when email is not an email"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .email("@kiesoft.com")
@@ -415,9 +508,14 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.EMAIL_INVALID.getCode())
     }
 
-    def "retrieveJWT: token not generated when email invalid"() {
+    def "generateJWT: token not generated when invalid credentials (email)"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .email("wrong@email.com")
@@ -434,9 +532,14 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.BAD_CREDENTIALS.getCode(), ApiErrorMessage.BAD_CREDENTIALS.getCode())
     }
 
-    def "retrieveJWT: token not generated when password invalid"() {
+    def "generateJWT: token not generated when invalid credentials (password)"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .email("admin@kiesoft.com")
@@ -453,9 +556,14 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.BAD_CREDENTIALS.getCode(), ApiErrorMessage.BAD_CREDENTIALS.getCode())
     }
 
-    def "retrieveJWT: token not generated when email and password invalid"() {
+    def "generateJWT: token not generated when invalid credentials (email and password)"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .email("wrong@email.com")
@@ -472,9 +580,14 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.BAD_CREDENTIALS.getCode(), ApiErrorMessage.BAD_CREDENTIALS.getCode())
     }
 
-    def "retrieveJWT: token not generated when email and password are correct but user not enabled"() {
+    def "generateJWT: token not generated when credentials (email and password) are correct but user not enabled"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
                 .email("sucolega@kiesoft.com")
@@ -491,6 +604,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.USER_NOT_ENABLED.getCode())
     }
 
     def "changePassword: password is changed successfully"() {
@@ -530,6 +648,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
     }
 
     def "changePassword: password not change because missing password"() {
@@ -549,6 +672,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
     }
 
     def "changePassword: password not change because missing newPassword"() {
@@ -568,6 +696,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
     }
 
     def "changePassword: password not change because missing email, password and newPassword"() {
@@ -584,6 +717,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode(), ApiErrorMessage.STRING_BLANK.getCode(), ApiErrorMessage.STRING_BLANK.getCode())
     }
 
     def "changePassword: password not change because password too small"() {
@@ -604,6 +742,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
     def "changePassword: password not change because password too big"() {
@@ -624,6 +767,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
     def "changePassword: password not change because newPassword too small"() {
@@ -644,6 +792,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
     def "changePassword: password not change because newPassword too big"() {
@@ -664,6 +817,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_LENGTH.getCode())
     }
 
     def "changePassword: password not change because is equal to newPassword"() {
@@ -684,6 +842,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.PASSWORDS_ARE_EQUALS.getCode())
     }
 
     def "changePassword: password not change because invalid email"() {
@@ -704,29 +867,14 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.EMAIL_INVALID.getCode())
     }
 
-    def "changePassword: password not change because valid email and password but user not enabled"() {
-        given:
-        final changePasswordDTO = new ChangePasswordDTO.Builder()
-                .email("sucolega@kiesoft.com")
-                .password("sucolega")
-                .newPassword("Heliopolis")
-                .build()
-
-        and:
-        testDataService.usersRandomPeople()
-
-        when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
-                .content(objectMapper.writeValueAsString(changePasswordDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-
-        then:
-        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
-    }
-
-    def "changePassword: password not change because invalid email or password"() {
+    def "changePassword: password not change because invalid credentials (email or password)"() {
         given:
         final changePasswordDTO = new ChangePasswordDTO.Builder()
                 .email("pedrola@kiesoft.com")
@@ -744,6 +892,36 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.BAD_CREDENTIALS.getCode(), ApiErrorMessage.BAD_CREDENTIALS.getCode())
+    }
+
+    def "changePassword: password not change because invalid credentials (email and password) but user not enabled"() {
+        given:
+        final changePasswordDTO = new ChangePasswordDTO.Builder()
+                .email("sucolega@kiesoft.com")
+                .password("sucolega")
+                .newPassword("Heliopolis")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD)
+                .content(objectMapper.writeValueAsString(changePasswordDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.USER_NOT_ENABLED.getCode())
     }
 
     def "enableUser: enabled is changed successfully"() {
@@ -781,6 +959,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
     }
 
     def "enableUser: enabled not changed because missing enable"() {
@@ -799,6 +982,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.FIELD_REQUIRED.getCode())
     }
 
     def "enableUser: enabled not changed because missing email and enable"() {
@@ -815,6 +1003,12 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode(), ApiErrorMessage.FIELD_REQUIRED.getCode())
+
     }
 
     def "enableUser: enabled not changed because invalid email"() {
@@ -834,6 +1028,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.EMAIL_INVALID.getCode())
     }
 
     def "enableUser: enabled not changed because email does not exist"() {
@@ -853,6 +1052,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.EMAIL_NOT_FOUND.getCode())
     }
 
     def "enableUser: enabled not changed because is the same value"() {
@@ -872,8 +1076,11 @@ class UserControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.FIELD_NOT_CHANGED.getCode())
     }
-
-
 
 }

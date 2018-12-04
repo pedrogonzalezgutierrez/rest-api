@@ -1,6 +1,5 @@
 package com.kiesoft.userapi.jpa.repository.user
 
-
 import com.kiesoft.userapi.jpa.entity.user.UserEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -10,11 +9,11 @@ import spock.lang.Specification
 class UserRepositorySpec extends Specification {
 
     @Autowired
-    private UserRepository userRepository
+    UserRepository userRepository
 
     final userAdmin = new UserEntity.Builder()
-            .name("TheAdmin")
-            .email("TheAdmin@kiesoft.es")
+            .name("admin")
+            .email("admin@kiesoft.es")
             .password("Betis")
             .enabled(Boolean.TRUE)
             .points(100)
@@ -44,55 +43,64 @@ class UserRepositorySpec extends Specification {
         actual.getAt(0).getRoles().isEmpty()
     }
 
-    def "find by name"() {
+    def "will find by name (ignore case) when it exists"() {
         given:
         userRepository.save(userAdmin)
 
         when:
-        final actual = userRepository.findByNameIgnoreCase(name)
+        final actual = userRepository.findByNameIgnoreCase("aDmiN")
 
         then:
         actual.isPresent()
-
-        where:
-        name                     || _
-        "TheAdmin".toUpperCase() || __
-        "TheAdmin".toLowerCase() || __
     }
 
-    def "find by email"() {
+    def "will not find by name (ignore case) when it does not exist"() {
+        when:
+        final actual = userRepository.findByNameIgnoreCase("aDmiN")
+
+        then:
+        !actual.isPresent()
+    }
+
+    def "will find by email (ignore case) when it exists"() {
         given:
         userRepository.save(userAdmin)
 
         when:
-        final actual = userRepository.findByEmailIgnoreCase(email)
+        final actual = userRepository.findByEmailIgnoreCase("aDmiN@KIEsOfT.es")
 
         then:
         actual.isPresent()
-
-        where:
-        email                               || _
-        "TheAdmin@kiesoft.es".toUpperCase() || __
-        "TheAdmin@kiesoft.es".toLowerCase() || __
     }
 
-    def "find by email ignore case and password"() {
+    def "will not find by email (ignore case) when it does not exist"() {
+        when:
+        final actual = userRepository.findByEmailIgnoreCase("aDmiN@KIEsOfT.es")
+
+        then:
+        !actual.isPresent()
+    }
+
+    def "will find by email (ignore case) and password when it exists"() {
         given:
         userRepository.save(userAdmin)
 
         when:
-        final actual = userRepository.findByEmailIgnoreCaseAndPassword(email, password)
+        final actual = userRepository.findByEmailIgnoreCaseAndPassword("aDmiN@KIEsOfT.es", "Betis")
 
         then:
         actual.isPresent()
-
-        where:
-        email                               | password || _
-        "TheAdmin@kiesoft.es".toUpperCase() | "Betis"  || __
-        "TheAdmin@kiesoft.es".toLowerCase() | "Betis"  || __
     }
 
-    def "find by id"() {
+    def "will not find by email (ignore case) and password when it does not exist"() {
+        when:
+        final actual = userRepository.findByEmailIgnoreCaseAndPassword("aDmiN@KIEsOfT.es", "Betis")
+
+        then:
+        !actual.isPresent()
+    }
+
+    def "will find by id when it exists"() {
         given:
         userRepository.save(userAdmin)
 
@@ -101,6 +109,14 @@ class UserRepositorySpec extends Specification {
 
         then:
         actual.isPresent()
+    }
+
+    def "will not find by id when it does not exist"() {
+        when:
+        final actual = userRepository.findById(UUID.randomUUID())
+
+        then:
+        !actual.isPresent()
     }
 
 }
