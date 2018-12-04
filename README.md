@@ -16,7 +16,7 @@ POST /user
 Body:
 {
 	"name": "Pedro",
-	"email": "pedro@universidad.com"
+	"email": "pedro@universidad.com",
 	"password": "Betis"
 }
 ```
@@ -31,7 +31,7 @@ Body:
 POST /user/jwt
 Body:
 {
-	"email": "pedro@universidad.com"
+	"email": "pedro@universidad.com",
 	"password": "Betis"
 }
 ```
@@ -50,7 +50,7 @@ Header Authorization: Bearer jwtToken
 PATCH /user/password
 Body:
 {
-	"email": "pedro@universidad.com"
+	"email": "pedro@universidad.com",
 	"password": "Betis",
 	"newPassword": "Heliopolis"
 }
@@ -69,7 +69,7 @@ PATCH /user/enable
 Header Authorization: Bearer jwtToken
 Body:
 {
-	"email": "pedro@universidad.com"
+	"email": "pedro@universidad.com",
 	"enable": false
 }
 ```
@@ -78,3 +78,20 @@ Body:
 > 400: Validation Error
 
 > 200: User enabled updated
+
+**5) Create role:** Only admin user (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to create a new role 
+```
+ROLE_ADMIN
+
+POST /role
+Header Authorization: Bearer jwtToken
+Body:
+{
+	"name": "ROLE_EDITOR"
+}
+```
+> 400: Role already exists
+
+> 400: Validation Error
+
+> 200: Role created
