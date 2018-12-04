@@ -5,6 +5,7 @@ import com.kiesoft.userapi.TestDataService
 import com.kiesoft.userapi.controller.error.ApiValidationExceptionHandler
 import com.kiesoft.userapi.dto.user.ChangePasswordDTO
 import com.kiesoft.userapi.dto.user.CreateUserDTO
+import com.kiesoft.userapi.dto.user.EnableUserDTO
 import com.kiesoft.userapi.dto.user.GenerateJwtDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -744,6 +745,135 @@ class UserControllerSpec extends Specification {
         then:
         result.andExpect(MockMvcResultMatchers.status().isBadRequest())
     }
+
+    def "enableUser: enabled is changed successfully"() {
+        given:
+        final enableUserDTO = new EnableUserDTO.Builder()
+                .email("sucolega@kiesoft.com")
+                .enable(Boolean.TRUE)
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_ENABLE_USER)
+                .content(objectMapper.writeValueAsString(enableUserDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+    }
+
+    def "enableUser: enabled not changed because missing email"() {
+        given:
+        final enableUserDTO = new EnableUserDTO.Builder()
+                .enable(Boolean.TRUE)
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_ENABLE_USER)
+                .content(objectMapper.writeValueAsString(enableUserDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "enableUser: enabled not changed because missing enable"() {
+        given:
+        final enableUserDTO = new EnableUserDTO.Builder()
+                .email("sucolega@kiesoft.com")
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_ENABLE_USER)
+                .content(objectMapper.writeValueAsString(enableUserDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "enableUser: enabled not changed because missing email and enable"() {
+        given:
+        final enableUserDTO = new EnableUserDTO.Builder().build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_ENABLE_USER)
+                .content(objectMapper.writeValueAsString(enableUserDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "enableUser: enabled not changed because invalid email"() {
+        given:
+        final enableUserDTO = new EnableUserDTO.Builder()
+                .email("sucolega@kiesoft")
+                .enable(Boolean.TRUE)
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_ENABLE_USER)
+                .content(objectMapper.writeValueAsString(enableUserDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "enableUser: enabled not changed because email does not exist"() {
+        given:
+        final enableUserDTO = new EnableUserDTO.Builder()
+                .email("wrong@email.com")
+                .enable(Boolean.TRUE)
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_ENABLE_USER)
+                .content(objectMapper.writeValueAsString(enableUserDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
+    def "enableUser: enabled not changed because is the same value"() {
+        given:
+        final enableUserDTO = new EnableUserDTO.Builder()
+                .email("sucolega@kiesoft.com")
+                .enable(Boolean.FALSE)
+                .build()
+
+        and:
+        testDataService.usersRandomPeople()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.patch(ROUTING_USER_CONTROLLER + ROUTING_USER_ENABLE_USER)
+                .content(objectMapper.writeValueAsString(enableUserDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+    }
+
 
 
 }

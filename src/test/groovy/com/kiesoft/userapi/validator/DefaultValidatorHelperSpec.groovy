@@ -123,6 +123,36 @@ class DefaultValidatorHelperSpec extends Specification {
         20      | 5        | 20       || _
     }
 
+    def "will reject the boolean if is null"() {
+        given:
+        final validationObject = new ValidationObject()
+        final errors = new BeanPropertyBindingResult(validationObject, "validationObject")
+
+        when:
+        validatorHelper.rejectBooleanIfNull("booleanField", null, errors)
+
+        then:
+        errors.hasErrors()
+    }
+
+    def "will not reject the boolean when is '#booleanValue'"() {
+        given:
+        final validationObject = new ValidationObject()
+        validationObject.setBooleanField(booleanValue)
+        final errors = new BeanPropertyBindingResult(validationObject, "validationObject")
+
+        when:
+        validatorHelper.rejectBooleanIfNull("booleanField", booleanValue, errors)
+
+        then:
+        !errors.hasErrors()
+
+        where:
+        booleanValue  || _
+        Boolean.TRUE  || _
+        Boolean.FALSE || _
+    }
+
     def "will remove HTML and Javascript code from string '#string'"() {
         when:
         final actualString = validatorHelper.removeHTMLandJS(untrustedString)
@@ -183,6 +213,7 @@ class DefaultValidatorHelperSpec extends Specification {
     private static class ValidationObject {
         private String stringField;
         private Integer integerField;
+        private Boolean booleanField;
 
         String getStringField() {
             return stringField
@@ -198,6 +229,14 @@ class DefaultValidatorHelperSpec extends Specification {
 
         void setIntegerField(Integer integerField) {
             this.integerField = integerField
+        }
+
+        Boolean getBooleanField() {
+            return booleanField
+        }
+
+        void setBooleanField(Boolean booleanField) {
+            this.booleanField = booleanField
         }
 
     }

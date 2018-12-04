@@ -2,6 +2,7 @@ package com.kiesoft.userapi.config;
 
 import com.kiesoft.userapi.auth.filter.AuthorizationFilterJWT;
 import com.kiesoft.userapi.auth.provider.AuthenticationProviderJWT;
+import com.kiesoft.userapi.domain.role.RoleConstants;
 import com.kiesoft.userapi.service.jwt.JwtService;
 import com.kiesoft.userapi.service.stateless.StatelessService;
 import com.kiesoft.userapi.service.user.UserService;
@@ -18,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CONTROLLER;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CREATE;
+import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_ENABLE_USER;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_JWT;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_UPDATE_PASSWORD;
 
@@ -47,10 +49,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // No CSRF
                 .csrf().disable()
 
-                // Add Filter
-                .addFilter(jwtAuthorizationFilter())
+                // Secure next request with the JWT filter
+                .addFilter(authorizationFilterJWT())
                 .authorizeRequests()
-                .antMatchers("/role/**").authenticated();
+                .antMatchers(HttpMethod.PATCH, ROUTING_USER_CONTROLLER + ROUTING_USER_ENABLE_USER).hasRole(RoleConstants.ROLE_ADMIN);
     }
 
     // Spring Security will ignore these requests
@@ -59,7 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         webSecurity
                 .ignoring()
                 .antMatchers(HttpMethod.POST, ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
-                .antMatchers(HttpMethod.GET, ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
+                .antMatchers(HttpMethod.POST, ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
                 .antMatchers(HttpMethod.PATCH, ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD);
     }
 
@@ -75,8 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProviderJWT());
     }
 
-    //    @Bean
-    public AuthorizationFilterJWT jwtAuthorizationFilter() throws Exception {
+    public AuthorizationFilterJWT authorizationFilterJWT() throws Exception {
         AuthorizationFilterJWT authorizationFilterJWT = new AuthorizationFilterJWT(authenticationManager());
         authorizationFilterJWT.setJwtService(jwtService);
         authorizationFilterJWT.setStatelessService(statelessService);

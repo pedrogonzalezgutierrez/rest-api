@@ -52,6 +52,13 @@ public class DefaultValidatorHelper implements ValidatorHelper {
     }
 
     @Override
+    public void rejectBooleanIfNull(String field, Boolean value, Errors errors) {
+        if (Objects.isNull(value)) {
+            errors.rejectValue(field, ApiErrorMessage.FIELD_REQUIRED.getCode(), ApiErrorMessage.FIELD_REQUIRED.getMessage());
+        }
+    }
+
+    @Override
     public String removeHTMLandJS(String untrustedString) {
         return sanitizer.sanitize(untrustedString);
     }

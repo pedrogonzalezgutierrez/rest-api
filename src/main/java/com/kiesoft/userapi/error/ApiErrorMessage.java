@@ -3,6 +3,7 @@ package com.kiesoft.userapi.error;
 public enum ApiErrorMessage {
 
     FIELD_REQUIRED("field-required", "This field is required"),
+    FIELD_NOT_CHANGED("field-not-changed", "New value and old value are the same"),
 
     STRING_BLANK("string-blank", "This field can not be null, empty or whitespaces"),
     STRING_LENGTH("string-length", "The length of this string has to be between %d and %d characters"),
@@ -14,6 +15,7 @@ public enum ApiErrorMessage {
 
     EMAIL_INVALID("email-invalid", "This email is not valid"),
     EMAIL_ALREADY_EXISTS("email-already-exists", "This email is in use by other user"),
+    EMAIL_NOT_FOUND("email-not-found", "This email is not associate to any user"),
 
     BAD_CREDENTIALS("bad-credentials", "Incorrect email or password"),
     JWT_NOT_GENERATED("jwt-not-generated", "JSON Web Token could not be generate. Please try again"),

@@ -8,6 +8,8 @@ import com.kiesoft.userapi.dto.user.UserDTO;
 import com.kiesoft.userapi.service.user.UserService;
 import com.kiesoft.userapi.validator.user.ChangePasswordDTOValidator;
 import com.kiesoft.userapi.validator.user.CreateUserDTOValidator;
+import com.kiesoft.userapi.dto.user.EnableUserDTO;
+import com.kiesoft.userapi.validator.user.EnableUserDTOValidator;
 import com.kiesoft.userapi.validator.user.GenerateJwtDTOValidator;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +35,19 @@ public class UserController extends AbstractUserController {
     private final CreateUserDTOValidator createUserDTOValidator;
     private final GenerateJwtDTOValidator generateJwtDTOValidator;
     private final ChangePasswordDTOValidator changePasswordDTOValidator;
+    private final EnableUserDTOValidator enableUserDTOValidator;
 
     @Autowired
     public UserController(final UserService userService,
                           final CreateUserDTOValidator createUserDTOValidator,
                           final GenerateJwtDTOValidator generateJwtDTOValidator,
-                          final ChangePasswordDTOValidator changePasswordDTOValidator) {
+                          final ChangePasswordDTOValidator changePasswordDTOValidator,
+                          final EnableUserDTOValidator enableUserDTOValidator) {
         this.userService = userService;
         this.createUserDTOValidator = createUserDTOValidator;
         this.generateJwtDTOValidator = generateJwtDTOValidator;
         this.changePasswordDTOValidator = changePasswordDTOValidator;
+        this.enableUserDTOValidator = enableUserDTOValidator;
     }
 
     @InitBinder("createUserDTO")
@@ -87,5 +92,17 @@ public class UserController extends AbstractUserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @InitBinder("enableUserDTO")
+    public void setupEnableUser(WebDataBinder binder) {
+        binder.addValidators(enableUserDTOValidator);
+    }
+
+    @RequestMapping(value = ROUTING_USER_ENABLE_USER, method = RequestMethod.PATCH)
+    public ResponseEntity<Void> enableUser(@Valid @RequestBody EnableUserDTO enableUserDTO) {
+        UserDTO userDTO = enableUserDTO.getUserDTO();
+        userDTO.setEnabled(enableUserDTO.getEnable());
+        userService.save(userDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

@@ -66,10 +66,11 @@ Body:
 ROLE_ADMIN
 
 PATCH /user/enable
+Header Authorization: Bearer jwtToken
 Body:
 {
 	"email": "pedro@universidad.com"
-	"enabled": false
+	"enable": false
 }
 ```
 > 400: User does not exist
