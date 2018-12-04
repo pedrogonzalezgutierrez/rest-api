@@ -60,3 +60,20 @@ Body:
 > 400: Validation Error
 
 > 200: Password updated
+
+**4) Enable or Disable user:** Only admin user (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to enable or disable the account of any user 
+```
+ROLE_ADMIN
+
+PATCH /user/enable
+Body:
+{
+	"email": "pedro@universidad.com"
+	"enabled": false
+}
+```
+> 400: User does not exist
+
+> 400: Validation Error
+
+> 200: User enabled updated
