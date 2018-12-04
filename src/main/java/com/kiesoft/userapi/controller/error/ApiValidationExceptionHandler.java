@@ -10,6 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -20,7 +21,10 @@ public class ApiValidationExceptionHandler extends ResponseEntityExceptionHandle
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         BindingResult bindingResult = ex.getBindingResult();
         List<ApiFieldError> apiFieldErrors = bindingResult.getFieldErrors().stream()
-                .map(fieldError -> new ApiFieldError(fieldError.getField(), fieldError.getDefaultMessage()))
+                .map(fieldError -> new ApiFieldError(
+                        fieldError.getField(),
+                        Objects.nonNull(fieldError.getCodes()) ? fieldError.getCodes()[fieldError.getCodes().length - 1] : "no-code",
+                        fieldError.getDefaultMessage()))
                 .collect(toList());
         return new ResponseEntity<>(new ApiErrorsView(apiFieldErrors), HttpStatus.BAD_REQUEST);
     }

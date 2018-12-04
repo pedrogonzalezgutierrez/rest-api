@@ -1,4 +1,4 @@
-package com.kiesoft.userapi.error;
+package com.kiesoft.userapi.controller.error;
 
 public enum ApiErrorMessage {
 
@@ -11,7 +11,7 @@ public enum ApiErrorMessage {
     INTEGER_RANGE("integer-range", "This number has to be less than %d and greater than %d"),
 
     USERNAME_ALREADY_EXISTS("username-already-exists", "This username is in use by other user"),
-    USERNAME_NOT_ENABLED("username-not-enabled", "The user is not enabled"),
+    USER_NOT_ENABLED("user-not-enabled", "The user is not enabled"),
 
     EMAIL_INVALID("email-invalid", "This email is not valid"),
     EMAIL_ALREADY_EXISTS("email-already-exists", "This email is in use by other user"),
