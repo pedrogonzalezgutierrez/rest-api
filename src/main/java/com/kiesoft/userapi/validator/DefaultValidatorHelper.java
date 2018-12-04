@@ -1,6 +1,6 @@
 package com.kiesoft.userapi.validator;
 
-import com.kiesoft.userapi.error.ApiErrorMessage;
+import com.kiesoft.userapi.controller.error.ApiErrorMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.owasp.html.HtmlPolicyBuilder;

@@ -11,8 +11,8 @@ import spock.lang.Specification
 
 class GenerateJwtDTOValidatorSpec extends Specification {
 
-    final env = Mock(Environment)
     final validatorHelper = new DefaultValidatorHelper()
+    final env = Mock(Environment)
     final userService = Mock(UserService)
     final jwtService = Mock(JwtService)
     final generateJwtDTOValidator = new GenerateJwtDTOValidator(validatorHelper, env, userService, jwtService)
@@ -159,14 +159,6 @@ class GenerateJwtDTOValidatorSpec extends Specification {
         env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
 
         and:
-        final userDTO = new UserDTO.Builder()
-                .id(UUID.randomUUID())
-                .name("pEDROLA")
-                .email("pedro@email.com")
-                .password("Betis")
-                .enabled(Boolean.FALSE)
-                .points(100)
-                .build()
         userService.findByEmailAndPassword(_ as String, _ as String) >> Optional.empty()
 
         when:

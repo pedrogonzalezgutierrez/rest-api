@@ -2,7 +2,7 @@ package com.kiesoft.userapi.validator.user;
 
 import com.kiesoft.userapi.dto.user.CreateUserDTO;
 import com.kiesoft.userapi.dto.user.UserDTO;
-import com.kiesoft.userapi.error.ApiErrorMessage;
+import com.kiesoft.userapi.controller.error.ApiErrorMessage;
 import com.kiesoft.userapi.service.user.UserService;
 import com.kiesoft.userapi.validator.ValidatorHelper;
 import org.springframework.beans.factory.annotation.Autowired;

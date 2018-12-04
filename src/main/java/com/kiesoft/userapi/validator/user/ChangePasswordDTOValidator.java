@@ -2,7 +2,7 @@ package com.kiesoft.userapi.validator.user;
 
 import com.kiesoft.userapi.dto.user.ChangePasswordDTO;
 import com.kiesoft.userapi.dto.user.UserDTO;
-import com.kiesoft.userapi.error.ApiErrorMessage;
+import com.kiesoft.userapi.controller.error.ApiErrorMessage;
 import com.kiesoft.userapi.service.user.UserService;
 import com.kiesoft.userapi.validator.ValidatorHelper;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -91,7 +91,7 @@ public class ChangePasswordDTOValidator implements Validator {
         Optional<UserDTO> userDTO = userService.findByEmailAndPassword(changePasswordDTO.getEmail(), DigestUtils.md5Hex(changePasswordDTO.getPassword()));
         if (userDTO.isPresent()) {
             if (!userDTO.get().getEnabled()) {
-                errors.rejectValue("email", ApiErrorMessage.USERNAME_NOT_ENABLED.getCode(), ApiErrorMessage.USERNAME_NOT_ENABLED.getMessage());
+                errors.rejectValue("email", ApiErrorMessage.USER_NOT_ENABLED.getCode(), ApiErrorMessage.USER_NOT_ENABLED.getMessage());
             } else {
                 // Populate the object for the Controller
                 changePasswordDTO.setUserDTO(userDTO.get());

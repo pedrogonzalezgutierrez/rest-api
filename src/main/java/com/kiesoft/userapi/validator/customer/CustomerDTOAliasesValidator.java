@@ -1,7 +1,7 @@
 package com.kiesoft.userapi.validator.customer;
 
 import com.kiesoft.userapi.dto.customer.CustomerDTO;
-import com.kiesoft.userapi.error.ApiErrorMessage;
+import com.kiesoft.userapi.controller.error.ApiErrorMessage;
 import com.kiesoft.userapi.validator.ValidatorHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

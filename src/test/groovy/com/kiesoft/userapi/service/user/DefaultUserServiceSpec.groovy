@@ -11,7 +11,7 @@ class DefaultUserServiceSpec extends Specification {
 
     final userRepository = Mock(UserRepository)
     final userMapper = Mock(UserMapper)
-    final userService = new DefaultUserService(userRepository, userMapper)
+    final defaultUserService = new DefaultUserService(userRepository, userMapper)
 
     final username = "pEDROLA"
     final email = "pEDROLA@correo.es"
@@ -31,14 +31,14 @@ class DefaultUserServiceSpec extends Specification {
 
     UUID idUser = UUID.randomUUID()
 
-    final savedEntity = new UserEntity.Builder()
+    final savedDTO = new UserDTO.Builder()
             .id(idUser)
             .name(username)
             .password(password)
             .email(email)
             .build()
 
-    final savedDTO = new UserDTO.Builder()
+    final savedEntity = new UserEntity.Builder()
             .id(idUser)
             .name(username)
             .password(password)
@@ -52,7 +52,7 @@ class DefaultUserServiceSpec extends Specification {
         userMapper.asDTO(savedEntity) >> savedDTO
 
         when:
-        final actual = userService.save(userDTO)
+        final actual = defaultUserService.save(userDTO)
 
         then:
         actual == savedDTO
@@ -64,7 +64,7 @@ class DefaultUserServiceSpec extends Specification {
         userRepository.save(userEntity) >> { throw new RuntimeException() }
 
         when:
-        userService.save(userDTO)
+        defaultUserService.save(userDTO)
 
         then:
         thrown PersistenceProblemException
@@ -75,7 +75,7 @@ class DefaultUserServiceSpec extends Specification {
         userRepository.findByNameIgnoreCase(username) >> Optional.empty()
 
         when:
-        final optionalUserDTO = userService.findByName(username)
+        final optionalUserDTO = defaultUserService.findByName(username)
 
         then:
         !optionalUserDTO.isPresent()
@@ -87,7 +87,7 @@ class DefaultUserServiceSpec extends Specification {
         userMapper.asDTO(savedEntity) >> savedDTO
 
         when:
-        final optionalUserDTO = userService.findByName(username)
+        final optionalUserDTO = defaultUserService.findByName(username)
 
         then:
         optionalUserDTO.isPresent()
@@ -98,7 +98,7 @@ class DefaultUserServiceSpec extends Specification {
         userRepository.findByEmailIgnoreCase(email) >> Optional.empty()
 
         when:
-        final optionalUserDTO = userService.findByEmail(email)
+        final optionalUserDTO = defaultUserService.findByEmail(email)
 
         then:
         !optionalUserDTO.isPresent()
@@ -110,7 +110,7 @@ class DefaultUserServiceSpec extends Specification {
         userMapper.asDTO(savedEntity) >> savedDTO
 
         when:
-        final optionalUserDTO = userService.findByEmail(email)
+        final optionalUserDTO = defaultUserService.findByEmail(email)
 
         then:
         optionalUserDTO.isPresent()
@@ -121,7 +121,7 @@ class DefaultUserServiceSpec extends Specification {
         userRepository.findByEmailIgnoreCaseAndPassword(email, password) >> Optional.empty()
 
         when:
-        final optionalUserDTO = userService.findByEmailAndPassword(email, password)
+        final optionalUserDTO = defaultUserService.findByEmailAndPassword(email, password)
 
         then:
         !optionalUserDTO.isPresent()
@@ -133,7 +133,7 @@ class DefaultUserServiceSpec extends Specification {
         userMapper.asDTO(savedEntity) >> savedDTO
 
         when:
-        final optionalUserDTO = userService.findByEmailAndPassword(email, password)
+        final optionalUserDTO = defaultUserService.findByEmailAndPassword(email, password)
 
         then:
         optionalUserDTO.isPresent()
@@ -144,7 +144,7 @@ class DefaultUserServiceSpec extends Specification {
         userRepository.findById(idUser) >> Optional.empty()
 
         when:
-        final optionalUserDTO = userService.findById(idUser)
+        final optionalUserDTO = defaultUserService.findById(idUser)
 
         then:
         !optionalUserDTO.isPresent()
@@ -156,7 +156,7 @@ class DefaultUserServiceSpec extends Specification {
         userMapper.asDTO(savedEntity) >> savedDTO
 
         when:
-        final optionalUserDTO = userService.findById(idUser)
+        final optionalUserDTO = defaultUserService.findById(idUser)
 
         then:
         optionalUserDTO.isPresent()

@@ -2,7 +2,7 @@ package com.kiesoft.userapi.validator.user;
 
 import com.kiesoft.userapi.dto.user.GenerateJwtDTO;
 import com.kiesoft.userapi.dto.user.UserDTO;
-import com.kiesoft.userapi.error.ApiErrorMessage;
+import com.kiesoft.userapi.controller.error.ApiErrorMessage;
 import com.kiesoft.userapi.service.jwt.JwtService;
 import com.kiesoft.userapi.service.user.UserService;
 import com.kiesoft.userapi.validator.ValidatorHelper;
@@ -91,7 +91,7 @@ public class GenerateJwtDTOValidator implements Validator {
                     errors.rejectValue("jwt", ApiErrorMessage.JWT_NOT_GENERATED.getCode(), ApiErrorMessage.JWT_NOT_GENERATED.getMessage());
                 }
             } else {
-                errors.rejectValue("email", ApiErrorMessage.USERNAME_NOT_ENABLED.getCode(), ApiErrorMessage.USERNAME_NOT_ENABLED.getMessage());
+                errors.rejectValue("email", ApiErrorMessage.USER_NOT_ENABLED.getCode(), ApiErrorMessage.USER_NOT_ENABLED.getMessage());
             }
         } else {
             errors.rejectValue("email", ApiErrorMessage.BAD_CREDENTIALS.getCode(), ApiErrorMessage.BAD_CREDENTIALS.getMessage());
