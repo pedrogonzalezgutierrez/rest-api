@@ -68,12 +68,12 @@ public class UserController extends AbstractUserController {
     }
 
     @InitBinder("generateJwtDTO")
-    public void setupRetrieveJWT(WebDataBinder binder) {
+    public void setupGenerateJWT(WebDataBinder binder) {
         binder.addValidators(generateJwtDTOValidator);
     }
 
     @RequestMapping(value = ROUTING_USER_JWT, method = RequestMethod.POST)
-    public ResponseEntity<Void> retrieveJWT(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
+    public ResponseEntity<Void> generateJWT(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, String.format("%s %s", AuthorizationFilterJWT.BEARER_PREFIX, generateJwtDTO.getJwt()));
         return new ResponseEntity<>(headers, HttpStatus.OK);

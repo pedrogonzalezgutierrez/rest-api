@@ -5,7 +5,7 @@ import com.kiesoft.userapi.jpa.entity.role.RoleEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface RoleConverter {
+public interface RoleMapper {
 
     RoleDTO asDTO(RoleEntity roleEntity);
 
