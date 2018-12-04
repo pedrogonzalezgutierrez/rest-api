@@ -20,7 +20,9 @@ public enum ApiErrorMessage {
     BAD_CREDENTIALS("bad-credentials", "Incorrect email or password"),
     JWT_NOT_GENERATED("jwt-not-generated", "JSON Web Token could not be generate. Please try again"),
 
-    PASSWORDS_ARE_EQUALS("passwords-are-equals", "The new password needs to be different that the current one");
+    PASSWORDS_ARE_EQUALS("passwords-are-equals", "The new password needs to be different that the current one"),
+
+    ROLE_ALREADY_EXISTS("role-already-exists", "This role already exists");
 
     private String code;
     private String message;
