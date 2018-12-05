@@ -10,7 +10,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -23,10 +22,19 @@ public class ApiValidationExceptionHandler extends ResponseEntityExceptionHandle
         List<ApiFieldError> apiFieldErrors = bindingResult.getFieldErrors().stream()
                 .map(fieldError -> new ApiFieldError(
                         fieldError.getField(),
-                        Objects.nonNull(fieldError.getCodes()) ? fieldError.getCodes()[fieldError.getCodes().length - 1] : "no-code",
+                        asString(fieldError.getCodes()),
                         fieldError.getDefaultMessage()))
+
                 .collect(toList());
         return new ResponseEntity<>(new ApiErrorsView(apiFieldErrors), HttpStatus.BAD_REQUEST);
+    }
+
+    private String asString(String[] codes) {
+        try {
+            return codes[codes.length - 1];
+        } catch (Exception e) {
+            return ApiErrorMessage.UNKNOWN_CODE.getCode();
+        }
     }
 
 }

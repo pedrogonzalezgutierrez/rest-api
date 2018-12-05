@@ -2,6 +2,8 @@ package com.kiesoft.userapi.controller.error;
 
 public enum ApiErrorMessage {
 
+    UNKNOWN_CODE("unknown-code", "Unknown error"),
+
     FIELD_REQUIRED("field-required", "This field is required"),
     FIELD_NOT_CHANGED("field-not-changed", "New value and old value are the same"),
 
