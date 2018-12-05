@@ -5,9 +5,9 @@ package com.kiesoft.userapi.validator.user;
  */
 public class UserProperties {
 
-    final static String USER_LENGTH_MIN = "user.name.length.min";
-    final static String USER_LENGTH_MAX = "user.name.length.max";
-    final static String USER_PASSWORD_MIN = "user.password.length.min";
-    final static String USER_PASSWORD_MAX = "user.password.length.max";
+    final static String NAME_LENGTH_MIN = "user.name.length.min";
+    final static String NAME_LENGTH_MAX = "user.name.length.max";
+    final static String PASSWORD_LENGTH_MIN = "user.password.length.min";
+    final static String PASSWORD_LENGTH_MAX = "user.password.length.max";
 
 }

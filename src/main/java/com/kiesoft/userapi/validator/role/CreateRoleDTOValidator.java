@@ -14,8 +14,8 @@ import org.springframework.validation.Validator;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.kiesoft.userapi.validator.role.RoleProperties.ROLE_LENGTH_MAX;
-import static com.kiesoft.userapi.validator.role.RoleProperties.ROLE_LENGTH_MIN;
+import static com.kiesoft.userapi.validator.role.RoleProperties.NAME_LENGTH_MAX;
+import static com.kiesoft.userapi.validator.role.RoleProperties.NAME_LENGTH_MIN;
 
 @Component
 public class CreateRoleDTOValidator implements Validator {
@@ -54,8 +54,8 @@ public class CreateRoleDTOValidator implements Validator {
         validatorHelper.rejectStringIfNotInLength(
                 "name",
                 createRoleDTO.getName(),
-                Integer.valueOf(Objects.requireNonNull(env.getProperty(ROLE_LENGTH_MIN))),
-                Integer.valueOf(Objects.requireNonNull(env.getProperty(ROLE_LENGTH_MAX))),
+                Integer.valueOf(Objects.requireNonNull(env.getProperty(NAME_LENGTH_MIN))),
+                Integer.valueOf(Objects.requireNonNull(env.getProperty(NAME_LENGTH_MAX))),
                 errors);
 
         if (errors.hasErrors()) {

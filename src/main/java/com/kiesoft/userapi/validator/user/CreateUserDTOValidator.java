@@ -14,10 +14,10 @@ import org.springframework.validation.Validator;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.kiesoft.userapi.validator.user.UserProperties.USER_LENGTH_MAX;
-import static com.kiesoft.userapi.validator.user.UserProperties.USER_LENGTH_MIN;
-import static com.kiesoft.userapi.validator.user.UserProperties.USER_PASSWORD_MAX;
-import static com.kiesoft.userapi.validator.user.UserProperties.USER_PASSWORD_MIN;
+import static com.kiesoft.userapi.validator.user.UserProperties.NAME_LENGTH_MAX;
+import static com.kiesoft.userapi.validator.user.UserProperties.NAME_LENGTH_MIN;
+import static com.kiesoft.userapi.validator.user.UserProperties.PASSWORD_LENGTH_MAX;
+import static com.kiesoft.userapi.validator.user.UserProperties.PASSWORD_LENGTH_MIN;
 
 @Component
 public class CreateUserDTOValidator implements Validator {
@@ -67,15 +67,15 @@ public class CreateUserDTOValidator implements Validator {
         validatorHelper.rejectStringIfNotInLength(
                 "name",
                 createUserDTO.getName(),
-                Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_LENGTH_MIN))),
-                Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_LENGTH_MAX))),
+                Integer.valueOf(Objects.requireNonNull(env.getProperty(NAME_LENGTH_MIN))),
+                Integer.valueOf(Objects.requireNonNull(env.getProperty(NAME_LENGTH_MAX))),
                 errors);
 
         validatorHelper.rejectStringIfNotInLength(
                 "password",
                 createUserDTO.getPassword(),
-                Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_PASSWORD_MIN))),
-                Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_PASSWORD_MAX))),
+                Integer.valueOf(Objects.requireNonNull(env.getProperty(PASSWORD_LENGTH_MIN))),
+                Integer.valueOf(Objects.requireNonNull(env.getProperty(PASSWORD_LENGTH_MAX))),
                 errors);
 
         // valid email

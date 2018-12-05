@@ -5,7 +5,7 @@ package com.kiesoft.userapi.validator.role;
  */
 public class RoleProperties {
 
-    public final static String ROLE_LENGTH_MIN = "role.name.length.min";
-    public final static String ROLE_LENGTH_MAX = "role.name.length.max";
+    public final static String NAME_LENGTH_MIN = "role.name.length.min";
+    public final static String NAME_LENGTH_MAX = "role.name.length.max";
 
 }

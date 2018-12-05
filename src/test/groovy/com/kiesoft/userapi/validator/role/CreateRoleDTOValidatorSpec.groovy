@@ -2,10 +2,8 @@ package com.kiesoft.userapi.validator.role
 
 import com.kiesoft.userapi.dto.role.CreateRoleDTO
 import com.kiesoft.userapi.dto.role.RoleDTO
-import com.kiesoft.userapi.dto.user.GenerateJwtDTO
 import com.kiesoft.userapi.service.role.RoleService
 import com.kiesoft.userapi.validator.DefaultValidatorHelper
-import com.kiesoft.userapi.validator.user.CreateUserDTOValidator
 import org.springframework.core.env.Environment
 import org.springframework.validation.BeanPropertyBindingResult
 import spock.lang.Specification
@@ -30,8 +28,8 @@ class CreateRoleDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createRoleDTO, "createRoleDTO")
 
         and:
-        env.getProperty(RoleProperties.ROLE_LENGTH_MIN) >> 5
-        env.getProperty(RoleProperties.ROLE_LENGTH_MAX) >> 10
+        env.getProperty(RoleProperties.NAME_LENGTH_MIN) >> 5
+        env.getProperty(RoleProperties.NAME_LENGTH_MAX) >> 10
 
         and:
         roleService.findByName(_ as String) >> Optional.empty()
@@ -63,8 +61,8 @@ class CreateRoleDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createRoleDTO, "createRoleDTO")
 
         and:
-        env.getProperty(RoleProperties.ROLE_LENGTH_MIN) >> 5
-        env.getProperty(RoleProperties.ROLE_LENGTH_MAX) >> 10
+        env.getProperty(RoleProperties.NAME_LENGTH_MIN) >> 5
+        env.getProperty(RoleProperties.NAME_LENGTH_MAX) >> 10
 
         when:
         createRoleDTOValidator.validate(createRoleDTO, errors)
@@ -81,8 +79,8 @@ class CreateRoleDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createRoleDTO, "createRoleDTO")
 
         and:
-        env.getProperty(RoleProperties.ROLE_LENGTH_MIN) >> 5
-        env.getProperty(RoleProperties.ROLE_LENGTH_MAX) >> 10
+        env.getProperty(RoleProperties.NAME_LENGTH_MIN) >> 5
+        env.getProperty(RoleProperties.NAME_LENGTH_MAX) >> 10
 
         when:
         createRoleDTOValidator.validate(createRoleDTO, errors)
@@ -99,8 +97,8 @@ class CreateRoleDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createRoleDTO, "createRoleDTO")
 
         and:
-        env.getProperty(RoleProperties.ROLE_LENGTH_MIN) >> 5
-        env.getProperty(RoleProperties.ROLE_LENGTH_MAX) >> 10
+        env.getProperty(RoleProperties.NAME_LENGTH_MIN) >> 5
+        env.getProperty(RoleProperties.NAME_LENGTH_MAX) >> 10
 
         and:
         roleService.findByName(_ as String) >> Optional.of(roleDTO)

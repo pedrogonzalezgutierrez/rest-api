@@ -35,8 +35,8 @@ class GenerateJwtDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(generateJwtDTO, "generateJwtDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 10
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 10
 
         and:
         userService.findByEmailAndPassword(_ as String, _ as String) >> Optional.of(userDTO)
@@ -98,8 +98,8 @@ class GenerateJwtDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(generateJwtDTO, "generateJwtDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         when:
         generateJwtDTOValidator.validate(generateJwtDTO, errors)
@@ -117,8 +117,8 @@ class GenerateJwtDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(generateJwtDTO, "generateJwtDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         when:
         generateJwtDTOValidator.validate(generateJwtDTO, errors)
@@ -136,8 +136,8 @@ class GenerateJwtDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(generateJwtDTO, "generateJwtDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         when:
         generateJwtDTOValidator.validate(generateJwtDTO, errors)
@@ -155,8 +155,8 @@ class GenerateJwtDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(generateJwtDTO, "generateJwtDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         and:
         userService.findByEmailAndPassword(_ as String, _ as String) >> Optional.empty()
@@ -177,8 +177,8 @@ class GenerateJwtDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(generateJwtDTO, "generateJwtDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         and:
         final userDTO = new UserDTO.Builder()
@@ -207,8 +207,8 @@ class GenerateJwtDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(generateJwtDTO, "generateJwtDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         and:
         userService.findByEmailAndPassword(_ as String, _ as String) >> Optional.of(userDTO)

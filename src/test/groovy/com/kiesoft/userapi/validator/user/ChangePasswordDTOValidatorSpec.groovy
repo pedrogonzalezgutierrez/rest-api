@@ -34,8 +34,8 @@ class ChangePasswordDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(changePasswordDTO, "changePasswordDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 10
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 10
 
         and:
         userService.findByEmailAndPassword(_ as String, _ as String) >> Optional.of(userDTO)
@@ -114,8 +114,8 @@ class ChangePasswordDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(changePasswordDTO, "changePasswordDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         when:
         changePasswordDTOValidator.validate(changePasswordDTO, errors)
@@ -134,8 +134,8 @@ class ChangePasswordDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(changePasswordDTO, "changePasswordDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         when:
         changePasswordDTOValidator.validate(changePasswordDTO, errors)
@@ -154,8 +154,8 @@ class ChangePasswordDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(changePasswordDTO, "changePasswordDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         when:
         changePasswordDTOValidator.validate(changePasswordDTO, errors)
@@ -174,8 +174,8 @@ class ChangePasswordDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(changePasswordDTO, "changePasswordDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         when:
         changePasswordDTOValidator.validate(changePasswordDTO, errors)
@@ -194,8 +194,8 @@ class ChangePasswordDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(changePasswordDTO, "changePasswordDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         when:
         changePasswordDTOValidator.validate(changePasswordDTO, errors)
@@ -214,8 +214,8 @@ class ChangePasswordDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(changePasswordDTO, "changePasswordDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 15
 
         when:
         changePasswordDTOValidator.validate(changePasswordDTO, errors)
@@ -234,8 +234,8 @@ class ChangePasswordDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(changePasswordDTO, "changePasswordDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 10
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 10
 
         and:
         final userDTO = new UserDTO.Builder()
@@ -265,8 +265,8 @@ class ChangePasswordDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(changePasswordDTO, "changePasswordDTO")
 
         and:
-        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
-        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 10
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.PASSWORD_LENGTH_MAX) >> 10
 
         and:
         userService.findByEmailAndPassword(_ as String, _ as String) >> Optional.empty()

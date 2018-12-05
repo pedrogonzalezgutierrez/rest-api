@@ -16,8 +16,8 @@ import org.springframework.validation.Validator;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.kiesoft.userapi.validator.user.UserProperties.USER_PASSWORD_MAX;
-import static com.kiesoft.userapi.validator.user.UserProperties.USER_PASSWORD_MIN;
+import static com.kiesoft.userapi.validator.user.UserProperties.PASSWORD_LENGTH_MAX;
+import static com.kiesoft.userapi.validator.user.UserProperties.PASSWORD_LENGTH_MIN;
 
 @Component
 public class GenerateJwtDTOValidator implements Validator {
@@ -65,8 +65,8 @@ public class GenerateJwtDTOValidator implements Validator {
         validatorHelper.rejectStringIfNotInLength(
                 "password",
                 generateJwtDTO.getPassword(),
-                Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_PASSWORD_MIN))),
-                Integer.valueOf(Objects.requireNonNull(env.getProperty(USER_PASSWORD_MAX))),
+                Integer.valueOf(Objects.requireNonNull(env.getProperty(PASSWORD_LENGTH_MIN))),
+                Integer.valueOf(Objects.requireNonNull(env.getProperty(PASSWORD_LENGTH_MAX))),
                 errors);
 
         // valid email
