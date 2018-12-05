@@ -15,8 +15,8 @@ import org.springframework.validation.Validator;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.kiesoft.userapi.validator.user.CreateUserDTOValidator.USER_PASSWORD_MAX;
-import static com.kiesoft.userapi.validator.user.CreateUserDTOValidator.USER_PASSWORD_MIN;
+import static com.kiesoft.userapi.validator.user.UserProperties.USER_PASSWORD_MAX;
+import static com.kiesoft.userapi.validator.user.UserProperties.USER_PASSWORD_MIN;
 
 @Component
 public class ChangePasswordDTOValidator implements Validator {

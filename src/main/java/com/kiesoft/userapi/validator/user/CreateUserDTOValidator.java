@@ -14,17 +14,17 @@ import org.springframework.validation.Validator;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.kiesoft.userapi.validator.user.UserProperties.USER_LENGTH_MAX;
+import static com.kiesoft.userapi.validator.user.UserProperties.USER_LENGTH_MIN;
+import static com.kiesoft.userapi.validator.user.UserProperties.USER_PASSWORD_MAX;
+import static com.kiesoft.userapi.validator.user.UserProperties.USER_PASSWORD_MIN;
+
 @Component
 public class CreateUserDTOValidator implements Validator {
 
     private final ValidatorHelper validatorHelper;
     private final Environment env;
     private final UserService userService;
-
-    final static String USER_LENGTH_MIN = "user.name.length.min";
-    final static String USER_LENGTH_MAX = "user.name.length.max";
-    final static String USER_PASSWORD_MIN = "user.password.length.min";
-    final static String USER_PASSWORD_MAX = "user.password.length.max";
 
     @Autowired
     public CreateUserDTOValidator(final ValidatorHelper validatorHelper, final Environment env, final UserService userService) {

@@ -25,10 +25,10 @@ class CreateUserDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
 
         and:
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 10
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 10
+        env.getProperty(UserProperties.USER_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.USER_LENGTH_MAX) >> 10
+        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
+        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 10
 
         and:
         userService.findByName(_ as String) >> Optional.empty()
@@ -108,10 +108,10 @@ class CreateUserDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
 
         and:
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.USER_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.USER_LENGTH_MAX) >> 15
+        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
+        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
@@ -130,10 +130,10 @@ class CreateUserDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
 
         and:
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.USER_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.USER_LENGTH_MAX) >> 15
+        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
+        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
@@ -152,10 +152,10 @@ class CreateUserDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
 
         and:
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.USER_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.USER_LENGTH_MAX) >> 15
+        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
+        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
@@ -174,10 +174,10 @@ class CreateUserDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
 
         and:
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.USER_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.USER_LENGTH_MAX) >> 15
+        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
+        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
@@ -196,10 +196,10 @@ class CreateUserDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
 
         and:
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.USER_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.USER_LENGTH_MAX) >> 15
+        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
+        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
@@ -218,10 +218,10 @@ class CreateUserDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
 
         and:
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.USER_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.USER_LENGTH_MAX) >> 15
+        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
+        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
@@ -240,10 +240,10 @@ class CreateUserDTOValidatorSpec extends Specification {
         final errors = new BeanPropertyBindingResult(createUserDTO, "createUserDTO")
 
         and:
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.USER_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.USER_LENGTH_MAX) >> 15
+        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
+        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
@@ -273,10 +273,10 @@ class CreateUserDTOValidatorSpec extends Specification {
         userService.findByName(name) >> Optional.of(userDTO)
 
         and:
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.USER_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.USER_LENGTH_MAX) >> 15
+        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
+        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
@@ -313,10 +313,10 @@ class CreateUserDTOValidatorSpec extends Specification {
         userService.findByEmail(email) >> Optional.of(userDTO)
 
         and:
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_LENGTH_MAX) >> 15
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MIN) >> 5
-        env.getProperty(CreateUserDTOValidator.USER_PASSWORD_MAX) >> 15
+        env.getProperty(UserProperties.USER_LENGTH_MIN) >> 5
+        env.getProperty(UserProperties.USER_LENGTH_MAX) >> 15
+        env.getProperty(UserProperties.USER_PASSWORD_MIN) >> 5
+        env.getProperty(UserProperties.USER_PASSWORD_MAX) >> 15
 
         when:
         createUserDTOValidator.validate(createUserDTO, errors)
