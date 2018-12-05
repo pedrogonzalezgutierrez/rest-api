@@ -5,6 +5,8 @@ import java.util.UUID;
 
 public interface JwtService {
 
+    Boolean hasExpired(String jwt);
+
     Optional<String> generateHS256(UUID id, String secret);
     Boolean verifyHS256(String jwt, String secret);
 

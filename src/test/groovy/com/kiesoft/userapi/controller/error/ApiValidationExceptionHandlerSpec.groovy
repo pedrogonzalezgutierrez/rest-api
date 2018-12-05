@@ -82,5 +82,5 @@ class ApiValidationExceptionHandlerSpec extends Specification {
                 tuple("booleanField", "booleanCode", "Boolean message"),
                 tuple("doubleField", "doubleCode2", "Double message"))
     }
-    
+
 }

@@ -12,6 +12,13 @@ import com.nimbusds.jwt.SignedJWT;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,9 +27,33 @@ import java.util.UUID;
 @Component
 public class DefaultJwtService implements JwtService {
 
-    public final static String ISSUER = "iss";
-    public final static String ISSUE_TIME = "iat";
-    public final static String EXPIRATION_TIME = "exp";
+    private final static String ISSUER = "iss";
+    private final static String ISSUE_TIME = "iat";
+    private final static String EXPIRATION_TIME = "exp";
+
+    @Override
+    public Boolean hasExpired(String jwt) {
+        Optional<String> issueTime = getIssueTime(jwt);
+        Optional<String> expirationTime = getExpirationTime(jwt);
+
+        if (issueTime.isPresent() && expirationTime.isPresent()) {
+
+            Date dateIssueTime = new Date(Long.valueOf(issueTime.get()) * 1000L);
+            LocalDateTime localDateTimeIssue = LocalDateTime.ofInstant(dateIssueTime.toInstant(), ZoneId.systemDefault());
+//            LocalDate localDateIssueTime = dateIssueTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            Date dateExpirationTime = new Date(Long.valueOf(expirationTime.get()) * 1000L);
+            LocalDateTime localDateTimeExpiration = LocalDateTime.ofInstant(dateExpirationTime.toInstant(), ZoneId.systemDefault());
+//            LocalDate localDateExpirationTime = dateExpirationTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            Long horas = Duration.between(localDateTimeIssue, localDateTimeExpiration).toHours();
+
+            LocalDate now = LocalDate.now();
+
+
+        }
+        return Boolean.TRUE;
+    }
 
     @Override
     public Optional<String> generateHS256(UUID id, String secret) {

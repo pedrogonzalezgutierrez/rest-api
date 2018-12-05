@@ -16,8 +16,7 @@ class AuthenticationProviderJWTSpec extends Specification {
     final uuid = UUID.randomUUID()
     final stringUUID = uuid.toString()
     final password = "Betis"
-    final jwt = "jwt"
-    final roles = [new DefaultGrantedAuthority("ROLE_ADMIN"), new DefaultGrantedAuthority("ROLE_STUFF")]
+    final jwt = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyZmIyODEzMS1lODQxLTRjMmQtOWZlNi1iYzVkZGI3MDg3MDQiLCJleHAiOjE1NDM5NzE0ODIsImlhdCI6MTU0Mzk2Nzg4Mn0.DhD0UK9dlYhoz9XZ5Jp0Nv457tm47yr65LD-CVbvAYg"
 
     def "return a populated Authenticate object"() {
         given:

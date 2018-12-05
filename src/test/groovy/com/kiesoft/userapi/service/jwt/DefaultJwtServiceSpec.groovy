@@ -7,6 +7,17 @@ class DefaultJwtServiceSpec extends Specification {
 
     final defaultJwtService = new DefaultJwtService()
 
+    def "will reject JWT token is has expired"() {
+        given:
+        final jwt = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyZmIyODEzMS1lODQxLTRjMmQtOWZlNi1iYzVkZGI3MDg3MDQiLCJleHAiOjE1NDM5NzE0ODIsImlhdCI6MTU0Mzk2Nzg4Mn0.DhD0UK9dlYhoz9XZ5Jp0Nv457tm47yr65LD-CVbvAYg"
+
+        when:
+        final actual = defaultJwtService.hasExpired(jwt)
+
+        then:
+        actual
+    }
+
     def "will generate HS256 JWT token"() {
         given:
         final id = UUID.randomUUID()
