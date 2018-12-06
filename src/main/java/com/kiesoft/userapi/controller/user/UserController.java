@@ -1,6 +1,7 @@
 package com.kiesoft.userapi.controller.user;
 
 import com.kiesoft.userapi.auth.filter.AuthorizationFilterJWT;
+import com.kiesoft.userapi.dto.user.AddRoleDTO;
 import com.kiesoft.userapi.dto.user.ChangePasswordDTO;
 import com.kiesoft.userapi.dto.user.CreateUserDTO;
 import com.kiesoft.userapi.dto.user.GenerateJwtDTO;
@@ -102,6 +103,16 @@ public class UserController extends AbstractUserController {
         UserDTO userDTO = enableUserDTO.getUserDTO();
         userDTO.setEnabled(enableUserDTO.getEnable());
         userService.save(userDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @InitBinder("addRoleDTO")
+    public void setupAddRole(WebDataBinder binder) {
+        binder.addValidators(enableUserDTOValidator);
+    }
+
+    @RequestMapping(value = ROUTING_USER_ROLE, method = RequestMethod.POST)
+    public ResponseEntity<Void> addRole(@Valid @RequestBody AddRoleDTO addRoleDTO) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
