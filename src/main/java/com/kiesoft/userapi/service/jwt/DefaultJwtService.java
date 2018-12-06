@@ -9,48 +9,42 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.lang.Math.toIntExact;
+
 @Component
 public class DefaultJwtService implements JwtService {
 
     private final static String ISSUER = "iss";
     private final static String ISSUE_TIME = "iat";
-    private final static String EXPIRATION_TIME = "exp";
+    private final static int EXPIRATION_MINUTES = 60;
 
     @Override
     public Boolean hasExpired(String jwt) {
         Optional<String> issueTime = getIssueTime(jwt);
-        Optional<String> expirationTime = getExpirationTime(jwt);
-
-        if (issueTime.isPresent() && expirationTime.isPresent()) {
+        if (issueTime.isPresent()) {
 
             Date dateIssueTime = new Date(Long.valueOf(issueTime.get()) * 1000L);
-            LocalDateTime localDateTimeIssue = LocalDateTime.ofInstant(dateIssueTime.toInstant(), ZoneId.systemDefault());
-//            LocalDate localDateIssueTime = dateIssueTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDateTime ldtIssueTime = LocalDateTime.ofInstant(dateIssueTime.toInstant(), ZoneId.systemDefault());
 
-            Date dateExpirationTime = new Date(Long.valueOf(expirationTime.get()) * 1000L);
-            LocalDateTime localDateTimeExpiration = LocalDateTime.ofInstant(dateExpirationTime.toInstant(), ZoneId.systemDefault());
-//            LocalDate localDateExpirationTime = dateExpirationTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDateTime ldtNow = LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault());
 
-            Long horas = Duration.between(localDateTimeIssue, localDateTimeExpiration).toHours();
+            int minutes = toIntExact(Duration.between(ldtIssueTime, ldtNow).toMinutes());
 
-            LocalDate now = LocalDate.now();
-
-
+            if (minutes <= EXPIRATION_MINUTES) {
+                return Boolean.FALSE;
+            }
         }
         return Boolean.TRUE;
     }
@@ -60,13 +54,14 @@ public class DefaultJwtService implements JwtService {
         // https://connect2id.com/products/nimbus-jose-jwt/examples/jws-with-hmac
         try {
             Date now = new Date();
-            Date expirationDate = DateUtils.addHours(now, 1);
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.add(Calendar.HOUR_OF_DAY, -1);
+//            Date now= calendar.getTime();
 
             JWSSigner signer = new MACSigner(secret);
             JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                     .issuer(id.toString())
                     .issueTime(now)
-                    .expirationTime(expirationDate)
                     .build();
 
             SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
@@ -80,6 +75,9 @@ public class DefaultJwtService implements JwtService {
 
     @Override
     public Boolean verifyHS256(String jwt, String secret) {
+        if (hasExpired(jwt)) {
+            return Boolean.FALSE;
+        }
         try {
             final JWSObject jwsObject = JWSObject.parse(jwt);
             final MACVerifier verifier = new MACVerifier(secret);
@@ -109,11 +107,6 @@ public class DefaultJwtService implements JwtService {
     @Override
     public Optional<String> getIssueTime(String jwt) {
         return getClaim(jwt, ISSUE_TIME);
-    }
-
-    @Override
-    public Optional<String> getExpirationTime(String jwt) {
-        return getClaim(jwt, EXPIRATION_TIME);
     }
 
     private Optional<String> getClaim(String jwt, String name) {

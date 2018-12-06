@@ -3,9 +3,11 @@ package com.kiesoft.userapi.service.stateless
 import com.kiesoft.userapi.auth.StatelessAuthentication
 import com.kiesoft.userapi.auth.authority.DefaultGrantedAuthority
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
 @SpringBootTest
+@ActiveProfiles(value = "integrationTest")
 class DefaultStatelessServiceSpec extends Specification {
 
     final defaultStatelessService = new DefaultStatelessService()
