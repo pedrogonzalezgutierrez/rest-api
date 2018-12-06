@@ -38,9 +38,7 @@ public class AuthenticationProviderJWT implements AuthenticationProvider {
         if (userDTO.isPresent() && userDTO.get().getEnabled()) {
             String token = (String) statelessAuthentication.getDetails();
             if (jwtService.verifyHS256(token, userDTO.get().getPassword())) {
-                // Token is valid
-
-                // Check if token has expired
+                // Token is valid and it is not expired
 
                 // Set up Roles
                 List<DefaultGrantedAuthority> roles = userDTO.get().getRoles().stream()
