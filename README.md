@@ -101,7 +101,7 @@ Body:
 
 > 200: Role created
 
-**5) Add role:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to add a role to an existing user 
+**6) Add role:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to add a role to an existing user 
 ```
 ROLE_ADMIN
 
@@ -121,4 +121,7 @@ Body:
 
 > 200: Role added to user
 
-#### Gradle tasks
+TODO:
+- Explain Gradle task integrationTest and test
+- Explain Database structure
+- Explain and Test Spring Security

@@ -23,6 +23,7 @@ import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CREATE;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_ENABLE_USER;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_JWT;
+import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_ROLE;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_UPDATE_PASSWORD;
 
 @Configuration
@@ -54,7 +55,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // Secure next request with the JWT filter
                 .addFilter(authorizationFilterJWT())
                 .authorizeRequests()
+
+                // Enable or disable an User
                 .antMatchers(HttpMethod.PATCH, ROUTING_USER_CONTROLLER + ROUTING_USER_ENABLE_USER).hasRole(RoleConstants.ROLE_ADMIN)
+                // Add a Role to a User
+                .antMatchers(HttpMethod.POST, ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE).hasRole(RoleConstants.ROLE_ADMIN)
+                // Create a Role
                 .antMatchers(HttpMethod.POST, ROUTING_ROLE_CONTROLLER + ROUTING_ROLE_CREATE).hasRole(RoleConstants.ROLE_ADMIN);
     }
 
