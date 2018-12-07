@@ -26,7 +26,7 @@ class UserRepositorySpec extends Specification {
             .build()
 
     def roleAdmin = new RoleEntity.Builder()
-            .name("ROLE_ADMIN")
+            .name(TestDataService.ROLE_ADMIN)
             .build()
 
     def "create an UserEntity without id (UUID) and without Roles"() {

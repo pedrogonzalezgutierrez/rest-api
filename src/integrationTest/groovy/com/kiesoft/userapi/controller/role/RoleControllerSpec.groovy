@@ -119,7 +119,7 @@ class RoleControllerSpec extends Specification {
     def "createNewRole: validation fails when role already exists"() {
         given:
         final createRoleDTO = new CreateUserDTO.Builder()
-                .name("ROLE_ADMIN")
+                .name(TestDataService.ROLE_ADMIN)
                 .build()
 
         and:
