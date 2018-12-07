@@ -83,4 +83,27 @@ class DefaultRoleServiceSpec extends Specification {
         optionalRoleDTO.isPresent()
     }
 
+    def "findById: it does not exist"() {
+        given:
+        roleRepository.findById(idRole) >> Optional.empty()
+
+        when:
+        final optionalRoleDTO = defaultRoleService.findById(idRole)
+
+        then:
+        !optionalRoleDTO.isPresent()
+    }
+
+    def "findById: it exists"() {
+        given:
+        roleRepository.findById(idRole) >> Optional.of(savedEntity)
+        roleMapper.asDTO(savedEntity) >> savedDTO
+
+        when:
+        final optionalRoleDTO = defaultRoleService.findById(idRole)
+
+        then:
+        optionalRoleDTO.isPresent()
+    }
+
 }

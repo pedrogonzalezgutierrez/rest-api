@@ -5,6 +5,7 @@ import com.kiesoft.userapi.TestDataService
 import com.kiesoft.userapi.controller.error.ApiErrorMessage
 import com.kiesoft.userapi.controller.error.ApiErrorsView
 import com.kiesoft.userapi.controller.error.ApiValidationExceptionHandler
+import com.kiesoft.userapi.dto.user.AddRoleDTO
 import com.kiesoft.userapi.dto.user.ChangePasswordDTO
 import com.kiesoft.userapi.dto.user.CreateUserDTO
 import com.kiesoft.userapi.dto.user.EnableUserDTO
@@ -1081,6 +1082,220 @@ class UserControllerSpec extends Specification {
         assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
                 .extracting("code")
                 .contains(ApiErrorMessage.FIELD_NOT_CHANGED.getCode())
+    }
+
+    def "addRole: role is added to the user"() {
+        given:
+        final roleAdmin = testDataService.roleAdmin();
+        final userPedrola = testDataService.userPedrola();
+
+        and:
+        final addRoleDTO = new AddRoleDTO.Builder()
+            .idUser(userPedrola.getId().toString())
+            .idRole(roleAdmin.getId().toString())
+            .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(addRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+    }
+
+    def "addRole: validation fails when missing idUser"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idRole(UUID.randomUUID().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(addRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
+    }
+
+    def "addRole: validation fails when missing idRole"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser(UUID.randomUUID().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(addRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
+    }
+
+    def "addRole: validation fails when missing idUser and idRole"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder().build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(addRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode(), ApiErrorMessage.STRING_BLANK.getCode())
+    }
+
+    def "addRole: validation fails when idUser is not an UUID"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser("not an UUID")
+                .idRole(UUID.randomUUID().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(addRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_NOT_UUID.getCode())
+    }
+
+    def "addRole: validation fails when idRole is not an UUID"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser(UUID.randomUUID().toString())
+                .idRole("not an UUID")
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(addRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_NOT_UUID.getCode())
+    }
+
+    def "addRole: validation fails when neither idRole nor idUser is not an UUID"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser("not an UUID")
+                .idRole("not an UUID")
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(addRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_NOT_UUID.getCode(), ApiErrorMessage.STRING_NOT_UUID.getCode())
+    }
+
+    def "addRole: validation fails when Role does not exist"() {
+        given:
+        final userPedrola = testDataService.userPedrola();
+
+        and:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser(userPedrola.getId().toString())
+                .idRole(UUID.randomUUID().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(addRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.ROLE_NOT_FOUND.getCode())
+    }
+
+    def "addRole: validation fails when User does not exist"() {
+        given:
+        final roleAdmin = testDataService.roleAdmin();
+
+        and:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser(UUID.randomUUID().toString())
+                .idRole(roleAdmin.getId().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(addRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.USER_NOT_FOUND.getCode())
+    }
+
+    def "addRole: validation fails when User already contains the Role"() {
+        given:
+        final roleAdmin = testDataService.roleAdmin();
+        final userAdmin = testDataService.userAdmin();
+
+        and:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser(userAdmin.getId().toString())
+                .idRole(roleAdmin.getId().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.post(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(addRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.USER_ALREADY_HAS_THE_ROLE.getCode())
     }
 
 }

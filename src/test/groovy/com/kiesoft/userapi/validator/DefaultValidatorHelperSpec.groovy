@@ -85,6 +85,43 @@ class DefaultValidatorHelperSpec extends Specification {
         "AAA"   | 1         | 3         || _
     }
 
+    def "will not reject the string '#string' because is a valid UUID"() {
+        final validationObject = new ValidationObject()
+        validationObject.setStringField(string)
+        final errors = new BeanPropertyBindingResult(validationObject, "validationObject")
+
+        when:
+        validatorHelper.rejectStringIfNotUUID("stringField", string, errors)
+
+        then:
+        !errors.hasErrors()
+
+        where:
+        string                                 || _
+        "1-2-3-4-5"                            || _
+        "55b7dfbe-c62a-464d-bc35-da2a324077b6" || _
+    }
+
+    def "will reject the string '#string' because is a not a valid UUID"() {
+        final validationObject = new ValidationObject()
+        validationObject.setStringField(string)
+        final errors = new BeanPropertyBindingResult(validationObject, "validationObject")
+
+        when:
+        validatorHelper.rejectStringIfNotUUID("stringField", string, errors)
+
+        then:
+        errors.hasErrors()
+
+        where:
+        string       || _
+        null         || _
+        ""           || _
+        "Not a UUID" || _
+        "----"       || _
+        "1-2-3-4-"   || _
+    }
+
     def "will reject the integer '#integer' if value not between #minValue and #maxValue"() {
         given:
         final validationObject = new ValidationObject()

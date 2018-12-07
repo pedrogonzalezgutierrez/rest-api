@@ -1,12 +1,14 @@
 package com.kiesoft.userapi.controller.user;
 
 import com.kiesoft.userapi.auth.filter.AuthorizationFilterJWT;
+import com.kiesoft.userapi.dto.role.RoleDTO;
 import com.kiesoft.userapi.dto.user.AddRoleDTO;
 import com.kiesoft.userapi.dto.user.ChangePasswordDTO;
 import com.kiesoft.userapi.dto.user.CreateUserDTO;
 import com.kiesoft.userapi.dto.user.GenerateJwtDTO;
 import com.kiesoft.userapi.dto.user.UserDTO;
 import com.kiesoft.userapi.service.user.UserService;
+import com.kiesoft.userapi.validator.user.AddRoleDTOValidator;
 import com.kiesoft.userapi.validator.user.ChangePasswordDTOValidator;
 import com.kiesoft.userapi.validator.user.CreateUserDTOValidator;
 import com.kiesoft.userapi.dto.user.EnableUserDTO;
@@ -37,18 +39,21 @@ public class UserController extends AbstractUserController {
     private final GenerateJwtDTOValidator generateJwtDTOValidator;
     private final ChangePasswordDTOValidator changePasswordDTOValidator;
     private final EnableUserDTOValidator enableUserDTOValidator;
+    private final AddRoleDTOValidator addRoleDTOValidator;
 
     @Autowired
     public UserController(final UserService userService,
                           final CreateUserDTOValidator createUserDTOValidator,
                           final GenerateJwtDTOValidator generateJwtDTOValidator,
                           final ChangePasswordDTOValidator changePasswordDTOValidator,
-                          final EnableUserDTOValidator enableUserDTOValidator) {
+                          final EnableUserDTOValidator enableUserDTOValidator,
+                          final AddRoleDTOValidator addRoleDTOValidator) {
         this.userService = userService;
         this.createUserDTOValidator = createUserDTOValidator;
         this.generateJwtDTOValidator = generateJwtDTOValidator;
         this.changePasswordDTOValidator = changePasswordDTOValidator;
         this.enableUserDTOValidator = enableUserDTOValidator;
+        this.addRoleDTOValidator = addRoleDTOValidator;
     }
 
     @InitBinder("createUserDTO")
@@ -108,11 +113,15 @@ public class UserController extends AbstractUserController {
 
     @InitBinder("addRoleDTO")
     public void setupAddRole(WebDataBinder binder) {
-        binder.addValidators(enableUserDTOValidator);
+        binder.addValidators(addRoleDTOValidator);
     }
 
     @RequestMapping(value = ROUTING_USER_ROLE, method = RequestMethod.POST)
     public ResponseEntity<Void> addRole(@Valid @RequestBody AddRoleDTO addRoleDTO) {
+        UserDTO userDTO = addRoleDTO.getUserDTO();
+        RoleDTO roleDTO = addRoleDTO.getRoleDTO();
+        userDTO.getRoles().add(roleDTO);
+        userService.save(userDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

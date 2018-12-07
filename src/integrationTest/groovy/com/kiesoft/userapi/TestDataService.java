@@ -10,9 +10,13 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TestDataService {
+
+    public final static String ROLE_ADMIN = "ROLE_ADMIN";
+    public final static String ROLE_EDITOR = "ROLE_EDITOR";
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
@@ -23,17 +27,32 @@ public class TestDataService {
         this.userRepository = userRepository;
     }
 
-    public List<UserEntity> usersAdminAndEditor() {
-        RoleEntity roleAdmin = new RoleEntity.Builder()
-                .name("ROLE_ADMIN")
-                .build();
+    public RoleEntity roleAdmin() {
+        Optional<RoleEntity> optionalRoleEntity = roleRepository.findByNameIgnoreCase(ROLE_ADMIN);
+        if(optionalRoleEntity.isPresent()) {
+            return optionalRoleEntity.get();
+        } else {
+            RoleEntity roleAdmin = new RoleEntity.Builder()
+                    .name(ROLE_ADMIN)
+                    .build();
+            return roleRepository.save(roleAdmin);
+        }
+    }
 
-        RoleEntity roleEditor = new RoleEntity.Builder()
-                .name("ROLE_EDITOR")
-                .build();
+    public RoleEntity roleEditor() {
+        Optional<RoleEntity> optionalRoleEntity = roleRepository.findByNameIgnoreCase(ROLE_EDITOR);
+        if(optionalRoleEntity.isPresent()) {
+            return optionalRoleEntity.get();
+        } else {
+            RoleEntity roleEditor = new RoleEntity.Builder()
+                    .name(ROLE_EDITOR)
+                    .build();
+            return roleRepository.save(roleEditor);
+        }
+    }
 
-        roleAdmin = roleRepository.save(roleAdmin);
-        roleEditor = roleRepository.save(roleEditor);
+    public UserEntity userAdmin() {
+        RoleEntity roleAdmin = roleAdmin();
 
         UserEntity userAdmin = new UserEntity.Builder()
                 .name("admin")
@@ -43,6 +62,11 @@ public class TestDataService {
                 .points(2000)
                 .roles(Collections.singletonList(roleAdmin))
                 .build();
+        return userRepository.save(userAdmin);
+    }
+
+    public UserEntity userEditor() {
+        RoleEntity roleEditor = roleEditor();
 
         UserEntity userEditor = new UserEntity.Builder()
                 .name("editor")
@@ -52,15 +76,14 @@ public class TestDataService {
                 .points(1000)
                 .roles(Collections.singletonList(roleEditor))
                 .build();
-
-        userAdmin = userRepository.save(userAdmin);
-        userEditor = userRepository.save(userEditor);
-
-        return Arrays.asList(userAdmin, userEditor);
+        return userRepository.save(userEditor);
     }
 
-    public List<UserEntity> usersRandomPeople() {
+    public List<UserEntity> usersAdminAndEditor() {
+        return Arrays.asList(userAdmin(), userEditor());
+    }
 
+    public UserEntity userPedrola() {
         UserEntity pedrola = new UserEntity.Builder()
                 .name("pedrola")
                 .email("pedrola@kiesoft.com")
@@ -68,7 +91,10 @@ public class TestDataService {
                 .enabled(Boolean.TRUE)
                 .points(0)
                 .build();
+        return userRepository.save(pedrola);
+    }
 
+    public UserEntity userMadara() {
         UserEntity madara = new UserEntity.Builder()
                 .name("madara")
                 .email("madara@kiesoft.com")
@@ -76,7 +102,10 @@ public class TestDataService {
                 .enabled(Boolean.TRUE)
                 .points(500)
                 .build();
+        return userRepository.save(madara);
+    }
 
+    public UserEntity userSuColega() {
         UserEntity sucolega = new UserEntity.Builder()
                 .name("sucolega")
                 .email("sucolega@kiesoft.com")
@@ -84,12 +113,11 @@ public class TestDataService {
                 .enabled(Boolean.FALSE)
                 .points(0)
                 .build();
+        return userRepository.save(sucolega);
+    }
 
-        pedrola = userRepository.save(pedrola);
-        madara = userRepository.save(madara);
-        sucolega = userRepository.save(sucolega);
-
-        return Arrays.asList(pedrola, madara, sucolega);
+    public List<UserEntity> usersRandomPeople() {
+        return Arrays.asList(userPedrola(), userMadara(), userSuColega());
     }
 
 }

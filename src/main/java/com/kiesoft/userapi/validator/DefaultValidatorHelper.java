@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Component
 public class DefaultValidatorHelper implements ValidatorHelper {
@@ -36,6 +37,18 @@ public class DefaultValidatorHelper implements ValidatorHelper {
         if (!StringUtils.isBlank(string)) {
             if ((string.length() < min) || (string.length() > max)) {
                 errors.rejectValue(field, ApiErrorMessage.STRING_LENGTH.getCode(), String.format(ApiErrorMessage.STRING_LENGTH.getMessage(), min, max));
+            }
+        }
+    }
+
+    @Override
+    public void rejectStringIfNotUUID(String field, String string, Errors errors) {
+        rejectIfStringIsBlank(field, string, errors);
+        if (!StringUtils.isBlank(string)) {
+            try {
+                UUID.fromString(string);
+            } catch (Exception e) {
+                errors.rejectValue(field, ApiErrorMessage.STRING_NOT_UUID.getCode(), ApiErrorMessage.STRING_NOT_UUID.getMessage());
             }
         }
     }

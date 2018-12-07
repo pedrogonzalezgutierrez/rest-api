@@ -1,6 +1,9 @@
 package com.kiesoft.userapi.jpa.repository.user
 
+import com.kiesoft.userapi.TestDataService
+import com.kiesoft.userapi.jpa.entity.role.RoleEntity
 import com.kiesoft.userapi.jpa.entity.user.UserEntity
+import com.kiesoft.userapi.jpa.repository.role.RoleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import spock.lang.Specification
@@ -11,12 +14,19 @@ class UserRepositorySpec extends Specification {
     @Autowired
     UserRepository userRepository
 
-    final userAdmin = new UserEntity.Builder()
+    @Autowired
+    RoleRepository roleRepository
+
+    def userAdmin = new UserEntity.Builder()
             .name("admin")
             .email("admin@kiesoft.es")
             .password("Betis")
             .enabled(Boolean.TRUE)
             .points(100)
+            .build()
+
+    def roleAdmin = new RoleEntity.Builder()
+            .name("ROLE_ADMIN")
             .build()
 
     def "create an UserEntity without id (UUID) and without Roles"() {
@@ -41,6 +51,78 @@ class UserRepositorySpec extends Specification {
 
         and: "there is no roles"
         actual.getAt(0).getRoles().isEmpty()
+    }
+
+    def "add RoleEntity to an UserEntity"() {
+        given: "Create UserEntity without roles"
+        userAdmin=userRepository.save(userAdmin)
+
+        and: "Create RoleEntity"
+        roleAdmin=roleRepository.save(roleAdmin)
+
+        and: "add RoleEntity"
+        userAdmin.addRole(roleAdmin)
+
+        and: "save the UserEntity"
+        userRepository.save(userAdmin)
+
+        when:
+        final actual = userRepository.findById(userAdmin.getId())
+
+        then: "UserEntity has got only one RoleEntity"
+        actual.isPresent()
+        actual.get().getRoles().size() == 1
+    }
+
+    def "remove RoleEntity from UserEntity"() {
+        given: "Create UserEntity without roles"
+        userAdmin=userRepository.save(userAdmin)
+
+        and: "Create RoleEntity"
+        roleAdmin=roleRepository.save(roleAdmin)
+
+        and: "add RoleEntity"
+        userAdmin.addRole(roleAdmin)
+
+        and: "save the UserEntity"
+        userRepository.save(userAdmin)
+
+        and: "Get UserEntity from DB"
+        final optionalUserEntity=userRepository.findById(userAdmin.getId())
+
+        and: "Remove RoleEntity"
+        optionalUserEntity.get().removeRole(roleAdmin)
+
+        and: "save the UserEntity"
+        userRepository.save(optionalUserEntity.get())
+
+        when:
+        final actual = userRepository.findById(userAdmin.getId())
+
+        then: "UserEntity does not have RoleEntity"
+        actual.isPresent()
+        actual.get().getRoles().isEmpty()
+    }
+
+    def "will not create a UserEntity when the name already exists"() {
+        given:
+        userRepository.save(userAdmin)
+
+        and:
+        def newUserAdmin = new UserEntity.Builder()
+                .name("admin")
+                .email("admin@kiesoft.es")
+                .password("Betis")
+                .enabled(Boolean.TRUE)
+                .points(100)
+                .build()
+        userRepository.save(newUserAdmin)
+
+        when:
+        userRepository.findAll()
+
+        then:
+        thrown Exception
     }
 
     def "will find by name (ignore case) when it exists"() {

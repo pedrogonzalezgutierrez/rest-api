@@ -21,9 +21,9 @@ Body:
 	"password": "Betis"
 }
 ```
-> 400: User already exists
-
 > 400: Validation Error
+
+> 400: User already exists
 
 > 200: User created
 
@@ -36,9 +36,11 @@ Body:
 	"password": "Betis"
 }
 ```
-> 400: User does not exist or user is not enabled
-
 > 400: Validation Error
+
+> 400: User does not exist
+
+> 400: User is not enabled
 
 > 200: Token created
 ```
@@ -56,9 +58,11 @@ Body:
 	"newPassword": "Heliopolis"
 }
 ```
-> 400: Invalid credentials or user is not enabled
-
 > 400: Validation Error
+
+> 400: Invalid credentials
+
+> 400: User is not enabled
 
 > 200: Password updated
 
@@ -74,9 +78,9 @@ Body:
 	"enable": false
 }
 ```
-> 400: User does not exist
-
 > 400: Validation Error
+
+> 400: User does not exist
 
 > 200: User enabled updated
 
@@ -91,9 +95,9 @@ Body:
 	"name": "ROLE_EDITOR"
 }
 ```
-> 400: Role already exists
-
 > 400: Validation Error
+
+> 400: Role already exists
 
 > 200: Role created
 
@@ -105,12 +109,15 @@ POST /user/role
 Header Authorization: Bearer jwtToken
 Body:
 {
-	"name": "ROLE_EDITOR"
+	"idUser": "2fb28131-e841-4c2d-9fe6-bc5ddb708704",
+	"idRole": "55b7dfbe-c62a-464d-bc35-da2a324077b6"
 }
 ```
-> 400: Role does not exist
-
 > 400: Validation Error
+
+> 400: User does not exist
+
+> 400: Role does not exist
 
 > 200: Role added to user
 

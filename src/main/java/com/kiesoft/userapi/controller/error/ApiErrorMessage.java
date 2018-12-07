@@ -9,11 +9,14 @@ public enum ApiErrorMessage {
 
     STRING_BLANK("string-blank", "This field can not be null, empty or whitespaces"),
     STRING_LENGTH("string-length", "The length of this string has to be between %d and %d characters"),
+    STRING_NOT_UUID("string-not-uuid", "The string is not a valid UUID"),
 
     INTEGER_RANGE("integer-range", "This number has to be less than %d and greater than %d"),
 
     USERNAME_ALREADY_EXISTS("username-already-exists", "This username is in use by other user"),
     USER_NOT_ENABLED("user-not-enabled", "The user is not enabled"),
+    USER_NOT_FOUND("user-not-found", "The user could not be found"),
+    USER_ALREADY_HAS_THE_ROLE("user-already-has-the-role", "The user already has that role"),
 
     EMAIL_INVALID("email-invalid", "This email is not valid"),
     EMAIL_ALREADY_EXISTS("email-already-exists", "This email is in use by other user"),

@@ -3,7 +3,9 @@ package com.kiesoft.userapi.validator.user
 
 import com.kiesoft.userapi.dto.role.RoleDTO
 import com.kiesoft.userapi.dto.user.AddRoleDTO
+import com.kiesoft.userapi.dto.user.UserDTO
 import com.kiesoft.userapi.service.role.RoleService
+import com.kiesoft.userapi.service.user.UserService
 import com.kiesoft.userapi.validator.DefaultValidatorHelper
 import com.kiesoft.userapi.validator.role.RoleProperties
 import org.springframework.core.env.Environment
@@ -15,26 +17,36 @@ class AddRoleDTOValidatorSpec extends Specification {
     final validatorHelper = new DefaultValidatorHelper()
     final env = Mock(Environment)
     final roleService = Mock(RoleService)
-    final addRoleDTOValidator = new AddRoleDTOValidator(validatorHelper, env, roleService)
+    final userService = Mock(UserService)
+    final addRoleDTOValidator = new AddRoleDTOValidator(validatorHelper, env, roleService, userService)
 
     final roleDTO = new RoleDTO.Builder()
             .id(UUID.randomUUID())
             .name("ROLE_ADMIN")
             .build()
 
+    final userDTO = new UserDTO.Builder()
+            .id(UUID.randomUUID())
+            .name("pEDROLA")
+            .email("pedrola@kiesoft.com")
+            .password("Betis")
+            .enabled(Boolean.TRUE)
+            .points(100)
+            .build()
+
     def "validation success"() {
         given:
         final addRoleDTO = new AddRoleDTO.Builder()
-                .name("ROLE_ADMIN")
+                .idUser(UUID.randomUUID().toString())
+                .idRole(UUID.randomUUID().toString())
                 .build()
         final errors = new BeanPropertyBindingResult(addRoleDTO, "addRoleDTO")
 
-        and:
-        env.getProperty(RoleProperties.NAME_LENGTH_MIN) >> 5
-        env.getProperty(RoleProperties.NAME_LENGTH_MAX) >> 10
+        and: "Role exists"
+        roleService.findById(UUID.fromString(addRoleDTO.getIdRole())) >> Optional.of(roleDTO)
 
-        and:
-        roleService.findByName(_ as String) >> Optional.of(roleDTO)
+        and: "User exists"
+        userService.findById(UUID.fromString(addRoleDTO.getIdUser())) >> Optional.of(userDTO)
 
         when:
         addRoleDTOValidator.validate(addRoleDTO, errors)
@@ -43,7 +55,35 @@ class AddRoleDTOValidatorSpec extends Specification {
         !errors.hasErrors()
     }
 
-    def "validation fails when missing name"() {
+    def "validation fails when missing idUser"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idRole(UUID.randomUUID().toString())
+                .build()
+        final errors = new BeanPropertyBindingResult(addRoleDTO, "addRoleDTO")
+
+        when:
+        addRoleDTOValidator.validate(addRoleDTO, errors)
+
+        then:
+        errors.getErrorCount() == 1
+    }
+
+    def "validation fails when missing idRole"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser(UUID.randomUUID().toString())
+                .build()
+        final errors = new BeanPropertyBindingResult(addRoleDTO, "addRoleDTO")
+
+        when:
+        addRoleDTOValidator.validate(addRoleDTO, errors)
+
+        then:
+        errors.getErrorCount() == 1
+    }
+
+    def "validation fails when missing idRole and idUser"() {
         given:
         final addRoleDTO = new AddRoleDTO.Builder().build()
         final errors = new BeanPropertyBindingResult(addRoleDTO, "addRoleDTO")
@@ -52,19 +92,16 @@ class AddRoleDTOValidatorSpec extends Specification {
         addRoleDTOValidator.validate(addRoleDTO, errors)
 
         then:
-        errors.getErrorCount() == 1
+        errors.getErrorCount() == 2
     }
 
-    def "validation fails when name too small"() {
+    def "validation fails when idUser is not an UUID"() {
         given:
         final addRoleDTO = new AddRoleDTO.Builder()
-                .name("ROLE")
+                .idUser("Not an UUID")
+                .idRole(UUID.randomUUID().toString())
                 .build()
         final errors = new BeanPropertyBindingResult(addRoleDTO, "addRoleDTO")
-
-        and:
-        env.getProperty(RoleProperties.NAME_LENGTH_MIN) >> 5
-        env.getProperty(RoleProperties.NAME_LENGTH_MAX) >> 10
 
         when:
         addRoleDTOValidator.validate(addRoleDTO, errors)
@@ -73,16 +110,13 @@ class AddRoleDTOValidatorSpec extends Specification {
         errors.getErrorCount() == 1
     }
 
-    def "validation fails when name too big"() {
+    def "validation fails when idRole is not an UUID"() {
         given:
         final addRoleDTO = new AddRoleDTO.Builder()
-                .name("ROLE_SUPER_LONG")
+                .idUser(UUID.randomUUID().toString())
+                .idRole("Not an UUID")
                 .build()
         final errors = new BeanPropertyBindingResult(addRoleDTO, "addRoleDTO")
-
-        and:
-        env.getProperty(RoleProperties.NAME_LENGTH_MIN) >> 5
-        env.getProperty(RoleProperties.NAME_LENGTH_MAX) >> 10
 
         when:
         addRoleDTOValidator.validate(addRoleDTO, errors)
@@ -91,19 +125,74 @@ class AddRoleDTOValidatorSpec extends Specification {
         errors.getErrorCount() == 1
     }
 
-    def "validation fails when role does not exist"() {
+    def "validation fails when neither idRole nor idUser are UUID"() {
         given:
         final addRoleDTO = new AddRoleDTO.Builder()
-                .name("ROLE_ADMIN")
+                .idRole("Not an UUID")
+                .idUser("Not an UUID")
                 .build()
         final errors = new BeanPropertyBindingResult(addRoleDTO, "addRoleDTO")
 
-        and:
-        env.getProperty(RoleProperties.NAME_LENGTH_MIN) >> 5
-        env.getProperty(RoleProperties.NAME_LENGTH_MAX) >> 10
+        when:
+        addRoleDTOValidator.validate(addRoleDTO, errors)
 
-        and:
-        roleService.findByName(_ as String) >> Optional.empty()
+        then:
+        errors.getErrorCount() == 2
+    }
+
+    def "validation fails when Role does not exist"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser(UUID.randomUUID().toString())
+                .idRole(UUID.randomUUID().toString())
+                .build()
+        final errors = new BeanPropertyBindingResult(addRoleDTO, "addRoleDTO")
+
+        and: "Role does not exist"
+        roleService.findById(UUID.fromString(addRoleDTO.getIdRole())) >> Optional.empty()
+
+        when:
+        addRoleDTOValidator.validate(addRoleDTO, errors)
+
+        then:
+        errors.getErrorCount() == 1
+    }
+
+    def "validation fails when User does not exist"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser(UUID.randomUUID().toString())
+                .idRole(UUID.randomUUID().toString())
+                .build()
+        final errors = new BeanPropertyBindingResult(addRoleDTO, "addRoleDTO")
+
+        and: "Role exists"
+        roleService.findById(UUID.fromString(addRoleDTO.getIdRole())) >> Optional.of(roleDTO)
+
+        and: "User does not exist"
+        userService.findById(UUID.fromString(addRoleDTO.getIdUser())) >> Optional.empty()
+
+        when:
+        addRoleDTOValidator.validate(addRoleDTO, errors)
+
+        then:
+        errors.getErrorCount() == 1
+    }
+
+    def "validation fails when User already contains the Role"() {
+        given:
+        final addRoleDTO = new AddRoleDTO.Builder()
+                .idUser(UUID.randomUUID().toString())
+                .idRole(UUID.randomUUID().toString())
+                .build()
+        final errors = new BeanPropertyBindingResult(addRoleDTO, "addRoleDTO")
+
+        and: "Role exists"
+        roleService.findById(UUID.fromString(addRoleDTO.getIdRole())) >> Optional.of(roleDTO)
+
+        and: "User does not exist"
+        userDTO.getRoles().add(roleDTO)
+        userService.findById(UUID.fromString(addRoleDTO.getIdUser())) >> Optional.of(userDTO)
 
         when:
         addRoleDTOValidator.validate(addRoleDTO, errors)
