@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service used only for create dummy data in the Integration Tests
+ */
 @Component
 public class TestDataService {
 

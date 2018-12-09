@@ -10,6 +10,7 @@ import com.kiesoft.userapi.dto.user.ChangePasswordDTO
 import com.kiesoft.userapi.dto.user.CreateUserDTO
 import com.kiesoft.userapi.dto.user.EnableUserDTO
 import com.kiesoft.userapi.dto.user.GenerateJwtDTO
+import com.kiesoft.userapi.dto.user.RemoveRoleDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -45,6 +46,10 @@ class UserControllerSpec extends Specification {
     void setup() throws Exception {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController, new ApiValidationExceptionHandler()).build()
     }
+
+    // -------------------------------------------
+    // Create a new user
+    // -------------------------------------------
 
     def "createNewUser: user created when it does not exist and validation successful"() {
         given:
@@ -358,6 +363,10 @@ class UserControllerSpec extends Specification {
         "admin@kiesoft.com".toUpperCase() || _
     }
 
+    // -------------------------------------------
+    // Generate a JWT
+    // -------------------------------------------
+
     def "generateJWT: token generated when is valid credentials and validation successful"() {
         given:
         final generateJWTDTO = new GenerateJwtDTO.Builder()
@@ -611,6 +620,10 @@ class UserControllerSpec extends Specification {
                 .extracting("code")
                 .contains(ApiErrorMessage.USER_NOT_ENABLED.getCode())
     }
+
+    // -------------------------------------------
+    // Change the password of a user
+    // -------------------------------------------
 
     def "changePassword: password is changed successfully"() {
         given:
@@ -925,6 +938,10 @@ class UserControllerSpec extends Specification {
                 .contains(ApiErrorMessage.USER_NOT_ENABLED.getCode())
     }
 
+    // -------------------------------------------
+    // Enable or disable an user
+    // -------------------------------------------
+
     def "enableUser: enabled is changed successfully"() {
         given:
         final enableUserDTO = new EnableUserDTO.Builder()
@@ -1083,6 +1100,10 @@ class UserControllerSpec extends Specification {
                 .extracting("code")
                 .contains(ApiErrorMessage.FIELD_NOT_CHANGED.getCode())
     }
+
+    // -------------------------------------------
+    // Add Role to a user
+    // -------------------------------------------
 
     def "addRole: role is added to the user"() {
         given:
@@ -1296,6 +1317,224 @@ class UserControllerSpec extends Specification {
         assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
                 .extracting("code")
                 .contains(ApiErrorMessage.USER_ALREADY_HAS_THE_ROLE.getCode())
+    }
+
+    // -------------------------------------------
+    // Remove a Role from a user
+    // -------------------------------------------
+
+    def "removeRole: role is removed from the user"() {
+        given:
+        final roleAdmin = testDataService.roleAdmin();
+        final userAdmin = testDataService.userAdmin()
+
+        and:
+        final removeRoleDTO = new RemoveRoleDTO.Builder()
+                .idUser(userAdmin.getId().toString())
+                .idRole(roleAdmin.getId().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(removeRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+    }
+
+    def "removeRole: validation fails when missing idUser"() {
+        given:
+        final removeRoleDTO = new RemoveRoleDTO.Builder()
+                .idRole(UUID.randomUUID().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(removeRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
+    }
+
+    def "removeRole: validation fails when missing idRole"() {
+        given:
+        final removeRoleDTO = new RemoveRoleDTO.Builder()
+                .idUser(UUID.randomUUID().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(removeRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode())
+    }
+
+    def "removeRole: validation fails when missing idUser and idRole"() {
+        given:
+        final removeRoleDTO = new RemoveRoleDTO.Builder().build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(removeRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_BLANK.getCode(), ApiErrorMessage.STRING_BLANK.getCode())
+    }
+
+    def "removeRole: validation fails when idUser is not an UUID"() {
+        given:
+        final removeRoleDTO = new RemoveRoleDTO.Builder()
+                .idUser("not an UUID")
+                .idRole(UUID.randomUUID().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(removeRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_NOT_UUID.getCode())
+    }
+
+    def "removeRole: validation fails when idRole is not an UUID"() {
+        given:
+        final removeRoleDTO = new RemoveRoleDTO.Builder()
+                .idUser(UUID.randomUUID().toString())
+                .idRole("not an UUID")
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(removeRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_NOT_UUID.getCode())
+    }
+
+    def "removeRole: validation fails when neither idRole nor idUser is not an UUID"() {
+        given:
+        final removeRoleDTO = new RemoveRoleDTO.Builder()
+                .idUser("not an UUID")
+                .idRole("not an UUID")
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(removeRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.STRING_NOT_UUID.getCode(), ApiErrorMessage.STRING_NOT_UUID.getCode())
+    }
+
+    def "removeRole: validation fails when Role does not exist"() {
+        given:
+        final userPedrola = testDataService.userPedrola();
+
+        and:
+        final removeRoleDTO = new RemoveRoleDTO.Builder()
+                .idUser(userPedrola.getId().toString())
+                .idRole(UUID.randomUUID().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(removeRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.ROLE_NOT_FOUND.getCode())
+    }
+
+    def "removeRole: validation fails when User does not exist"() {
+        given:
+        final roleAdmin = testDataService.roleAdmin();
+
+        and:
+        final removeRoleDTO = new RemoveRoleDTO.Builder()
+                .idUser(UUID.randomUUID().toString())
+                .idRole(roleAdmin.getId().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(removeRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.USER_NOT_FOUND.getCode())
+    }
+
+    def "removeRole: validation fails when User does not contain the Role"() {
+        given:
+        final roleAdmin = testDataService.roleAdmin();
+        final userPedrola = testDataService.userPedrola();
+
+        and:
+        final removeRoleDTO = new RemoveRoleDTO.Builder()
+                .idUser(userPedrola.getId().toString())
+                .idRole(roleAdmin.getId().toString())
+                .build()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE)
+                .content(objectMapper.writeValueAsString(removeRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).fieldErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.USER_DOES_NOT_HAVE_THE_ROLE.getCode())
     }
 
 }
