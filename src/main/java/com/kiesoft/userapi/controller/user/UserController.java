@@ -6,6 +6,7 @@ import com.kiesoft.userapi.dto.user.AddRoleDTO;
 import com.kiesoft.userapi.dto.user.ChangePasswordDTO;
 import com.kiesoft.userapi.dto.user.CreateUserDTO;
 import com.kiesoft.userapi.dto.user.GenerateJwtDTO;
+import com.kiesoft.userapi.dto.user.RemoveRoleDTO;
 import com.kiesoft.userapi.dto.user.UserDTO;
 import com.kiesoft.userapi.service.user.UserService;
 import com.kiesoft.userapi.validator.user.AddRoleDTOValidator;
@@ -14,6 +15,7 @@ import com.kiesoft.userapi.validator.user.CreateUserDTOValidator;
 import com.kiesoft.userapi.dto.user.EnableUserDTO;
 import com.kiesoft.userapi.validator.user.EnableUserDTOValidator;
 import com.kiesoft.userapi.validator.user.GenerateJwtDTOValidator;
+import com.kiesoft.userapi.validator.user.RemoveRoleDTOValidator;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -40,6 +42,7 @@ public class UserController extends AbstractUserController {
     private final ChangePasswordDTOValidator changePasswordDTOValidator;
     private final EnableUserDTOValidator enableUserDTOValidator;
     private final AddRoleDTOValidator addRoleDTOValidator;
+    private final RemoveRoleDTOValidator removeRoleDTOValidator;
 
     @Autowired
     public UserController(final UserService userService,
@@ -47,13 +50,15 @@ public class UserController extends AbstractUserController {
                           final GenerateJwtDTOValidator generateJwtDTOValidator,
                           final ChangePasswordDTOValidator changePasswordDTOValidator,
                           final EnableUserDTOValidator enableUserDTOValidator,
-                          final AddRoleDTOValidator addRoleDTOValidator) {
+                          final AddRoleDTOValidator addRoleDTOValidator,
+                          final RemoveRoleDTOValidator removeRoleDTOValidator) {
         this.userService = userService;
         this.createUserDTOValidator = createUserDTOValidator;
         this.generateJwtDTOValidator = generateJwtDTOValidator;
         this.changePasswordDTOValidator = changePasswordDTOValidator;
         this.enableUserDTOValidator = enableUserDTOValidator;
         this.addRoleDTOValidator = addRoleDTOValidator;
+        this.removeRoleDTOValidator = removeRoleDTOValidator;
     }
 
     @InitBinder("createUserDTO")
@@ -120,7 +125,21 @@ public class UserController extends AbstractUserController {
     public ResponseEntity<Void> addRole(@Valid @RequestBody AddRoleDTO addRoleDTO) {
         UserDTO userDTO = addRoleDTO.getUserDTO();
         RoleDTO roleDTO = addRoleDTO.getRoleDTO();
-        userDTO.getRoles().add(roleDTO);
+        userDTO.addRole(roleDTO);
+        userService.save(userDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @InitBinder("removeRoleDTO")
+    public void setupRemoveRoleDTO(WebDataBinder binder) {
+        binder.addValidators(removeRoleDTOValidator);
+    }
+
+    @RequestMapping(value = ROUTING_USER_ROLE, method = RequestMethod.DELETE)
+    public ResponseEntity<Void> removeRole(@Valid @RequestBody RemoveRoleDTO removeRoleDTO) {
+        UserDTO userDTO = removeRoleDTO.getUserDTO();
+        RoleDTO roleDTO = removeRoleDTO.getRoleDTO();
+        userDTO.removeRole(roleDTO);
         userService.save(userDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }

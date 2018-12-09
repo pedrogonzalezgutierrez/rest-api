@@ -17,6 +17,7 @@ public enum ApiErrorMessage {
     USER_NOT_ENABLED("user-not-enabled", "The user is not enabled"),
     USER_NOT_FOUND("user-not-found", "The user could not be found"),
     USER_ALREADY_HAS_THE_ROLE("user-already-has-the-role", "The user already has that role"),
+    USER_DOES_NOT_HAVE_THE_ROLE("user-does-not-have-the-role", "The user does not have that role"),
 
     EMAIL_INVALID("email-invalid", "This email is not valid"),
     EMAIL_ALREADY_EXISTS("email-already-exists", "This email is in use by other user"),

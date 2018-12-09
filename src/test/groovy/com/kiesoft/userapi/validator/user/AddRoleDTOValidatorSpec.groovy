@@ -15,10 +15,9 @@ import spock.lang.Specification
 class AddRoleDTOValidatorSpec extends Specification {
 
     final validatorHelper = new DefaultValidatorHelper()
-    final env = Mock(Environment)
     final roleService = Mock(RoleService)
     final userService = Mock(UserService)
-    final addRoleDTOValidator = new AddRoleDTOValidator(validatorHelper, env, roleService, userService)
+    final addRoleDTOValidator = new AddRoleDTOValidator(validatorHelper, roleService, userService)
 
     final roleDTO = new RoleDTO.Builder()
             .id(UUID.randomUUID())
@@ -190,7 +189,7 @@ class AddRoleDTOValidatorSpec extends Specification {
         and: "Role exists"
         roleService.findById(UUID.fromString(addRoleDTO.getIdRole())) >> Optional.of(roleDTO)
 
-        and: "User does not exist"
+        and: "User already contains the Role"
         userDTO.getRoles().add(roleDTO)
         userService.findById(UUID.fromString(addRoleDTO.getIdUser())) >> Optional.of(userDTO)
 

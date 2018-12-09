@@ -2,13 +2,12 @@ package com.kiesoft.userapi.validator.user;
 
 import com.kiesoft.userapi.controller.error.ApiErrorMessage;
 import com.kiesoft.userapi.dto.role.RoleDTO;
-import com.kiesoft.userapi.dto.user.AddRoleDTO;
+import com.kiesoft.userapi.dto.user.RemoveRoleDTO;
 import com.kiesoft.userapi.dto.user.UserDTO;
 import com.kiesoft.userapi.service.role.RoleService;
 import com.kiesoft.userapi.service.user.UserService;
 import com.kiesoft.userapi.validator.ValidatorHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -17,14 +16,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class AddRoleDTOValidator implements Validator {
+public class RemoveRoleDTOValidator implements Validator {
 
     private final ValidatorHelper validatorHelper;
     private final RoleService roleService;
     private final UserService userService;
 
     @Autowired
-    public AddRoleDTOValidator(final ValidatorHelper validatorHelper, final RoleService roleService, final UserService userService) {
+    public RemoveRoleDTOValidator(ValidatorHelper validatorHelper, RoleService roleService, UserService userService) {
         this.validatorHelper = validatorHelper;
         this.roleService = roleService;
         this.userService = userService;
@@ -32,41 +31,41 @@ public class AddRoleDTOValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return AddRoleDTO.class.isAssignableFrom(clazz);
+        return RemoveRoleDTO.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        AddRoleDTO addRoleDTO = (AddRoleDTO) target;
+        RemoveRoleDTO removeRoleDTO = (RemoveRoleDTO) target;
 
         // idUser and idRole cannot by blank and they need to be a valid UUID
         validatorHelper.rejectStringIfNotUUID(
                 "idUser",
-                addRoleDTO.getIdUser(),
+                removeRoleDTO.getIdUser(),
                 errors);
 
         validatorHelper.rejectStringIfNotUUID(
                 "idRole",
-                addRoleDTO.getIdRole(),
+                removeRoleDTO.getIdRole(),
                 errors);
 
         if (errors.hasErrors()) {
             return;
         }
 
-        Optional<RoleDTO> roleDTO = roleService.findById(UUID.fromString(addRoleDTO.getIdRole()));
+        Optional<RoleDTO> roleDTO = roleService.findById(UUID.fromString(removeRoleDTO.getIdRole()));
         if (roleDTO.isPresent()) {
-            Optional<UserDTO> userDTO = userService.findById(UUID.fromString(addRoleDTO.getIdUser()));
+            Optional<UserDTO> userDTO = userService.findById(UUID.fromString(removeRoleDTO.getIdUser()));
 
             if(userDTO.isPresent()) {
-                // Check the User does not have the Role
-                if(!userDTO.get().getRoles().contains(roleDTO.get())) {
+                // Check the User has the Role
+                if(userDTO.get().getRoles().contains(roleDTO.get())) {
                     // Populate the fields for the controller
-                    addRoleDTO.setRoleDTO(roleDTO.get());
-                    addRoleDTO.setUserDTO(userDTO.get());
+                    removeRoleDTO.setRoleDTO(roleDTO.get());
+                    removeRoleDTO.setUserDTO(userDTO.get());
                 } else {
-                    // User has got the role
-                    errors.rejectValue("idUser", ApiErrorMessage.USER_ALREADY_HAS_THE_ROLE.getCode(), ApiErrorMessage.USER_ALREADY_HAS_THE_ROLE.getMessage());
+                    // User does not have role
+                    errors.rejectValue("idUser", ApiErrorMessage.USER_DOES_NOT_HAVE_THE_ROLE.getCode(), ApiErrorMessage.USER_DOES_NOT_HAVE_THE_ROLE.getMessage());
                 }
 
             } else {
