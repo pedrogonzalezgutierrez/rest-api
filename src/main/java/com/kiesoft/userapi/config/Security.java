@@ -28,7 +28,7 @@ import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class Security extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserService userService;
@@ -39,9 +39,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private StatelessService statelessService;
 
-    // Secured Requests
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // Secured Requests
+
         http.sessionManagement()
 
                 // No session
@@ -58,35 +59,47 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 // Enable or disable an User
                 .antMatchers(HttpMethod.PATCH, ROUTING_USER_CONTROLLER + ROUTING_USER_ENABLE_USER).hasRole(RoleConstants.ROLE_ADMIN)
+
                 // Add a Role to a User
                 .antMatchers(HttpMethod.POST, ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE).hasRole(RoleConstants.ROLE_ADMIN)
+
+                // Remove a Role from a User
+                .antMatchers(HttpMethod.DELETE, ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE).hasRole(RoleConstants.ROLE_ADMIN)
+
                 // Create a Role
                 .antMatchers(HttpMethod.POST, ROUTING_ROLE_CONTROLLER + ROUTING_ROLE_CREATE).hasRole(RoleConstants.ROLE_ADMIN);
     }
 
-    // Spring Security will ignore these requests
     @Override
     public void configure(WebSecurity webSecurity) {
+        // These requests are ignore by Spring Security
+
         webSecurity
                 .ignoring()
+
+                // Create user
                 .antMatchers(HttpMethod.POST, ROUTING_USER_CONTROLLER + ROUTING_USER_CREATE)
+
+                // Get a JWT
                 .antMatchers(HttpMethod.POST, ROUTING_USER_CONTROLLER + ROUTING_USER_JWT)
+
+                // Update the password of a user
                 .antMatchers(HttpMethod.PATCH, ROUTING_USER_CONTROLLER + ROUTING_USER_UPDATE_PASSWORD);
     }
 
-    // JWT Authentication Provider
     @Bean
     public AuthenticationProviderJWT authenticationProviderJWT() throws Exception {
+        // JWT Authentication Provider
         return new AuthenticationProviderJWT(userService, jwtService);
     }
 
-    // Set AuthenticationProviderJWT into AuthenticationManager
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // Set AuthenticationProviderJWT into AuthenticationManager
         auth.authenticationProvider(authenticationProviderJWT());
     }
 
-    public AuthorizationFilterJWT authorizationFilterJWT() throws Exception {
+    private AuthorizationFilterJWT authorizationFilterJWT() throws Exception {
         AuthorizationFilterJWT authorizationFilterJWT = new AuthorizationFilterJWT(authenticationManager());
         authorizationFilterJWT.setJwtService(jwtService);
         authorizationFilterJWT.setStatelessService(statelessService);
