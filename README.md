@@ -3,9 +3,9 @@
 Rest API allows you to create users and roles and manage them. Anyone can create users and get a JSON Web token which will need to provide in next requests in other to authenticate. Only admin user (a user with the role ROLE_ADMIN) can manage roles and assign existing ones to other users.
  
 #### Technologies
-- Gradle
-- Spring Boot 2.1,
-- JPA 2.2 and Hibernate 5.3.7 with Hikari pool running in PostgreSQL 9.5 
+- Gradle 4.10.2
+- Spring Boot 2.1
+- JPA 2.2 and Hibernate 5.3.7 with Hikari pool (running dialect PostgreSQL 9.5) 
 - Mapstruct 1.2
 - Spock Framework 1.2 (H2 in memory database for Integration Test)
 - Owasp Java Html Sanitizer to avoid Cross-site scripting (XSS)
@@ -101,7 +101,7 @@ Body:
 
 > 200: Role created
 
-**6) Add role:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to add a role to an existing user 
+**6) Add role to User:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to add a role to an existing user 
 ```
 ROLE_ADMIN
 
@@ -120,6 +120,27 @@ Body:
 > 400: Role does not exist
 
 > 200: Role added to user
+
+**6) Remove role from User:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to remove a role from an user 
+```
+ROLE_ADMIN
+
+DELETE /user/role
+Header Authorization: Bearer jwtToken
+Body:
+{
+	"idUser": "2fb28131-e841-4c2d-9fe6-bc5ddb708704",
+	"idRole": "55b7dfbe-c62a-464d-bc35-da2a324077b6"
+}
+```
+> 400: Validation Error
+
+> 400: User does not exist
+
+> 400: Role does not exist
+
+> 200: Role removed from user
+
 
 TODO:
 - Explain Gradle task integrationTest and test
