@@ -84,24 +84,7 @@ Body:
 
 > 200: User enabled updated
 
-**5) Create role:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to create a new role 
-```
-ROLE_ADMIN
-
-POST /role
-Header Authorization: Bearer jwtToken
-Body:
-{
-	"name": "ROLE_EDITOR"
-}
-```
-> 400: Validation Error
-
-> 400: Role already exists
-
-> 200: Role created
-
-**6) Add role to User:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to add a role to an existing user 
+**5) Add role to User:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to add a role to an existing user 
 ```
 ROLE_ADMIN
 
@@ -121,7 +104,7 @@ Body:
 
 > 200: Role added to user
 
-**7) Remove role from User:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to remove a role from an user 
+**6) Remove role from User:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to remove a role from an user 
 ```
 ROLE_ADMIN
 
@@ -141,6 +124,42 @@ Body:
 
 > 200: Role removed from user
 
+**7) Create role:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to create a new role 
+```
+ROLE_ADMIN
+
+POST /role
+Header Authorization: Bearer jwtToken
+Body:
+{
+	"name": "ROLE_EDITOR"
+}
+```
+> 400: Validation Error
+
+> 400: Role already exists
+
+> 200: Role created
+
+**8) Delete role:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to delete an existing role 
+```
+ROLE_ADMIN
+
+DELETE /role
+Header Authorization: Bearer jwtToken
+Body:
+{
+	"name": "ROLE_EDITOR"
+}
+```
+> 400: Validation Error
+
+> 400: Role does not exist
+
+> 400: Role is in used by users
+
+> 200: Role deleted
+
 #### Gradle tasks
 **1) Run Unit test** 
 ```
@@ -154,7 +173,7 @@ Body:
 ```
 ./gradlew clean build
 ```
-This will create the jar in ```build/libs/user-api-0.0.1-SNAPSHOT.jar```
+This will create the jar in ```build/libs/user-api-X.Y.Z-SNAPSHOT.jar```
 
 #### Database structure
 
