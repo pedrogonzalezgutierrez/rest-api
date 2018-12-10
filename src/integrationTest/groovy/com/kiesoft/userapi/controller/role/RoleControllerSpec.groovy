@@ -244,4 +244,27 @@ class RoleControllerSpec extends Specification {
                 .contains(ApiErrorMessage.ROLE_NOT_FOUND.getCode())
     }
 
+    def "deleteRole: role is not deleted when it contains users"() {
+        given:
+        final deleteRoleDTO = new DeleteRoleDTO.Builder()
+                .name(TestDataService.ROLE_ADMIN)
+                .build()
+
+        and:
+        testDataService.userAdmin()
+
+        when:
+        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_ROLE_CONTROLLER + ROUTING_MANAGE)
+                .content(objectMapper.writeValueAsString(deleteRoleDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+        and: "the error code is in the response"
+        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).globalErrors)
+                .extracting("code")
+                .contains(ApiErrorMessage.ROLE_NOT_DELETED.getCode())
+    }
+
 }
