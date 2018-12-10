@@ -2,7 +2,7 @@
 
 Rest API allows you to create users and roles and manage them. Anyone can create users and get a JSON Web token which will need to provide in next requests in other to authenticate. Only admin user (a user with the role ROLE_ADMIN) can manage roles and assign existing ones to other users.
  
-#### Technologies
+### Technologies
 - Gradle 4.10.2
 - Spring Boot 2.1
 - JPA 2.2 and Hibernate 5.3.7 with Hikari pool (running dialect PostgreSQL 9.5) 
@@ -10,7 +10,7 @@ Rest API allows you to create users and roles and manage them. Anyone can create
 - Spock Framework 1.2 (H2 in memory database for Integration Test)
 - Owasp Java Html Sanitizer to avoid Cross-site scripting (XSS)
 
-#### Pacts
+### Pacts
 **1) Create user:** This endpoint is public and everyone can hit it in order to add a new user to the database 
 ```
 POST /user
@@ -160,7 +160,7 @@ Body:
 
 > 200: Role deleted
 
-#### Gradle tasks
+### Gradle tasks
 **1) Run Unit test** 
 ```
 ./gradlew test
@@ -175,9 +175,9 @@ Body:
 ```
 This will create the jar in ```build/libs/user-api-X.Y.Z-SNAPSHOT.jar```
 
-#### Database structure
+### Database structure
 
-#### Spring Security
+### Spring Security
 
-#### Postman
+### Postman
  
