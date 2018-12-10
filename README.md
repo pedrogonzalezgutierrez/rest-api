@@ -178,6 +178,3 @@ There is a file called ```UserApi.postman_collection.json``` with all these requ
 ```
 This will create the jar in ```build/libs/user-api-X.Y.Z-SNAPSHOT.jar```
 
-### Database structure
-
-### Spring Security 
