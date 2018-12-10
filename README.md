@@ -121,7 +121,7 @@ Body:
 
 > 200: Role added to user
 
-**6) Remove role from User:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to remove a role from an user 
+**7) Remove role from User:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to remove a role from an user 
 ```
 ROLE_ADMIN
 
@@ -141,8 +141,24 @@ Body:
 
 > 200: Role removed from user
 
+#### Gradle tasks
+**1) Run Unit test** 
+```
+./gradlew test
+```
+**2) Run Integration test** 
+```
+./gradlew integrationTest
+```
+**3) Run unit tests, integration tests and build jar** 
+```
+./gradlew clean build
+```
+This will create the jar in ```build/libs/user-api-0.0.1-SNAPSHOT.jar```
 
-TODO:
-- Explain Gradle task integrationTest and test
-- Explain Database structure
-- Explain and Test Spring Security
+#### Database structure
+
+#### Spring Security
+
+#### Postman
+ 
