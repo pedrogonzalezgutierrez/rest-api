@@ -1,0 +1,326 @@
+{
+	"info": {
+		"_postman_id": "b6ff094b-4f85-499f-945b-92f37393c720",
+		"name": "UserApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Public",
+					"item": [
+						{
+							"name": "Create User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"niwwwcssso78\",\n\t\"email\": \"nisss33j7sco@kiesoft.com\",\n\t\"password\": \"mak000\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8090/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8090",
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Generate JWT",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"pedrola@kiesoft.com\",\n\t\"password\": \"pedrola\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8090/user/jwt",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8090",
+									"path": [
+										"user",
+										"jwt"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change Password",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"nico@kiesoft.com\",\n\t\"password\": \"mak000\",\n\t\"newPassword\": \"mak6666000\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8090/user/password",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8090",
+									"path": [
+										"user",
+										"password"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "ROLE_ADMIN",
+					"item": [
+						{
+							"name": "Enable User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyZmIyODEzMS1lODQxLTRjMmQtOWZlNi1iYzVkZGI3MDg3MDQiLCJleHAiOjE1NDM4ODc3MDAsImlhdCI6MTU0Mzg4NDEwMH0._qvLvqb2-lTA8kbYuHMP4S7Kv58Ebl881SihBhoQUcE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"nico@kiesoft.com\",\n\t\"enable\": false\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8090/user/enable",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8090",
+									"path": [
+										"user",
+										"enable"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Role to User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI2Y2M3OGVlZS0xNzZlLTQyNGUtYjVlNS1lOWNkZTUyZDIzMzIiLCJpYXQiOjE1NDQxNDg0OTh9.TVpks5XdKWm0JwA7RRpIek2oKw5PfTcKg4CtYHS1TNQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"idUser\": \"1ae3cd3d-f6af-44ce-b41c-8d9513089fb0\",\n\t\"idRole\": \"a2172aea-898f-449e-af77-4f96f320bf38\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8090/user/role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8090",
+									"path": [
+										"user",
+										"role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Role from User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyZmIyODEzMS1lODQxLTRjMmQtOWZlNi1iYzVkZGI3MDg3MDQiLCJpYXQiOjE1NDQ0ODU1Njl9.tqVZKq8sHz8jWcwUHNyMh9VUVFdEpvXYd3BPvOXVwYs",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"idUser\": \"6cc78eee-176e-424e-b5e5-e9cde52d2332\",\n\t\"idRole\": \"a2172aea-898f-449e-af77-4f96f320bf38\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8090/user/role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8090",
+									"path": [
+										"user",
+										"role"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "role",
+			"item": [
+				{
+					"name": "Create Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI2Y2M3OGVlZS0xNzZlLTQyNGUtYjVlNS1lOWNkZTUyZDIzMzIiLCJleHAiOjE1NDM5NzEzOTksImlhdCI6MTU0Mzk2Nzc5OX0.16uiSIaK9cUI-xYK0vTSBLoi4aAqrX4JzdoLOJdrDQA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"ROLE_SUCOLEGA1\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8090/role",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyZmIyODEzMS1lODQxLTRjMmQtOWZlNi1iYzVkZGI3MDg3MDQiLCJpYXQiOjE1NDQ0ODU1Njl9.tqVZKq8sHz8jWcwUHNyMh9VUVFdEpvXYd3BPvOXVwYs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"ROLE_SUCOLEGA\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8090/role",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"role"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

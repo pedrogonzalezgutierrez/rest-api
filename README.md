@@ -160,6 +160,9 @@ Body:
 
 > 200: Role deleted
 
+#### Postman Collection
+There is a file called ```UserApi.postman_collection.json``` with all these request ready to import in [Postman](https://www.getpostman.com/) in order to play with them.
+ 
 ### Gradle tasks
 **1) Run Unit test** 
 ```
@@ -177,7 +180,4 @@ This will create the jar in ```build/libs/user-api-X.Y.Z-SNAPSHOT.jar```
 
 ### Database structure
 
-### Spring Security
-
-### Postman
- 
+### Spring Security 
