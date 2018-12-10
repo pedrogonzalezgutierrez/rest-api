@@ -18,7 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 import static com.kiesoft.userapi.controller.role.AbstractRoleController.ROUTING_ROLE_CONTROLLER;
-import static com.kiesoft.userapi.controller.role.AbstractRoleController.ROUTING_ROLE_CREATE;
+import static com.kiesoft.userapi.controller.role.AbstractRoleController.ROUTING_MANAGE;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CONTROLLER;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_CREATE;
 import static com.kiesoft.userapi.controller.user.AbstractUserController.ROUTING_USER_ENABLE_USER;
@@ -67,7 +67,10 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, ROUTING_USER_CONTROLLER + ROUTING_USER_ROLE).hasRole(RoleConstants.ROLE_ADMIN)
 
                 // Create a Role
-                .antMatchers(HttpMethod.POST, ROUTING_ROLE_CONTROLLER + ROUTING_ROLE_CREATE).hasRole(RoleConstants.ROLE_ADMIN);
+                .antMatchers(HttpMethod.POST, ROUTING_ROLE_CONTROLLER + ROUTING_MANAGE).hasRole(RoleConstants.ROLE_ADMIN)
+
+                // Delete a Role
+                .antMatchers(HttpMethod.DELETE, ROUTING_ROLE_CONTROLLER + ROUTING_MANAGE).hasRole(RoleConstants.ROLE_ADMIN);
     }
 
     @Override

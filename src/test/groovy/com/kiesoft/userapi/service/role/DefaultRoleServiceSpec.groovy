@@ -60,6 +60,22 @@ class DefaultRoleServiceSpec extends Specification {
         thrown PersistenceProblemException
     }
 
+    def "error deleting a role"() {
+        given:
+        roleRepository.deleteById(_) >> { throw new RuntimeException() }
+
+        when:
+        defaultRoleService.delete(aRoleDTO)
+
+        then:
+        thrown Exception
+
+        where:
+        aRoleDTO                      || _
+        null                          || _
+        new RoleDTO.Builder().build() || _
+    }
+
     def "findByName: role does not exist"() {
         given:
         roleRepository.findByNameIgnoreCase(name) >> Optional.empty()

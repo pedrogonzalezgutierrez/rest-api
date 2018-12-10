@@ -13,6 +13,9 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Handles the validations error
+ */
 @ControllerAdvice
 public class ApiValidationExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -26,7 +29,7 @@ public class ApiValidationExceptionHandler extends ResponseEntityExceptionHandle
                         fieldError.getDefaultMessage()))
 
                 .collect(toList());
-        return new ResponseEntity<>(new ApiErrorsView(apiFieldErrors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ApiErrorsView.Builder().fieldErrors(apiFieldErrors).build(), HttpStatus.BAD_REQUEST);
     }
 
     private String asString(String[] codes) {

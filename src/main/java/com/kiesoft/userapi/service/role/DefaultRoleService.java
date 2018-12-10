@@ -35,6 +35,15 @@ public class DefaultRoleService implements RoleService {
     }
 
     @Override
+    public void delete(RoleDTO roleDTO) {
+        try {
+            roleRepository.deleteById(roleDTO.getId());
+        } catch (Exception e) {
+            throw new PersistenceProblemException("Error when deleting RoleEntity", e);
+        }
+    }
+
+    @Override
     public Optional<RoleDTO> findByName(String name) {
         Optional<RoleEntity> roleEntity = roleRepository.findByNameIgnoreCase(name);
         return roleEntity.map(roleMapper::asDTO);

@@ -29,7 +29,8 @@ public enum ApiErrorMessage {
     PASSWORDS_ARE_EQUALS("passwords-are-equals", "The new password needs to be different that the current one"),
 
     ROLE_ALREADY_EXISTS("role-already-exists", "This role already exists"),
-    ROLE_NOT_FOUND("role-not-found", "The role could not be found");
+    ROLE_NOT_FOUND("role-not-found", "The role could not be found"),
+    ROLE_NOT_DELETED("role-not-deleted", "The role could not be deleted");
 
     private String code;
     private String message;
