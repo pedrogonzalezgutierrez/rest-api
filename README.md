@@ -1,6 +1,6 @@
 # User API
 
-Rest API allows you to create users and roles and manage them. Anyone can create users and get a JSON Web token which will need to provide in next requests in other to authenticate. Only admin user (a user with the role ROLE_ADMIN) can manage roles and assign existing ones to other users.
+This RestAPI allows you to create users and roles and manage them. Anyone can create users and get a JSON Web token which will need to provide in next requests in other to authenticate. Only admin user (a user with the role ROLE_ADMIN) can manage roles and assign existing ones to other users.
  
 ### Technologies
 - Gradle 4.10.2
