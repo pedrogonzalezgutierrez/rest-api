@@ -31,26 +31,22 @@ public class TestDataService {
     }
 
     public RoleEntity roleAdmin() {
-        Optional<RoleEntity> optionalRoleEntity = roleRepository.findByNameIgnoreCase(ROLE_ADMIN);
-        if(optionalRoleEntity.isPresent()) {
-            return optionalRoleEntity.get();
-        } else {
-            RoleEntity roleAdmin = new RoleEntity.Builder()
-                    .name(ROLE_ADMIN)
-                    .build();
-            return roleRepository.save(roleAdmin);
-        }
+        return getRole(ROLE_ADMIN);
     }
 
     public RoleEntity roleEditor() {
-        Optional<RoleEntity> optionalRoleEntity = roleRepository.findByNameIgnoreCase(ROLE_EDITOR);
+        return getRole(ROLE_EDITOR);
+    }
+
+    private RoleEntity getRole(String name) {
+        Optional<RoleEntity> optionalRoleEntity = roleRepository.findByNameIgnoreCase(name);
         if(optionalRoleEntity.isPresent()) {
             return optionalRoleEntity.get();
         } else {
-            RoleEntity roleEditor = new RoleEntity.Builder()
-                    .name(ROLE_EDITOR)
+            RoleEntity role = new RoleEntity.Builder()
+                    .name(name)
                     .build();
-            return roleRepository.save(roleEditor);
+            return roleRepository.save(role);
         }
     }
 
