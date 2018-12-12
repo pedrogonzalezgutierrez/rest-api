@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 class UserMapperSpec extends Specification {
 
-    final userConverter = new UserMapperImpl()
+    final userMapper = new UserMapperImpl()
 
     def "will convert an Entity to DTO"() {
         given:
@@ -35,7 +35,7 @@ class UserMapperSpec extends Specification {
                 .build()
 
         when:
-        final userDTO = userConverter.asDTO(userEntity)
+        final userDTO = userMapper.asDTO(userEntity)
 
         then:
         with(userDTO) {
@@ -74,7 +74,7 @@ class UserMapperSpec extends Specification {
                 .build()
 
         when:
-        final userEntity = userConverter.asEntity(userDTO)
+        final userEntity = userMapper.asEntity(userDTO)
 
         then:
         with(userEntity) {
