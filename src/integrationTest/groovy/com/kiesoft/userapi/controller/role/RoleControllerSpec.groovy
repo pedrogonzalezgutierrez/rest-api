@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.kiesoft.userapi.TestDataService
 import com.kiesoft.userapi.controller.error.ApiErrorMessage
 import com.kiesoft.userapi.controller.error.ApiErrorsView
-import com.kiesoft.userapi.controller.error.ApiValidationExceptionHandler
+import com.kiesoft.userapi.controller.error.ApiExceptionHandler
 import com.kiesoft.userapi.dto.role.DeleteRoleDTO
 import com.kiesoft.userapi.dto.user.CreateUserDTO
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,7 +41,7 @@ class RoleControllerSpec extends Specification {
     final objectMapper = new ObjectMapper();
 
     void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(roleController, new ApiValidationExceptionHandler()).build()
+        this.mockMvc = MockMvcBuilders.standaloneSetup(roleController, new ApiExceptionHandler()).build()
     }
 
     //------------------------------
@@ -254,17 +254,12 @@ class RoleControllerSpec extends Specification {
         testDataService.userAdmin()
 
         when:
-        final result = mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_ROLE_CONTROLLER + ROUTING_MANAGE)
+        mockMvc.perform(MockMvcRequestBuilders.delete(ROUTING_ROLE_CONTROLLER + ROUTING_MANAGE)
                 .content(objectMapper.writeValueAsString(deleteRoleDTO))
                 .contentType(MediaType.APPLICATION_JSON))
 
         then:
-        result.andExpect(MockMvcResultMatchers.status().isBadRequest())
-
-        and: "the error code is in the response"
-        assertThat(objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApiErrorsView.class).globalErrors)
-                .extracting("code")
-                .contains(ApiErrorMessage.ROLE_NOT_DELETED.getCode())
+        thrown Exception
     }
 
 }

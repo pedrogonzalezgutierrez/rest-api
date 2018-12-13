@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.kiesoft.userapi.TestDataService
 import com.kiesoft.userapi.controller.error.ApiErrorMessage
 import com.kiesoft.userapi.controller.error.ApiErrorsView
-import com.kiesoft.userapi.controller.error.ApiValidationExceptionHandler
+import com.kiesoft.userapi.controller.error.ApiExceptionHandler
 import com.kiesoft.userapi.dto.user.AddRoleDTO
 import com.kiesoft.userapi.dto.user.ChangePasswordDTO
 import com.kiesoft.userapi.dto.user.CreateUserDTO
@@ -44,7 +44,7 @@ class UserControllerSpec extends Specification {
     final objectMapper = new ObjectMapper();
 
     void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(userController, new ApiValidationExceptionHandler()).build()
+        this.mockMvc = MockMvcBuilders.standaloneSetup(userController, new ApiExceptionHandler()).build()
     }
 
     // -------------------------------------------
