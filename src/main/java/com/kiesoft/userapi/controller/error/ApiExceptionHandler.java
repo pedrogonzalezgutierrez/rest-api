@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.toList;
  * Handles the validations error
  */
 @ControllerAdvice
-public class ApiValidationExceptionHandler extends ResponseEntityExceptionHandler {
+public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
