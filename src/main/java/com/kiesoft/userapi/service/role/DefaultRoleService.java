@@ -1,5 +1,6 @@
 package com.kiesoft.userapi.service.role;
 
+import com.kiesoft.userapi.controller.error.ApiErrorMessage;
 import com.kiesoft.userapi.dto.role.RoleDTO;
 import com.kiesoft.userapi.dto.user.UserDTO;
 import com.kiesoft.userapi.exception.PersistenceProblemException;
@@ -39,7 +40,7 @@ public class DefaultRoleService implements RoleService {
         try {
             roleRepository.deleteById(roleDTO.getId());
         } catch (Exception e) {
-            throw new PersistenceProblemException("Error when deleting RoleEntity", e);
+            throw new PersistenceProblemException(ApiErrorMessage.ROLE_NOT_DELETED.getMessage(), e);
         }
     }
 

@@ -1,8 +1,5 @@
 package com.kiesoft.userapi.controller.role;
 
-import com.kiesoft.userapi.controller.error.ApiErrorMessage;
-import com.kiesoft.userapi.controller.error.ApiErrorsView;
-import com.kiesoft.userapi.controller.error.ApiGlobalError;
 import com.kiesoft.userapi.dto.role.CreateRoleDTO;
 import com.kiesoft.userapi.dto.role.DeleteRoleDTO;
 import com.kiesoft.userapi.dto.role.RoleDTO;
@@ -21,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-
-import java.util.Collections;
 
 import static com.kiesoft.userapi.controller.role.AbstractRoleController.ROUTING_ROLE_CONTROLLER;
 
@@ -61,14 +56,9 @@ public class RoleController extends AbstractRoleController {
 
     @RequestMapping(value = ROUTING_MANAGE, method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteRole(@Valid @RequestBody DeleteRoleDTO deleteRoleDTO) {
-        try {
-            RoleDTO roleDTO = deleteRoleDTO.getRoleDTO();
-            roleService.delete(roleDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            ApiGlobalError apiGlobalError = new ApiGlobalError(ApiErrorMessage.ROLE_NOT_DELETED.getCode(), ApiErrorMessage.ROLE_NOT_DELETED.getMessage());
-            return new ResponseEntity<>(new ApiErrorsView.Builder().globalErrors(Collections.singletonList(apiGlobalError)).build(), HttpStatus.BAD_REQUEST);
-        }
+        RoleDTO roleDTO = deleteRoleDTO.getRoleDTO();
+        roleService.delete(roleDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
