@@ -46,7 +46,7 @@ public class RoleController extends AbstractRoleController {
         roleService.save(new RoleDTO.Builder()
                 .name(createRoleDTO.getName())
                 .build());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @InitBinder("deleteRoleDTO")

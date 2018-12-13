@@ -65,7 +65,7 @@ class UserControllerSpec extends Specification {
                 .contentType(MediaType.APPLICATION_JSON))
 
         then:
-        result.andExpect(MockMvcResultMatchers.status().isOk())
+        result.andExpect(MockMvcResultMatchers.status().isCreated())
     }
 
     def "createNewUser: user not created when missing name"() {
@@ -383,7 +383,7 @@ class UserControllerSpec extends Specification {
                 .contentType(MediaType.APPLICATION_JSON))
 
         then:
-        result.andExpect(MockMvcResultMatchers.status().isOk())
+        result.andExpect(MockMvcResultMatchers.status().isCreated())
     }
 
     def "generateJWT: token not generated when missing email"() {
@@ -1122,7 +1122,7 @@ class UserControllerSpec extends Specification {
                 .contentType(MediaType.APPLICATION_JSON))
 
         then:
-        result.andExpect(MockMvcResultMatchers.status().isOk())
+        result.andExpect(MockMvcResultMatchers.status().isCreated())
     }
 
     def "addRole: validation fails when missing idUser"() {

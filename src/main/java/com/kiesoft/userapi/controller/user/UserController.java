@@ -75,7 +75,7 @@ public class UserController extends AbstractUserController {
                 .enabled(Boolean.TRUE)
                 .points(0)
                 .build());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @InitBinder("generateJwtDTO")
@@ -87,7 +87,7 @@ public class UserController extends AbstractUserController {
     public ResponseEntity<Void> generateJWT(@Valid @RequestBody GenerateJwtDTO generateJwtDTO) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, String.format("%s %s", AuthorizationFilterJWT.BEARER_PREFIX, generateJwtDTO.getJwt()));
-        return new ResponseEntity<>(headers, HttpStatus.OK);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @InitBinder("changePasswordDTO")
@@ -127,7 +127,7 @@ public class UserController extends AbstractUserController {
         RoleDTO roleDTO = addRoleDTO.getRoleDTO();
         userDTO.addRole(roleDTO);
         userService.save(userDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @InitBinder("removeRoleDTO")

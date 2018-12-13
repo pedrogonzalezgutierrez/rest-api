@@ -60,7 +60,7 @@ class RoleControllerSpec extends Specification {
                 .contentType(MediaType.APPLICATION_JSON))
 
         then:
-        result.andExpect(MockMvcResultMatchers.status().isOk())
+        result.andExpect(MockMvcResultMatchers.status().isCreated())
     }
 
     def "createRole: validation fails when missing name"() {
