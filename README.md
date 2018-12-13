@@ -156,7 +156,7 @@ Body:
 
 > 400: Role does not exist
 
-> 400: Role is in used by users
+> 500: Role is in used by users
 
 > 200: Role deleted
 
