@@ -140,6 +140,13 @@ Body:
 > 400: Role already exists
 
 > 201: Role created
+```
+Response
+{
+    "id": "e86f81ad-104e-4f71-a6b6-ee3bab771977",
+    "name": "ROLE_EDITOR"
+}
+```
 
 **8) Delete role:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to delete an existing role 
 ```
