@@ -25,7 +25,7 @@ Body:
 
 > 400: User already exists
 
-> 200: User created
+> 201: User created
 
 **2) Obtain a JSON Web Token:** Get a token valid for 1 hour providing email and password/secret
 ```
@@ -42,7 +42,7 @@ Body:
 
 > 400: User is not enabled
 
-> 200: Token created
+> 201: Token created
 ```
 Response:
 Header Authorization: Bearer jwtToken
@@ -102,7 +102,7 @@ Body:
 
 > 400: Role does not exist
 
-> 200: Role added to user
+> 201: Role added to user
 
 **6) Remove role from User:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to remove a role from an user 
 ```
@@ -139,7 +139,7 @@ Body:
 
 > 400: Role already exists
 
-> 200: Role created
+> 201: Role created
 
 **8) Delete role:** Only admin (any user with the role *ROLE_ADMIN*) can hit this endpoint in order to delete an existing role 
 ```
