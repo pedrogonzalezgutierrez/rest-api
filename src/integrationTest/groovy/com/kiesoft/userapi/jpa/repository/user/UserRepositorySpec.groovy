@@ -125,6 +125,32 @@ class UserRepositorySpec extends Specification {
         thrown Exception
     }
 
+    def "update attributes when it already exists"() {
+        given:
+        userRepository.save(userAdmin)
+
+        and: "update attributes"
+        userAdmin.setName("Loco")
+        userAdmin.setEmail("loco@kiesoft.com")
+        userAdmin.setPassword("nuevaPass")
+        userAdmin.setEnabled(Boolean.FALSE)
+        userAdmin.setPoints(2000)
+        userRepository.save(userAdmin)
+
+        when:
+        final actual = userRepository.findById(userAdmin.getId())
+
+        then:
+        actual.isPresent()
+        with(actual.get()) {
+            name == userAdmin.getName()
+            email == userAdmin.getEmail()
+            password == userAdmin.getPassword()
+            enabled == userAdmin.getEnabled()
+            points == userAdmin.getPoints()
+        }
+    }
+
     def "will find by name (ignore case) when it exists"() {
         given:
         userRepository.save(userAdmin)
