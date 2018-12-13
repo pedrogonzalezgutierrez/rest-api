@@ -42,11 +42,11 @@ public class RoleController extends AbstractRoleController {
     }
 
     @RequestMapping(value = ROUTING_MANAGE, method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> createRole(@Valid @RequestBody CreateRoleDTO createRoleDTO) {
-        roleService.save(new RoleDTO.Builder()
+    public ResponseEntity<RoleDTO> createRole(@Valid @RequestBody CreateRoleDTO createRoleDTO) {
+        RoleDTO roleDTO = roleService.save(new RoleDTO.Builder()
                 .name(createRoleDTO.getName())
                 .build());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(roleDTO, HttpStatus.CREATED);
     }
 
     @InitBinder("deleteRoleDTO")
@@ -55,7 +55,7 @@ public class RoleController extends AbstractRoleController {
     }
 
     @RequestMapping(value = ROUTING_MANAGE, method = RequestMethod.DELETE)
-    public ResponseEntity<Object> deleteRole(@Valid @RequestBody DeleteRoleDTO deleteRoleDTO) {
+    public ResponseEntity<Void> deleteRole(@Valid @RequestBody DeleteRoleDTO deleteRoleDTO) {
         RoleDTO roleDTO = deleteRoleDTO.getRoleDTO();
         roleService.delete(roleDTO);
         return new ResponseEntity<>(HttpStatus.OK);

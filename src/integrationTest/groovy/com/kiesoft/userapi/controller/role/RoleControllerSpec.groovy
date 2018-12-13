@@ -6,6 +6,7 @@ import com.kiesoft.userapi.controller.error.ApiErrorMessage
 import com.kiesoft.userapi.controller.error.ApiErrorsView
 import com.kiesoft.userapi.controller.error.ApiExceptionHandler
 import com.kiesoft.userapi.dto.role.DeleteRoleDTO
+import com.kiesoft.userapi.dto.role.RoleDTO
 import com.kiesoft.userapi.dto.user.CreateUserDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -61,6 +62,13 @@ class RoleControllerSpec extends Specification {
 
         then:
         result.andExpect(MockMvcResultMatchers.status().isCreated())
+
+        and:
+        final actual = objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), RoleDTO.class)
+        with(actual) {
+            id != null
+            name == createRoleDTO.name
+        }
     }
 
     def "createRole: validation fails when missing name"() {
