@@ -1,5 +1,6 @@
 package com.kiesoft.userapi.service.user;
 
+import com.kiesoft.userapi.controller.error.ApiErrorMessage;
 import com.kiesoft.userapi.dto.user.UserDTO;
 import com.kiesoft.userapi.exception.PersistenceProblemException;
 import com.kiesoft.userapi.jpa.entity.user.UserEntity;
@@ -28,7 +29,7 @@ public class DefaultUserService implements UserService {
         try {
             return userMapper.asDTO(userRepository.save(userMapper.asEntity(userDTO)));
         } catch (Exception e) {
-            throw new PersistenceProblemException("Error when saving UserEntity", e);
+            throw new PersistenceProblemException(ApiErrorMessage.USER_NOT_SAVED.getMessage(), e);
         }
     }
 

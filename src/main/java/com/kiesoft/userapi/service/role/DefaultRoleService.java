@@ -31,7 +31,7 @@ public class DefaultRoleService implements RoleService {
         try {
             return roleMapper.asDTO(roleRepository.save(roleMapper.asEntity(roleDTO)));
         } catch (Exception e) {
-            throw new PersistenceProblemException("Error when saving RoleEntity", e);
+            throw new PersistenceProblemException(ApiErrorMessage.ROLE_NOT_SAVED.getMessage(), e);
         }
     }
 

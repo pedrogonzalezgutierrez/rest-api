@@ -16,6 +16,7 @@ public enum ApiErrorMessage {
     USERNAME_ALREADY_EXISTS("username-already-exists", "This username is in use by other user"),
     USER_NOT_ENABLED("user-not-enabled", "The user is not enabled"),
     USER_NOT_FOUND("user-not-found", "The user could not be found"),
+    USER_NOT_SAVED("user-not-saved", "The user could not be saved"),
     USER_ALREADY_HAS_THE_ROLE("user-already-has-the-role", "The user already has that role"),
     USER_DOES_NOT_HAVE_THE_ROLE("user-does-not-have-the-role", "The user does not have that role"),
 
@@ -30,7 +31,8 @@ public enum ApiErrorMessage {
 
     ROLE_ALREADY_EXISTS("role-already-exists", "This role already exists"),
     ROLE_NOT_FOUND("role-not-found", "The role could not be found"),
-    ROLE_NOT_DELETED("role-not-deleted", "The role could not be deleted");
+    ROLE_NOT_DELETED("role-not-deleted", "The role could not be deleted"),
+    ROLE_NOT_SAVED("role-not-saved", "The role could not be saved");
 
     private String code;
     private String message;
